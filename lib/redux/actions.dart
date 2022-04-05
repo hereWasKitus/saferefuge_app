@@ -1,0 +1,1 @@
+enum AppActions { selectMapFilter, setSearchQuery }

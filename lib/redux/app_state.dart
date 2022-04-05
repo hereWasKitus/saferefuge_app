@@ -1,6 +1,6 @@
-// class AppState {
+class AppSate {
+  final List<String> selectedTags;
+  final String searchQuery;
 
-//   AppState({
-
-//   })
-// }
+  const AppSate({this.selectedTags = const [], this.searchQuery = ''});
+}
