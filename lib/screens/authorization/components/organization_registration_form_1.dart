@@ -2,8 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:protect_ua_women/constants.dart';
 import 'package:protect_ua_women/models/registration_form.model.dart';
-import 'package:protect_ua_women/redux/actions.dart';
-import 'package:protect_ua_women/redux/store.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
 
 class OrganizationRegistrationForm1 extends StatefulWidget {
@@ -22,8 +20,9 @@ class _OrganizationRegistrationForm1State
   String? password = '';
 
   bool isFirstFormFilled() {
-    return appStore.state.registrationForm.email != null &&
-        appStore.state.registrationForm.email!.isNotEmpty;
+    return false;
+    // return appStore.state.registrationForm.email != null &&
+    //     appStore.state.registrationForm.email!.isNotEmpty;
   }
 
   // final _innerRouterKey = GlobalKey<AutoRouterState>();
@@ -84,11 +83,11 @@ class _OrganizationRegistrationForm1State
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState?.save();
-                      appStore
-                          .dispatch(SetRegistrationFormAction(RegistrationForm(
-                        email: email,
-                        password: password,
-                      )));
+                      // appStore
+                      //     .dispatch(SetRegistrationFormAction(RegistrationForm(
+                      //   email: email,
+                      //   password: password,
+                      // )));
                       context.router.pushNamed('step2');
                     }
                   },

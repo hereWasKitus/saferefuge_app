@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:protect_ua_women/redux/app_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:protect_ua_women/bloc/map/map_bloc.dart';
 import 'package:protect_ua_women/screens/home/home_screen.dart';
 import 'package:protect_ua_women/screens/splash_screen/splash_screen.dart';
 
@@ -9,14 +9,15 @@ class Entrypoint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, bool>(
-      converter: (store) => store.state.isInitialized,
-      builder: (context, bool isInitialized) {
-        if (!isInitialized) {
-          return const SplashScreen();
-        } else {
-          return const MapSample();
+    return BlocBuilder<MapBloc, MapState>(
+      buildWhen: (previous, current) =>
+          previous.poisLoaded != current.poisLoaded,
+      builder: (context, state) {
+        if (state.poisLoaded) {
+          return const HomeScreen();
         }
+
+        return const SplashScreen();
       },
     );
   }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:protect_ua_women/constants.dart';
 import 'package:protect_ua_women/models/registration_form.model.dart';
-import 'package:protect_ua_women/redux/actions.dart';
-import 'package:protect_ua_women/redux/store.dart';
 import 'package:protect_ua_women/services/auth.service.dart';
 import 'package:protect_ua_women/widgets/category_list.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
@@ -100,18 +98,18 @@ class _OrganizationRegistrationForm2State
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState?.save();
 
-                      RegistrationForm form =
-                          appStore.state.registrationForm.copyWith(
-                        name: name,
-                        organizationName: organizationName,
-                        address: organizationAddress,
-                        phone: organizationPhone,
-                        categories: services,
-                      );
+                      // RegistrationForm form =
+                      //     appStore.state.registrationForm.copyWith(
+                      //   name: name,
+                      //   organizationName: organizationName,
+                      //   address: organizationAddress,
+                      //   phone: organizationPhone,
+                      //   categories: services,
+                      // );
 
-                      appStore.dispatch(SetRegistrationFormAction(form));
+                      // appStore.dispatch(SetRegistrationFormAction(form));
 
-                      AuthService().registerOrganization(form);
+                      // AuthService().registerOrganization(form);
                     }
                   },
                   child: const Text('Register organization'),

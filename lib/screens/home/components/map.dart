@@ -1,17 +1,16 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:protect_ua_women/bloc/map/map_bloc.dart';
 import 'package:protect_ua_women/constants.dart';
 import 'package:protect_ua_women/models/poi.model.dart';
-import 'package:protect_ua_women/redux/store.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 
 class MapMain extends StatefulWidget {
@@ -104,7 +103,7 @@ class _MapState extends State<MapMain> {
   Future<void> _zoomToCluster(Cluster<POI> cluster) async {
     var zoomLevel = await _controller.getZoomLevel();
     _controller.animateCamera(
-      CameraUpdate.newLatLngZoom(cluster.location, zoomLevel + 2.2),
+      CameraUpdate.newLatLngZoom(cluster.location, zoomLevel + 2),
     );
   }
 
@@ -161,31 +160,44 @@ class _MapState extends State<MapMain> {
     return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
   }
 
-  /**
-   * 1. Somehow listen to app state change from the outside(try to react only to specific fields of state)
-   * 2. Create listener here that will call _initClusterManager() to recreate clusters
-   */
-
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
-      mapType: MapType.normal,
-      markers: Set.from(_markers),
-      initialCameraPosition: widget.defaultCameraPosition,
-      onMapCreated: (GoogleMapController controller) {
-        widget.controllerCompleter.complete(controller);
-        _manager.setMapId(controller.mapId);
-        setState(() {
-          _controller = controller;
-        });
+    return BlocListener<MapBloc, MapState>(
+      listenWhen: (previous, current) {
+        return (previous.selectedCategories != current.selectedCategories ||
+            previous.pois != current.pois);
       },
-      zoomControlsEnabled: false,
-      compassEnabled: false,
-      mapToolbarEnabled: false,
-      myLocationEnabled: true,
-      myLocationButtonEnabled: false,
-      onCameraMove: _manager.onCameraMove,
-      onCameraIdle: _manager.updateMap,
+      listener: (context, state) {
+        List<POI> filteredPOIs = state.pois
+            .where((poi) => poi.containsCategories(state.selectedCategories))
+            .toList();
+
+        _manager.setItems(filteredPOIs.isEmpty ? state.pois : filteredPOIs);
+        _manager.updateMap();
+      },
+      child: GoogleMap(
+        mapType: MapType.normal,
+        markers: Set.from(_markers),
+        initialCameraPosition: widget.defaultCameraPosition,
+        onMapCreated: (GoogleMapController controller) {
+          if (!widget.controllerCompleter.isCompleted) {
+            widget.controllerCompleter.complete(controller);
+          }
+
+          _manager.setMapId(controller.mapId);
+
+          setState(() {
+            _controller = controller;
+          });
+        },
+        zoomControlsEnabled: false,
+        compassEnabled: false,
+        mapToolbarEnabled: false,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: false,
+        onCameraMove: _manager.onCameraMove,
+        onCameraIdle: _manager.updateMap,
+      ),
     );
   }
 }

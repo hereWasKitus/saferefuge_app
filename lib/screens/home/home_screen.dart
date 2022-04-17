@@ -1,34 +1,30 @@
 import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:protect_ua_women/bloc/map/map_bloc.dart';
 import 'package:protect_ua_women/constants.dart';
-import 'package:protect_ua_women/models/poi.model.dart';
 import 'package:protect_ua_women/screens/home/components/map.dart';
 import 'package:protect_ua_women/screens/home/components/map_search_field.dart';
 import 'package:protect_ua_women/screens/home/components/positioned_tags_list.dart';
 import 'package:protect_ua_women/screens/home/components/menu_button.dart';
 import 'package:protect_ua_women/screens/home/components/suggestions_list.dart';
 
-import '../../redux/app_state.dart';
-
 typedef SetSearchQueryCallback = void Function(String query);
 
-class MapSample extends StatefulWidget {
-  const MapSample({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<MapSample> createState() => MapSampleState();
+  State<HomeScreen> createState() => HomeScreenState();
 }
 
-class MapSampleState extends State<MapSample> {
+class HomeScreenState extends State<HomeScreen> {
   final Completer<GoogleMapController> _controller = Completer();
-  static final CameraPosition _kGooglePlex = CameraPosition(
+  final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
@@ -59,20 +55,12 @@ class MapSampleState extends State<MapSample> {
       ),
       body: Stack(
         children: [
-          StoreConnector<AppState, List<POI>>(
-            converter: (store) {
-              return store.state.selectedTags.isEmpty
-                  ? store.state.pois
-                  : store.state.pois
-                      .where((poi) =>
-                          poi.containsCategories(store.state.selectedTags))
-                      .toList();
-            },
-            builder: (BuildContext context, List<POI> pois) {
+          BlocBuilder<MapBloc, MapState>(
+            builder: (context, state) {
               return MapMain(
                 defaultCameraPosition: _kGooglePlex,
                 controllerCompleter: _controller,
-                pois: pois,
+                pois: state.pois,
               );
             },
           ),
@@ -97,7 +85,7 @@ class MapSampleState extends State<MapSample> {
 
   _goToPosition(double lat, double lng) async {
     CameraPosition position =
-        CameraPosition(target: LatLng(lat, lng), zoom: 11);
+        CameraPosition(target: LatLng(lat, lng), zoom: 12.0);
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(position));
   }

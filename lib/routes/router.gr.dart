@@ -38,7 +38,7 @@ class AppRouter extends _i8.RootStackRouter {
     },
     MapSample.name: (routeData) {
       return _i8.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i2.MapSample());
+          routeData: routeData, child: const _i2.HomeScreen());
     },
     OrganizationListScreen.name: (routeData) {
       final args = routeData.argsAs<OrganizationListScreenArgs>();
@@ -114,7 +114,7 @@ class Entrypoint extends _i8.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.MapSample]
+/// [_i2.HomeScreen]
 class MapSample extends _i8.PageRouteInfo<void> {
   const MapSample() : super(MapSample.name, path: '/home');
 

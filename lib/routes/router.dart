@@ -18,7 +18,7 @@ import 'package:protect_ua_women/screens/organization_list_screen/organization_l
       fullMatch: true,
     ),
     AutoRoute(
-      page: MapSample,
+      page: HomeScreen,
       path: '/home',
       // initial: true,
     ),
@@ -29,32 +29,32 @@ import 'package:protect_ua_women/screens/organization_list_screen/organization_l
       durationInMilliseconds: defaultAnimationDuration,
       // initial: true,
     ),
-    AutoRoute(
-      page: AuthorizationScreenWrapper,
-      name: 'AuthorizationRoute',
-      path: '/authorization',
-      children: [
-        AutoRoute(
-          path: 'registration',
-          name: 'RegistrationRoute',
-          page: OrganizationRegistrationScreen,
-          initial: true,
-          children: [
-            AutoRoute(
-              path: 'step1',
-              name: 'RegistrationFirstStepRoute',
-              page: OrganizationRegistrationForm1,
-              initial: true,
-            ),
-            AutoRoute(
-              path: 'step2',
-              name: 'RegistrationFirstSecondRoute',
-              page: OrganizationRegistrationForm2,
-            )
-          ],
-        ),
-      ],
-    ),
+    // AutoRoute(
+    //   page: AuthorizationScreenWrapper,
+    //   name: 'AuthorizationRoute',
+    //   path: '/authorization',
+    //   children: [
+    //     AutoRoute(
+    //       path: 'registration',
+    //       name: 'RegistrationRoute',
+    //       page: OrganizationRegistrationScreen,
+    //       initial: true,
+    //       children: [
+    //         AutoRoute(
+    //           path: 'step1',
+    //           name: 'RegistrationFirstStepRoute',
+    //           page: OrganizationRegistrationForm1,
+    //           initial: true,
+    //         ),
+    //         AutoRoute(
+    //           path: 'step2',
+    //           name: 'RegistrationFirstSecondRoute',
+    //           page: OrganizationRegistrationForm2,
+    //         )
+    //       ],
+    //     ),
+    //   ],
+    // ),
   ],
 )
 class $AppRouter {}
