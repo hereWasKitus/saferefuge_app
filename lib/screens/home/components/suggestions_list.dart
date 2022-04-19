@@ -33,7 +33,7 @@ class SuggestionsList extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.searchResults != current.searchResults,
       builder: (BuildContext context, MapState state) {
-        if (state.searchResults.isNotEmpty) {
+        if (state.toShowSuggestions) {
           return Positioned(
             top: 85,
             left: defaultPadding,

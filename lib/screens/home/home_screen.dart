@@ -9,7 +9,7 @@ import 'package:protect_ua_women/bloc/map/map_bloc.dart';
 import 'package:protect_ua_women/constants.dart';
 import 'package:protect_ua_women/screens/home/components/map.dart';
 import 'package:protect_ua_women/screens/home/components/map_search_field.dart';
-import 'package:protect_ua_women/screens/home/components/positioned_tags_list.dart';
+import 'package:protect_ua_women/screens/home/components/categories_list.dart';
 import 'package:protect_ua_women/screens/home/components/menu_button.dart';
 import 'package:protect_ua_women/screens/home/components/suggestions_list.dart';
 
@@ -24,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   final Completer<GoogleMapController> _controller = Completer();
-  final CameraPosition _kGooglePlex = CameraPosition(
+  final CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
@@ -37,6 +37,7 @@ class HomeScreenState extends State<HomeScreen> {
         foregroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
+        // automaticallyImplyLeading: false,
         title: Container(
           margin: const EdgeInsets.fromLTRB(0, 0, 8, 0),
           child: MapSearchField(
@@ -52,6 +53,10 @@ class HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
+        bottom: const PreferredSize(
+          child: CategoriesList(),
+          preferredSize: Size.fromHeight(32),
+        ),
       ),
       body: Stack(
         children: [
@@ -64,7 +69,6 @@ class HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-          const PositionedTagsList(),
           SuggestionsList(onLocationSelected: _goToPosition)
         ],
       ),

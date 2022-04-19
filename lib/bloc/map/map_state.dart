@@ -16,6 +16,8 @@ class MapState extends Equatable {
   final List<POI> pois;
   final bool poisLoaded;
 
+  bool get toShowSuggestions => searchResults.isNotEmpty;
+
   @override
   List<Object?> get props =>
       [searchResults, categories, selectedCategories, pois, poisLoaded];

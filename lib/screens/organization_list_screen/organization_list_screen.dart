@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:protect_ua_women/constants.dart';
 import 'package:protect_ua_women/models/poi.model.dart';
@@ -82,14 +83,13 @@ class OrganizationCard extends StatelessWidget {
       fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white);
 
   double calculateDistance(LatLng from, LatLng to) {
-    var p = 0.017453292519943295;
-    var a = 0.5 -
-        cos((to.latitude - from.latitude) * p) / 2 +
-        cos(from.latitude * p) *
-            cos(to.latitude * p) *
-            (1 - cos((to.longitude - from.longitude) * p)) /
-            2;
-    var res = 12742 * asin(sqrt(a));
+    var res = Geolocator.distanceBetween(
+          from.latitude,
+          from.longitude,
+          to.latitude,
+          to.longitude,
+        ) /
+        1000;
     num mod = pow(10.0, 2);
     return ((res * mod).round().toDouble() / mod);
   }

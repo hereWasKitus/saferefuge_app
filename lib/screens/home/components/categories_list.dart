@@ -4,22 +4,18 @@ import 'package:protect_ua_women/bloc/map/map_bloc.dart';
 import 'package:protect_ua_women/constants.dart';
 import 'package:protect_ua_women/models/category.model.dart';
 
-class PositionedTagsList extends StatelessWidget {
-  const PositionedTagsList({Key? key}) : super(key: key);
+class CategoriesList extends StatelessWidget {
+  const CategoriesList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Positioned(
-      top: 85,
-      height: 32,
-      width: screenWidth,
-      // child: SizedBox.shrink(),
-      child: BlocBuilder<MapBloc, MapState>(
-        builder: (context, state) {
-          if (state.categories.isNotEmpty) {
-            return ListView.separated(
+    return BlocBuilder<MapBloc, MapState>(
+      builder: (context, state) {
+        if (state.categories.isNotEmpty && !state.toShowSuggestions) {
+          return SizedBox(
+            height: 32.0,
+            child: ListView.separated(
+              shrinkWrap: true,
               padding: const EdgeInsets.only(
                 left: defaultPadding,
                 right: defaultPadding,
@@ -49,12 +45,12 @@ class PositionedTagsList extends StatelessWidget {
                   isSelected: state.selectedCategories.contains(cat.id),
                 );
               },
-            );
-          }
+            ),
+          );
+        }
 
-          return SizedBox.shrink();
-        },
-      ),
+        return const SizedBox.shrink();
+      },
     );
   }
 }
