@@ -42,6 +42,7 @@ dependencies:
   auto_route: ^3.2.4
   equatable: ^2.0.3
   flutter_spinkit: ^5.1.0
+  flutter_launcher_icons: ^0.9.2
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +59,11 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/appicon.png"
 
 # The following section is specific to Flutter.
 flutter:
