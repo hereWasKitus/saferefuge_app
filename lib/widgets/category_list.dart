@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:protect_ua_women/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:protect_ua_women/bloc/map/map_bloc.dart';
 
 class CategoryList extends StatefulWidget {
   void Function(List<String> selected) onSelected;
@@ -12,16 +12,7 @@ class CategoryList extends StatefulWidget {
 }
 
 class _CategoryListState extends State<CategoryList> {
-  final List _categories = <String>[
-    'Medicine',
-    'Accomodation',
-    'Transport',
-    'Logistics',
-    'Food / Meals',
-    'Farmacy'
-  ];
-
-  var _selected = <String>[];
+  final _selected = <String>[];
 
   _onSelected(bool selected, String value) {
     setState(() {
@@ -36,32 +27,46 @@ class _CategoryListState extends State<CategoryList> {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 4,
-      runSpacing: -8,
-      children: _categories
-          .map(
-            (category) => FilterChip(
-              label: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    category,
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
-                  ),
-                  const SizedBox(
-                    width: 6,
-                  ),
-                ],
-              ),
-              onSelected: (bool selected) => _onSelected(selected, category),
-              showCheckmark: false,
-              backgroundColor: const Color.fromRGBO(44, 83, 218, 0.8),
-              selectedColor: const Color.fromRGBO(27, 50, 132, 1),
-              selected: _selected.contains(category),
-            ),
-          )
-          .toList(),
+    return BlocBuilder<MapBloc, MapState>(
+      builder: (context, state) {
+        return Wrap(
+          spacing: 4,
+          runSpacing: -8,
+          children: state.categories.map(
+            (category) {
+              return FilterChip(
+                label: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      category.id,
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                    // const SizedBox(width: 6),
+                  ],
+                ),
+                onSelected: (bool selected) => _onSelected(selected, category.id),
+                showCheckmark: false,
+                backgroundColor: const Color.fromRGBO(44, 83, 218, 0.8),
+                selectedColor: const Color.fromRGBO(27, 50, 132, 1),
+                selected: _selected.contains(category.id),
+              );
+            },
+          ).toList(),
+        );
+      },
     );
+  }
+
+  Widget _categoryIcon(String? url) {
+    if (url == null || url.isEmpty) {
+      return const SizedBox.shrink();
+    } else {
+      return Image.network(
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Windows_Settings_app_icon.png/1024px-Windows_Settings_app_icon.png',
+        width: 10,
+        height: 10,
+      );
+    }
   }
 }

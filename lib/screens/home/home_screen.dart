@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:protect_ua_women/bloc/map/map_bloc.dart';
-import 'package:protect_ua_women/constants.dart';
+import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/screens/home/components/map.dart';
 import 'package:protect_ua_women/screens/home/components/map_search_field.dart';
 import 'package:protect_ua_women/screens/home/components/categories_list.dart';
@@ -48,8 +48,7 @@ class HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 25),
             child: MenuButton(
-              onPressed: () =>
-                  AutoRouter.of(context).pushNamed('/authorization'),
+              onPressed: () => AutoRouter.of(context).pushNamed('/authorization'),
             ),
           ),
         ],
@@ -88,8 +87,7 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   _goToPosition(double lat, double lng) async {
-    CameraPosition position =
-        CameraPosition(target: LatLng(lat, lng), zoom: 12.0);
+    CameraPosition position = CameraPosition(target: LatLng(lat, lng), zoom: 12.0);
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(position));
   }
@@ -116,9 +114,7 @@ class HomeScreenState extends State<HomeScreen> {
     //       'Location permissions are permanently denied, we cannot request permissions.');
     // }
 
-    final Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    return CameraPosition(
-        target: LatLng(position.latitude, position.longitude), zoom: 15);
+    final Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 15);
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protect_ua_women/bloc/map/map_bloc.dart';
-import 'package:protect_ua_women/constants.dart';
+import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/models/category.model.dart';
 
 class CategoriesList extends StatelessWidget {
@@ -30,8 +30,7 @@ class CategoriesList extends StatelessWidget {
                 return MapCategoryChip(
                   category: cat,
                   onSelected: (bool isSelected) {
-                    List<String> _newSelectedTags =
-                        List<String>.from(state.selectedCategories);
+                    List<String> _newSelectedTags = List<String>.from(state.selectedCategories);
 
                     if (isSelected) {
                       _newSelectedTags.add(cat.id);
@@ -39,8 +38,7 @@ class CategoriesList extends StatelessWidget {
                       _newSelectedTags.removeWhere((id) => id == cat.id);
                     }
 
-                    context.read<MapBloc>().add(SetSelectedCategoriesEvent(
-                        selectedCategories: _newSelectedTags));
+                    context.read<MapBloc>().add(SetSelectedCategoriesEvent(selectedCategories: _newSelectedTags));
                   },
                   isSelected: state.selectedCategories.contains(cat.id),
                 );
@@ -56,11 +54,7 @@ class CategoriesList extends StatelessWidget {
 }
 
 class MapCategoryChip extends StatelessWidget {
-  const MapCategoryChip(
-      {Key? key,
-      required this.onSelected,
-      required this.category,
-      this.isSelected = false})
+  const MapCategoryChip({Key? key, required this.onSelected, required this.category, this.isSelected = false})
       : super(key: key);
 
   final Category category;
@@ -82,8 +76,8 @@ class MapCategoryChip extends StatelessWidget {
       ]),
       onSelected: onSelected,
       showCheckmark: false,
-      backgroundColor: const Color.fromRGBO(44, 83, 218,
-          0.8), // for some reason there is still white background underneath my background
+      backgroundColor: const Color.fromRGBO(
+          44, 83, 218, 0.8), // for some reason there is still white background underneath my background
       selectedColor: const Color.fromRGBO(27, 50, 132, 1),
       visualDensity: VisualDensity.compact,
       selected: isSelected,

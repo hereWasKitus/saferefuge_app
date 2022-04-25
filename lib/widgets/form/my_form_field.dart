@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:protect_ua_women/constants.dart';
+import 'package:protect_ua_women/config/constants.dart';
 
 class MyFormField extends StatelessWidget {
   String labelText;
@@ -8,19 +8,22 @@ class MyFormField extends StatelessWidget {
   TextInputType? keyboardType;
   String? Function(String?)? validator;
   void Function(String?)? onSaved;
+  void Function(String?)? onChanged;
+  TextEditingController? controller;
 
-  MyFormField(
-      {Key? key,
-      this.labelText = '',
-      this.hintText = '',
-      this.isPassword = false,
-      this.keyboardType,
-      this.validator,
-      this.onSaved})
-      : super(key: key);
+  MyFormField({
+    Key? key,
+    this.labelText = '',
+    this.hintText = '',
+    this.isPassword = false,
+    this.keyboardType,
+    this.validator,
+    this.onSaved,
+    this.onChanged,
+    this.controller,
+  }) : super(key: key);
 
-  OutlineInputBorder borderStyle({Color color = primaryColor}) =>
-      OutlineInputBorder(
+  OutlineInputBorder borderStyle({Color color = primaryColor}) => OutlineInputBorder(
         borderRadius: BorderRadius.circular(defaultBorderRadius),
         borderSide: BorderSide(width: 1, color: color),
       );
@@ -42,24 +45,24 @@ class MyFormField extends StatelessWidget {
             ),
           ),
         TextFormField(
+          controller: controller,
           onSaved: onSaved,
           style: const TextStyle(fontSize: 16),
           decoration: InputDecoration(
             border: borderStyle(),
-            enabledBorder:
-                borderStyle(color: const Color.fromRGBO(44, 83, 218, 0.8)),
+            enabledBorder: borderStyle(color: const Color.fromRGBO(44, 83, 218, 0.8)),
             focusedBorder: borderStyle(),
             hintText: hintText,
             hintStyle: const TextStyle(
               color: Color.fromRGBO(27, 50, 132, 0.2),
             ),
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 1, horizontal: 16),
+            contentPadding: const EdgeInsets.symmetric(vertical: 1, horizontal: 16),
           ),
           obscureText: isPassword,
           enableSuggestions: !isPassword,
           autocorrect: !isPassword,
           validator: validator,
+          onChanged: onChanged,
         )
       ],
     );

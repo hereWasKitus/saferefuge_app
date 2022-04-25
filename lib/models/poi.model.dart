@@ -4,6 +4,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class POI with ClusterItem {
   String id;
   String? address;
+  String? phone;
+  String? email;
+  String? url;
   String? city;
   String? country;
   String name;
@@ -16,6 +19,9 @@ class POI with ClusterItem {
     required this.id,
     this.address = '',
     this.city = '',
+    this.phone = '',
+    this.email = '',
+    this.url = '',
     this.country = '',
     required this.latLng,
     required this.name,
@@ -28,7 +34,7 @@ class POI with ClusterItem {
   LatLng get location => latLng;
 
   factory POI.fromJSON(Map<String, dynamic> json) => POI(
-        latLng: LatLng(json['lat'], json['lng']),
+        latLng: LatLng(json['geo']['coordinates'][1], json['geo']['coordinates'][0]),
         id: json['_id'],
         city: json['city'],
         address: json['address'],

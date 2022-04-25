@@ -3,9 +3,8 @@ import 'dart:convert' as convert;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protect_ua_women/bloc/map/map_bloc.dart';
-import 'package:protect_ua_women/constants.dart';
-import 'package:protect_ua_women/models/map_place.model.dart';
-import 'package:protect_ua_women/secrets.dart';
+import 'package:protect_ua_women/config/constants.dart';
+import 'package:protect_ua_women/config/secrets.dart';
 import 'package:http/http.dart' as http;
 
 typedef SetSearchQueryCallback = void Function(String query);
@@ -50,8 +49,7 @@ class MapSearchField extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       prefixInsets: const EdgeInsetsDirectional.only(start: 12),
       itemColor: primaryColor,
-      placeholderStyle:
-          const TextStyle(color: Color.fromRGBO(27, 50, 132, 0.2)),
+      placeholderStyle: const TextStyle(color: Color.fromRGBO(27, 50, 132, 0.2)),
       onChanged: (value) => {_searchPlaces(value, context)},
       onSubmitted: (value) => _handleSubmit(value, context),
     );

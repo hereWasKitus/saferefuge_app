@@ -9,7 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:protect_ua_women/bloc/map/map_bloc.dart';
-import 'package:protect_ua_women/constants.dart';
+import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/models/poi.model.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 
@@ -58,18 +58,14 @@ class _MapState extends State<MapMain> {
 
   Future<void> goToMyLocation() async {
     LatLng myPosition = await determinePosition();
-    CameraPosition camera =
-        CameraPosition(target: myPosition, zoom: _defaultCameraZoom);
-    final GoogleMapController controller =
-        await widget.controllerCompleter.future;
+    CameraPosition camera = CameraPosition(target: myPosition, zoom: _defaultCameraZoom);
+    final GoogleMapController controller = await widget.controllerCompleter.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(camera));
   }
 
   goToPosition(double lat, double lng) async {
-    CameraPosition position =
-        CameraPosition(target: LatLng(lat, lng), zoom: 12);
-    final GoogleMapController controller =
-        await widget.controllerCompleter.future;
+    CameraPosition position = CameraPosition(target: LatLng(lat, lng), zoom: 12);
+    final GoogleMapController controller = await widget.controllerCompleter.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(position));
   }
 
@@ -95,8 +91,7 @@ class _MapState extends State<MapMain> {
     //       'Location permissions are permanently denied, we cannot request permissions.');
     // }
 
-    final Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    final Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     return LatLng(position.latitude, position.longitude);
   }
 
@@ -131,8 +126,7 @@ class _MapState extends State<MapMain> {
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint1 = Paint()..color = primaryColor;
-    final Paint paint2 = Paint()
-      ..color = const Color.fromRGBO(71, 66, 221, 0.7);
+    final Paint paint2 = Paint()..color = const Color.fromRGBO(71, 66, 221, 0.7);
 
     canvas.drawCircle(Offset(size / 2, size / 2), size / 2.0, paint1);
     canvas.drawCircle(Offset(size / 2, size / 2), size / 2.2, paint2);
@@ -142,10 +136,7 @@ class _MapState extends State<MapMain> {
       TextPainter painter = TextPainter(textDirection: TextDirection.ltr);
       painter.text = TextSpan(
         text: text,
-        style: TextStyle(
-            fontSize: size / 3,
-            color: Colors.white,
-            fontWeight: FontWeight.normal),
+        style: TextStyle(fontSize: size / 3, color: Colors.white, fontWeight: FontWeight.normal),
       );
       painter.layout();
       painter.paint(
@@ -164,13 +155,10 @@ class _MapState extends State<MapMain> {
   Widget build(BuildContext context) {
     return BlocListener<MapBloc, MapState>(
       listenWhen: (previous, current) {
-        return (previous.selectedCategories != current.selectedCategories ||
-            previous.pois != current.pois);
+        return (previous.selectedCategories != current.selectedCategories || previous.pois != current.pois);
       },
       listener: (context, state) {
-        List<POI> filteredPOIs = state.pois
-            .where((poi) => poi.containsCategories(state.selectedCategories))
-            .toList();
+        List<POI> filteredPOIs = state.pois.where((poi) => poi.containsCategories(state.selectedCategories)).toList();
 
         _manager.setItems(filteredPOIs.isEmpty ? state.pois : filteredPOIs);
         _manager.updateMap();

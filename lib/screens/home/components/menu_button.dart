@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:protect_ua_women/constants.dart';
+import 'package:protect_ua_women/config/constants.dart';
 
 class MenuButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -13,11 +13,7 @@ class MenuButton extends StatelessWidget {
         color: primaryColor,
         shape: CircleBorder(),
       ),
-      child: IconButton(
-          splashRadius: 23,
-          onPressed: onPressed,
-          icon: const Icon(Icons.menu),
-          color: Colors.white),
+      child: IconButton(splashRadius: 23, onPressed: onPressed, icon: const Icon(Icons.menu), color: Colors.white),
     );
   }
 }

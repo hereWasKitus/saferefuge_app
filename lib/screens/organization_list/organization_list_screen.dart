@@ -5,13 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:protect_ua_women/constants.dart';
+import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/models/poi.model.dart';
 
 class OrganizationListScreen extends StatelessWidget {
-  const OrganizationListScreen(
-      {Key? key, required this.pois, required this.currentPosition})
-      : super(key: key);
+  const OrganizationListScreen({Key? key, required this.pois, required this.currentPosition}) : super(key: key);
 
   final List<POI> pois;
   final LatLng currentPosition;
@@ -72,15 +70,12 @@ class OrganizationListScreen extends StatelessWidget {
 }
 
 class OrganizationCard extends StatelessWidget {
-  const OrganizationCard(
-      {Key? key, required this.poi, required this.currentPosition})
-      : super(key: key);
+  const OrganizationCard({Key? key, required this.poi, required this.currentPosition}) : super(key: key);
 
   final POI poi;
   final LatLng currentPosition;
 
-  final TextStyle titleStyle = const TextStyle(
-      fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white);
+  final TextStyle titleStyle = const TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white);
 
   double calculateDistance(LatLng from, LatLng to) {
     var res = Geolocator.distanceBetween(

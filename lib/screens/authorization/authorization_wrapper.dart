@@ -2,9 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:protect_ua_women/screens/home/components/menu_button.dart';
 
-class AuthorizationScreenWrapper extends StatelessWidget {
+class AuthorizationScreenWrapper extends StatefulWidget {
   const AuthorizationScreenWrapper({Key? key}) : super(key: key);
 
+  @override
+  State<AuthorizationScreenWrapper> createState() => _AuthorizationScreenWrapperState();
+}
+
+class _AuthorizationScreenWrapperState extends State<AuthorizationScreenWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,11 +20,13 @@ class AuthorizationScreenWrapper extends StatelessWidget {
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 25),
-            child: MenuButton(
-              onPressed: () {
-                context.router.pop();
-                // context.router.navigateNamed('/home');
-              },
+            child: RotatedBox(
+              quarterTurns: 1,
+              child: MenuButton(
+                onPressed: () {
+                  context.router.pop();
+                },
+              ),
             ),
           ),
         ],

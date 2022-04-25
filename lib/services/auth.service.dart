@@ -1,62 +1,49 @@
-import 'dart:convert' as convert;
+import 'dart:convert';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:protect_ua_women/models/registration_form.model.dart';
-import 'package:protect_ua_women/constants.dart';
+import 'package:protect_ua_women/config/constants.dart';
 
 class AuthService {
-  Future registerOrganization(RegistrationForm form) async {
-    try {
-      String requestBody = convert.jsonEncode(
-        <String, dynamic>{
-          "username": form.email?.split('@')[0],
-          "name": form.name,
-          "email": form.email,
-          "phone": form.phone,
-          "website": "",
-          "approved": false,
-          "address": form.address,
-          "city": "",
-          "country": "",
-          "lat": form.latLng?.latitude,
-          "lng": form.latLng?.longitude,
-          "categories": form.categories
-        },
-      );
+  Future<ResponseData> registerOrganization({
+    String name = '',
+    String email = '',
+    String phone = '',
+    String address = '',
+    List<String> categories = const [],
+    LatLng? position,
+  }) async {
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request('POST', Uri.parse('$apiURL/org/'));
+    request.body = json.encode({
+      "username": email.split('@')[0],
+      "name": name,
+      "email": email,
+      "phone": phone,
+      "website": "",
+      "approved": false,
+      "address": address,
+      "city": "",
+      "country": "",
+      "lat": position?.latitude,
+      "lng": position?.longitude,
+      "categories": categories
+    });
+    request.headers.addAll(headers);
 
-      var response = await http.post(
-        Uri.parse('$apiURL/org'),
-        body: requestBody,
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'accept': 'application/json',
-        },
-      );
+    http.StreamedResponse response = await request.send();
+    ResponseData data =
+        ResponseData(statusCode: response.statusCode, data: json.decode(await response.stream.bytesToString()));
 
-      print(response.statusCode);
-
-      // var json = convert.jsonDecode(response.body);
-    } catch (e) {
-      print(e.toString());
-    }
+    return data;
   }
 }
 
-/**
- * {
-  "username": "org_user",
-  "name": "Help Org",
-  "email": "user@help.org",
-  "phone": "+38-12345678",
-  "website": "https://www.help.org",
-  "approved": true,
-  "address": "Pol's'kyi descent",
-  "city": "Odessa",
-  "country": "Ukraine",
-  "lat": 46.484486203259415,
-  "lng": 30.746438141417606,
-  "categories": [
-    "Clothes",
-    "Accommodation"
-  ]
+class ResponseData {
+  final int statusCode;
+  final Map<String, dynamic> data;
+
+  const ResponseData({
+    this.statusCode = 200,
+    this.data = const {},
+  });
 }
- */

@@ -9,7 +9,7 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:protect_ua_women/services/map.service.dart';
 
-import '../../secrets.dart';
+import '../../config/secrets.dart';
 
 part 'map_event.dart';
 part 'map_state.dart';
@@ -24,8 +24,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<LoadCategoriesEvent>(_loadCategories);
   }
 
-  Future<void> _setSearchResults(
-      SetSearchResultsByQueryEvent event, Emitter<MapState> emit) async {
+  Future<void> _setSearchResults(SetSearchResultsByQueryEvent event, Emitter<MapState> emit) async {
     if (event.query.isEmpty) {
       emit(state.copyWith(searchResults: []));
       return;
@@ -44,8 +43,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     emit(state.copyWith(categories: event.categories));
   }
 
-  _setSelectedCategories(
-      SetSelectedCategoriesEvent event, Emitter<MapState> emit) {
+  _setSelectedCategories(SetSelectedCategoriesEvent event, Emitter<MapState> emit) {
     emit(state.copyWith(selectedCategories: event.selectedCategories));
   }
 
@@ -58,8 +56,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     emit(state.copyWith(pois: pois, poisLoaded: true));
   }
 
-  Future<void> _loadCategories(
-      LoadCategoriesEvent event, Emitter<MapState> emit) async {
+  Future<void> _loadCategories(LoadCategoriesEvent event, Emitter<MapState> emit) async {
     List<Category> categories = await MapService().fetchCategories();
     emit(state.copyWith(categories: categories));
   }

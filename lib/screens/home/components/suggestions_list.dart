@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protect_ua_women/bloc/map/map_bloc.dart';
-import 'package:protect_ua_women/constants.dart';
-import 'package:protect_ua_women/secrets.dart';
+import 'package:protect_ua_women/config/constants.dart';
+import 'package:protect_ua_women/config/secrets.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
 class SuggestionsList extends StatelessWidget {
   Function onLocationSelected;
 
-  SuggestionsList({Key? key, required this.onLocationSelected})
-      : super(key: key);
+  SuggestionsList({Key? key, required this.onLocationSelected}) : super(key: key);
 
   _goToLocation(String input, BuildContext context) async {
     Uri url = Uri.parse(
@@ -26,12 +25,10 @@ class SuggestionsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double _screenWidth =
-        MediaQuery.of(context).size.width - defaultPadding * 2;
+    double _screenWidth = MediaQuery.of(context).size.width - defaultPadding * 2;
 
     return BlocBuilder<MapBloc, MapState>(
-      buildWhen: (previous, current) =>
-          previous.searchResults != current.searchResults,
+      buildWhen: (previous, current) => previous.searchResults != current.searchResults,
       builder: (BuildContext context, MapState state) {
         if (state.toShowSuggestions) {
           return Positioned(

@@ -1,6 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:protect_ua_women/constants.dart';
-import 'package:protect_ua_women/models/registration_form.model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:protect_ua_women/bloc/registration_form/registrationform_bloc.dart';
+import 'package:protect_ua_women/config/constants.dart';
+import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:protect_ua_women/services/auth.service.dart';
 import 'package:protect_ua_women/widgets/category_list.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
@@ -9,20 +14,136 @@ class OrganizationRegistrationForm2 extends StatefulWidget {
   const OrganizationRegistrationForm2({Key? key}) : super(key: key);
 
   @override
-  State<OrganizationRegistrationForm2> createState() =>
-      _OrganizationRegistrationForm2State();
+  State<OrganizationRegistrationForm2> createState() => _OrganizationRegistrationForm2State();
 }
 
-class _OrganizationRegistrationForm2State
-    extends State<OrganizationRegistrationForm2> {
+class _OrganizationRegistrationForm2State extends State<OrganizationRegistrationForm2> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final double _gap = 16;
 
-  String? name;
-  String? organizationName;
-  String? organizationAddress;
-  String? organizationPhone;
   List<String>? services;
+  final _addressController = TextEditingController();
+
+  Widget _nameField() {
+    return BlocBuilder<RegistrationFormBloc, RegistrationFormState>(
+      builder: (context, state) {
+        return MyFormField(
+          labelText: 'Your name',
+          hintText: 'Enter your name',
+          onChanged: (String? value) =>
+              context.read<RegistrationFormBloc>().add(RegistrationFullNameChanged(value ?? '')),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'This field is required';
+            }
+
+            if (!state.isNameValid) {
+              return 'This field need to contain at least 3 characters';
+            }
+
+            return null;
+          },
+        );
+      },
+    );
+  }
+
+  Widget _organizationNameField() {
+    return BlocBuilder<RegistrationFormBloc, RegistrationFormState>(
+      builder: (context, state) {
+        return MyFormField(
+          labelText: 'Organization name',
+          hintText: 'Enter your organization name',
+          onChanged: (String? value) =>
+              context.read<RegistrationFormBloc>().add(RegistrationOrganizationNameChanged(value ?? '')),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'This field is required';
+            }
+
+            if (!state.isOrganizationNameValid) {
+              return 'This field need to contain at least 3 characters';
+            }
+
+            return null;
+          },
+        );
+      },
+    );
+  }
+
+  Widget _organizationAddressField() {
+    return BlocBuilder<RegistrationFormBloc, RegistrationFormState>(
+      builder: (context, state) {
+        return MyFormField(
+          controller: _addressController,
+          labelText: 'Organization address',
+          hintText: 'e.g  Poland, Krakow, Zwiska str, 14',
+          onChanged: (String? value) =>
+              context.read<RegistrationFormBloc>().add(RegistrationOrganizationAddressChanged(value ?? '')),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'This field is required';
+            }
+
+            if (!state.isOrganizationAddressValid) {
+              return 'This field need to contain at least 3 characters';
+            }
+
+            return null;
+          },
+        );
+      },
+    );
+  }
+
+  Widget _organizationPhoneField() {
+    return BlocBuilder<RegistrationFormBloc, RegistrationFormState>(
+      builder: (context, state) {
+        return MyFormField(
+          labelText: 'Organization phone',
+          hintText: 'Enter your organization\'s phone number',
+          keyboardType: TextInputType.phone,
+          onChanged: (String? value) =>
+              context.read<RegistrationFormBloc>().add(RegistrationOrganizationPhoneChanged(value ?? '')),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'This field is required';
+            }
+
+            if (!state.isOrganizationPhoneValid) {
+              return 'Phone number is invalid';
+            }
+
+            return null;
+          },
+        );
+      },
+    );
+  }
+
+  Widget _servicesField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(bottom: 8.0),
+          child: Text(
+            'Services you provide',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            ),
+          ),
+        ),
+        CategoryList(
+          onSelected: (List<String> categories) {
+            context.read<RegistrationFormBloc>().add(RegistrationServicesChanged(categories));
+          },
+        )
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,99 +156,112 @@ class _OrganizationRegistrationForm2State
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MyFormField(
-                  labelText: 'Your name',
-                  hintText: 'Enter your name',
-                  onSaved: (value) => setState(() => name = value),
-                ),
-                SizedBox(
-                  height: _gap,
-                ),
-                MyFormField(
-                  labelText: 'Organization name',
-                  hintText: 'Enter your organization name',
-                  onSaved: (value) => setState(() => organizationName = value),
-                ),
-                SizedBox(
-                  height: _gap,
-                ),
-                MyFormField(
-                  labelText: 'Organization address',
-                  hintText: 'Enter your organization address',
-                  onSaved: (value) =>
-                      setState(() => organizationAddress = value),
-                ),
-                SizedBox(
-                  height: _gap,
-                ),
-                MyFormField(
-                  labelText: 'Organization phone',
-                  hintText: 'Enter your organization phone',
-                  onSaved: (value) => setState(() => organizationPhone = value),
-                ),
-                SizedBox(
-                  height: _gap,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                _nameField(),
+                SizedBox(height: _gap),
+                _organizationNameField(),
+                SizedBox(height: _gap),
+                _organizationAddressField(),
+                SizedBox(height: _gap / 2),
+                Row(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 8.0),
-                      child: Text(
-                        'Services you provide',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
+                    ElevatedButton(
+                      onPressed: () async {
+                        AutoRouter.of(context).push(
+                          MapScreenRoute(
+                            onAddressFound: (Map<String, dynamic> address, LatLng latLng) {
+                              context
+                                  .read<RegistrationFormBloc>()
+                                  .add(RegistrationOrganizationAddressChanged(address['formatted_address']));
+                              _addressController.text = address['formatted_address'];
+
+                              context.read<RegistrationFormBloc>().add(RegistrationPositionChanged(latLng));
+                            },
+                          ),
+                        );
+                      },
+                      child: const Text('Choose on map'),
+                      style: ElevatedButton.styleFrom(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(defaultBorderRadius),
+                          ),
                         ),
+                        primary: const Color.fromRGBO(27, 50, 132, 1),
                       ),
                     ),
-                    CategoryList(
-                      onSelected: (List<String> categories) {
-                        setState(() {
-                          services = categories;
-                        });
-                      },
-                    )
                   ],
                 ),
-                const SizedBox(
-                  height: 24,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState?.save();
-
-                      // RegistrationForm form =
-                      //     appStore.state.registrationForm.copyWith(
-                      //   name: name,
-                      //   organizationName: organizationName,
-                      //   address: organizationAddress,
-                      //   phone: organizationPhone,
-                      //   categories: services,
-                      // );
-
-                      // appStore.dispatch(SetRegistrationFormAction(form));
-
-                      // AuthService().registerOrganization(form);
-                    }
-                  },
-                  child: const Text('Register organization'),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 60),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(defaultBorderRadius),
+                SizedBox(height: _gap),
+                _organizationPhoneField(),
+                SizedBox(height: _gap),
+                _servicesField(),
+                const SizedBox(height: 24),
+                BlocBuilder<RegistrationFormBloc, RegistrationFormState>(
+                  builder: (context, state) {
+                    return ElevatedButton(
+                      onPressed: state.isLoading ? null : _handleRegistration,
+                      child: state.isLoading
+                          ? const SpinKitCircle(color: Colors.white)
+                          : const Text('Register organization'),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 60),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(defaultBorderRadius),
+                          ),
+                        ),
+                        primary: const Color.fromRGBO(27, 50, 132, 1),
                       ),
-                    ),
-                    primary: const Color.fromRGBO(27, 50, 132, 1),
-                  ),
-                )
+                    );
+                  },
+                ),
+                const SizedBox(height: 24)
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  _handleRegistration() async {
+    if (_formKey.currentState!.validate()) {
+      RegistrationFormState registrationState = context.read<RegistrationFormBloc>().state;
+
+      if (registrationState.services.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Choose at least 1 service you provide'),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: primaryColor,
+          ),
+        );
+
+        return;
+      }
+
+      context.read<RegistrationFormBloc>().add(const RegistrationLoading(true));
+
+      ResponseData res = await AuthService().registerOrganization(
+        name: registrationState.organizationName,
+        email: registrationState.email,
+        phone: registrationState.organizationPhone,
+        address: registrationState.organizationAddress,
+        categories: registrationState.services,
+        position: registrationState.position,
+      );
+
+      context.read<RegistrationFormBloc>().add(const RegistrationLoading(false));
+
+      if (res.statusCode == 201) {
+        context.read<RegistrationFormBloc>().add(const RegistrationCompleted(true));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(res.data['detail']),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: red,
+        ));
+      }
+    }
   }
 }
