@@ -1,15 +1,8 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:protect_ua_women/app/app.dart';
+import 'package:protect_ua_women/auth/registration/registration.dart';
 import 'package:protect_ua_women/config/constants.dart';
-import 'package:protect_ua_women/entrypoint.dart';
-import 'package:protect_ua_women/screens/authorization/authorization_wrapper.dart';
-import 'package:protect_ua_women/screens/authorization/components/organization_registration_form_1.dart';
-import 'package:protect_ua_women/screens/authorization/components/organization_registration_form_2.dart';
-import 'package:protect_ua_women/screens/authorization/components/thank_you.dart';
-import 'package:protect_ua_women/screens/authorization/registration_screen.dart';
-import 'package:protect_ua_women/screens/home/home_screen.dart';
-import 'package:protect_ua_women/screens/map/map_screen.dart';
-import 'package:protect_ua_women/screens/organization_list/organization_list_screen.dart';
+import 'package:protect_ua_women/home/home.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -23,46 +16,47 @@ import 'package:protect_ua_women/screens/organization_list/organization_list_scr
     AutoRoute(
       page: HomeScreen,
       path: '/home',
+      name: 'HomeScreenRoute',
+    ),
+    AutoRoute(
+      page: SplashScreen,
+      path: '/splash',
+      name: 'SplashScreenRoute',
     ),
     CustomRoute(
       transitionsBuilder: TransitionsBuilders.slideLeft,
-      page: OrganizationListScreen,
+      page: OrganizationListView,
+      name: 'OrganizationListRoute',
       path: '/organizations',
       durationInMilliseconds: defaultAnimationDuration,
     ),
     AutoRoute(
-      page: MapScreen,
+      page: MapView,
       name: 'MapScreenRoute',
       path: '/choosePoint',
     ),
-    AutoRoute(
-      page: AuthorizationScreenWrapper,
-      name: 'AuthorizationRoute',
-      path: '/authorization',
+    CustomRoute(
+      path: '/registration',
+      name: 'RegistrationRoute',
+      page: OrganizationRegistrationView,
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+      durationInMilliseconds: defaultAnimationDuration,
       children: [
         AutoRoute(
-          path: 'registration',
-          name: 'RegistrationRoute',
-          page: OrganizationRegistrationScreen,
-          initial: true,
-          children: [
-            AutoRoute(
-              path: 'step1',
-              name: 'RegistrationFirstStepRoute',
-              page: OrganizationRegistrationForm1,
-            ),
-            AutoRoute(
-              path: 'step2',
-              name: 'RegistrationSecondStepRoute',
-              page: OrganizationRegistrationForm2,
-            ),
-            AutoRoute(
-              path: 'thank-you',
-              name: 'ThankYouRoute',
-              page: ThankYou,
-            )
-          ],
+          path: 'step1',
+          name: 'RegistrationFirstStepRoute',
+          page: OrganizationRegistrationForm1,
         ),
+        AutoRoute(
+          path: 'step2',
+          name: 'RegistrationSecondStepRoute',
+          page: OrganizationRegistrationForm2,
+        ),
+        AutoRoute(
+          path: 'thank-you',
+          name: 'ThankYouRoute',
+          page: ThankYou,
+        )
       ],
     ),
   ],

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:protect_ua_women/bloc/map/map_bloc.dart';
-import 'package:protect_ua_women/bloc/registration_form/registrationform_bloc.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
+
+import 'auth/registration/registration.dart';
+import 'home/home.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,12 +20,12 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => MapBloc()
+          create: (context) => HomeBloc()
             ..add(LoadPOIsEvent())
             ..add(LoadCategoriesEvent()),
         ),
         BlocProvider(
-          create: (context) => RegistrationFormBloc(),
+          create: (context) => RegistrationBloc(),
         )
       ],
       child: MaterialApp.router(

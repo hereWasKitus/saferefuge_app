@@ -1,8 +1,7 @@
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:protect_ua_women/config/constants.dart';
-import 'package:protect_ua_women/models/category.model.dart';
-import 'package:protect_ua_women/models/poi.model.dart';
+import 'package:protect_ua_women/home/home.dart';
 import 'package:protect_ua_women/models/poi_response.model.dart';
 
 class MapService {
