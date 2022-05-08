@@ -1,4 +1,4 @@
-package com.example.protect_ua_women
+package com.safeway.app
 
 import io.flutter.embedding.android.FlutterActivity
 
