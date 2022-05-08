@@ -70,7 +70,11 @@ class _OrganizationRegistrationForm1State extends State<OrganizationRegistration
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.only(top: 64),
+      padding: const EdgeInsets.only(
+        top: 64,
+        left: defaultPadding,
+        right: defaultPadding,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

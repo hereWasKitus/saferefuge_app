@@ -41,16 +41,13 @@ class _OrganizationRegistrationViewState extends State<OrganizationRegistrationV
             prev.firstStepCompleted != curr.firstStepCompleted ||
             prev.registrationCompleted != curr.registrationCompleted,
         builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(defaultPadding, 0, defaultPadding, 0),
-            child: AutoRouter.declarative(routes: (_) {
-              return [
-                const RegistrationFirstStepRoute(),
-                if (state.firstStepCompleted) const RegistrationSecondStepRoute(),
-                if (state.registrationCompleted) const ThankYouRoute(),
-              ];
-            }),
-          );
+          return AutoRouter.declarative(routes: (_) {
+            return [
+              const RegistrationFirstStepRoute(),
+              if (state.firstStepCompleted) const RegistrationSecondStepRoute(),
+              if (state.registrationCompleted) const ThankYouRoute(),
+            ];
+          });
         },
       ),
     );
