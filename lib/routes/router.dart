@@ -45,17 +45,22 @@ import 'package:protect_ua_women/home/home.dart';
         AutoRoute(
           path: 'step1',
           name: 'RegistrationFirstStepRoute',
-          page: OrganizationRegistrationForm1,
+          page: RegistrationView1,
         ),
         AutoRoute(
           path: 'step2',
           name: 'RegistrationSecondStepRoute',
-          page: OrganizationRegistrationForm2,
+          page: RegistrationView2,
+        ),
+        AutoRoute(
+          path: 'step3',
+          name: 'RegistrationThirdStepRoute',
+          page: RegistrationView3,
         ),
         AutoRoute(
           path: 'thank-you',
           name: 'ThankYouRoute',
-          page: ThankYou,
+          page: ThankYouView,
         )
       ],
     ),

@@ -23,6 +23,7 @@ class OrganizationListView extends StatelessWidget {
         elevation: 0,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
+        centerTitle: false,
         title: const Text(
           'Points of interest',
           style: TextStyle(
@@ -111,6 +112,8 @@ class OrganizationCard extends StatelessWidget {
       );
 
   Widget buildAddressRow() => Row(
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
         children: [
           const Text(
             'Address: ',
@@ -120,11 +123,14 @@ class OrganizationCard extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-          Text(
-            poi.address ?? "No address",
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 12,
+          const SizedBox(width: 10),
+          Flexible(
+            child: Text(
+              poi.address ?? "No address",
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+              ),
             ),
           )
         ],

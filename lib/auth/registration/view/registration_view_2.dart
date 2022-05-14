@@ -4,25 +4,131 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:protect_ua_women/config/constants.dart';
+import 'package:protect_ua_women/home/widgets/menu_button.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:protect_ua_women/services/auth.service.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
 
 import '../registration.dart';
 
-class OrganizationRegistrationForm2 extends StatefulWidget {
-  const OrganizationRegistrationForm2({Key? key}) : super(key: key);
+class RegistrationView2 extends StatefulWidget {
+  const RegistrationView2({Key? key}) : super(key: key);
 
   @override
-  State<OrganizationRegistrationForm2> createState() => _OrganizationRegistrationForm2State();
+  State<RegistrationView2> createState() => _RegistrationView2State();
 }
 
-class _OrganizationRegistrationForm2State extends State<OrganizationRegistrationForm2> {
+class _RegistrationView2State extends State<RegistrationView2> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final double _gap = 16;
 
   List<String>? services;
   final _addressController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.transparent,
+        elevation: 0,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 25),
+            child: RotatedBox(
+              quarterTurns: 1,
+              child: MenuButton(
+                onPressed: () {
+                  context.router.pop();
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(
+          left: defaultPadding,
+          right: defaultPadding,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _nameField(),
+                  SizedBox(height: _gap),
+                  _organizationNameField(),
+                  SizedBox(height: _gap),
+                  _organizationAddressField(),
+                  SizedBox(height: _gap / 2),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          AutoRouter.of(context).push(
+                            MapScreenRoute(
+                              onAddressFound: (Map<String, dynamic> address, LatLng latLng) {
+                                context
+                                    .read<RegistrationBloc>()
+                                    .add(RegistrationOrganizationAddressChanged(address['formatted_address']));
+                                _addressController.text = address['formatted_address'];
+
+                                context.read<RegistrationBloc>().add(RegistrationPositionChanged(latLng));
+                              },
+                            ),
+                          );
+                        },
+                        child: const Text('Choose on map'),
+                        style: ElevatedButton.styleFrom(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(defaultBorderRadius),
+                            ),
+                          ),
+                          primary: const Color.fromRGBO(27, 50, 132, 1),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: _gap),
+                  _organizationPhoneField(),
+                  SizedBox(height: _gap),
+                  _organizationWebsiteField(),
+                  SizedBox(height: _gap),
+                  _servicesField(),
+                  const SizedBox(height: 24),
+                  BlocBuilder<RegistrationBloc, RegistrationState>(
+                    builder: (context, state) {
+                      return ElevatedButton(
+                        onPressed: state.isLoading ? null : _handleRegistration,
+                        child: state.isLoading
+                            ? const SpinKitCircle(color: Colors.white)
+                            : const Text('Register organization'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 60),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(defaultBorderRadius),
+                            ),
+                          ),
+                          primary: const Color.fromRGBO(27, 50, 132, 1),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 24)
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _nameField() {
     return BlocBuilder<RegistrationBloc, RegistrationState>(
@@ -165,91 +271,6 @@ class _OrganizationRegistrationForm2State extends State<OrganizationRegistration
           },
         )
       ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.only(
-        left: defaultPadding,
-        right: defaultPadding,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _nameField(),
-                SizedBox(height: _gap),
-                _organizationNameField(),
-                SizedBox(height: _gap),
-                _organizationAddressField(),
-                SizedBox(height: _gap / 2),
-                Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        AutoRouter.of(context).push(
-                          MapScreenRoute(
-                            onAddressFound: (Map<String, dynamic> address, LatLng latLng) {
-                              context
-                                  .read<RegistrationBloc>()
-                                  .add(RegistrationOrganizationAddressChanged(address['formatted_address']));
-                              _addressController.text = address['formatted_address'];
-
-                              context.read<RegistrationBloc>().add(RegistrationPositionChanged(latLng));
-                            },
-                          ),
-                        );
-                      },
-                      child: const Text('Choose on map'),
-                      style: ElevatedButton.styleFrom(
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(defaultBorderRadius),
-                          ),
-                        ),
-                        primary: const Color.fromRGBO(27, 50, 132, 1),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: _gap),
-                _organizationPhoneField(),
-                SizedBox(height: _gap),
-                _organizationWebsiteField(),
-                SizedBox(height: _gap),
-                _servicesField(),
-                const SizedBox(height: 24),
-                BlocBuilder<RegistrationBloc, RegistrationState>(
-                  builder: (context, state) {
-                    return ElevatedButton(
-                      onPressed: state.isLoading ? null : _handleRegistration,
-                      child: state.isLoading
-                          ? const SpinKitCircle(color: Colors.white)
-                          : const Text('Register organization'),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 60),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(defaultBorderRadius),
-                          ),
-                        ),
-                        primary: const Color.fromRGBO(27, 50, 132, 1),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 24)
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 

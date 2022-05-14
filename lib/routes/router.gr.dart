@@ -67,17 +67,19 @@ class AppRouter extends _i4.RootStackRouter {
     },
     RegistrationFirstStepRoute.name: (routeData) {
       return _i4.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: const _i3.OrganizationRegistrationForm1());
+          routeData: routeData, child: const _i3.RegistrationView1());
     },
     RegistrationSecondStepRoute.name: (routeData) {
       return _i4.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: const _i3.OrganizationRegistrationForm2());
+          routeData: routeData, child: const _i3.RegistrationView2());
+    },
+    RegistrationThirdStepRoute.name: (routeData) {
+      return _i4.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i3.RegistrationView3());
     },
     ThankYouRoute.name: (routeData) {
       return _i4.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i3.ThankYou());
+          routeData: routeData, child: const _i3.ThankYouView());
     }
   };
 
@@ -95,6 +97,8 @@ class AppRouter extends _i4.RootStackRouter {
                   path: 'step1', parent: RegistrationRoute.name),
               _i4.RouteConfig(RegistrationSecondStepRoute.name,
                   path: 'step2', parent: RegistrationRoute.name),
+              _i4.RouteConfig(RegistrationThirdStepRoute.name,
+                  path: 'step3', parent: RegistrationRoute.name),
               _i4.RouteConfig(ThankYouRoute.name,
                   path: 'thank-you', parent: RegistrationRoute.name)
             ])
@@ -194,7 +198,7 @@ class RegistrationRoute extends _i4.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.OrganizationRegistrationForm1]
+/// [_i3.RegistrationView1]
 class RegistrationFirstStepRoute extends _i4.PageRouteInfo<void> {
   const RegistrationFirstStepRoute()
       : super(RegistrationFirstStepRoute.name, path: 'step1');
@@ -203,7 +207,7 @@ class RegistrationFirstStepRoute extends _i4.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.OrganizationRegistrationForm2]
+/// [_i3.RegistrationView2]
 class RegistrationSecondStepRoute extends _i4.PageRouteInfo<void> {
   const RegistrationSecondStepRoute()
       : super(RegistrationSecondStepRoute.name, path: 'step2');
@@ -212,7 +216,16 @@ class RegistrationSecondStepRoute extends _i4.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.ThankYou]
+/// [_i3.RegistrationView3]
+class RegistrationThirdStepRoute extends _i4.PageRouteInfo<void> {
+  const RegistrationThirdStepRoute()
+      : super(RegistrationThirdStepRoute.name, path: 'step3');
+
+  static const String name = 'RegistrationThirdStepRoute';
+}
+
+/// generated route for
+/// [_i3.ThankYouView]
 class ThankYouRoute extends _i4.PageRouteInfo<void> {
   const ThankYouRoute() : super(ThankYouRoute.name, path: 'thank-you');
 
