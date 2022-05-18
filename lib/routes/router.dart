@@ -3,6 +3,8 @@ import 'package:protect_ua_women/app/app.dart';
 import 'package:protect_ua_women/auth/registration/registration.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/home/home.dart';
+import 'package:protect_ua_women/profile/profile.dart';
+import 'package:protect_ua_women/profile/view/profile_view.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -38,7 +40,7 @@ import 'package:protect_ua_women/home/home.dart';
     CustomRoute(
       path: '/registration',
       name: 'RegistrationRoute',
-      page: OrganizationRegistrationView,
+      page: RegistrationView,
       transitionsBuilder: TransitionsBuilders.slideLeft,
       durationInMilliseconds: defaultAnimationDuration,
       children: [
@@ -64,6 +66,25 @@ import 'package:protect_ua_women/home/home.dart';
         )
       ],
     ),
+    CustomRoute(
+      page: ProfileView,
+      path: '/profile',
+      name: 'ProfileRoute',
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+      durationInMilliseconds: defaultAnimationDuration,
+      children: [
+        AutoRoute(
+          path: '',
+          name: 'ProfileFormRoute',
+          page: ProfileForm,
+        ),
+        AutoRoute(
+          path: 'requests',
+          name: 'ProfileRequestsRoute',
+          page: Requests,
+        )
+      ],
+    )
   ],
 )
 class $AppRouter {}

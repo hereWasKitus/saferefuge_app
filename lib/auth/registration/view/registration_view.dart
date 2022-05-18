@@ -5,14 +5,14 @@ import 'package:protect_ua_women/routes/router.gr.dart';
 
 import '../registration.dart';
 
-class OrganizationRegistrationView extends StatefulWidget {
-  const OrganizationRegistrationView({Key? key}) : super(key: key);
+class RegistrationView extends StatefulWidget {
+  const RegistrationView({Key? key}) : super(key: key);
 
   @override
-  State<OrganizationRegistrationView> createState() => _OrganizationRegistrationViewState();
+  State<RegistrationView> createState() => _RegistrationViewState();
 }
 
-class _OrganizationRegistrationViewState extends State<OrganizationRegistrationView> {
+class _RegistrationViewState extends State<RegistrationView> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RegistrationBloc, RegistrationState>(
@@ -22,8 +22,8 @@ class _OrganizationRegistrationViewState extends State<OrganizationRegistrationV
       builder: (context, state) {
         return AutoRouter.declarative(routes: (_) {
           return [
-            // const RegistrationFirstStepRoute(),
-            const RegistrationThirdStepRoute(),
+            const RegistrationFirstStepRoute(),
+            // const RegistrationThirdStepRoute(),
             if (state.firstStepCompleted) const RegistrationSecondStepRoute(),
             if (state.registrationCompleted) const ThankYouRoute(),
           ];

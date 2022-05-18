@@ -80,31 +80,31 @@ class _RegistrationView1State extends State<RegistrationView1> {
                     },
                   ),
                   const SizedBox(height: 32),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'Have an account?',
-                          style: TextStyle(
-                            color: Color.fromRGBO(71, 66, 221, 0.7),
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'Log in',
-                          style: TextStyle(
-                            color: Color(0xFF1B3284),
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     TextButton(
+                  //       onPressed: () {},
+                  //       child: const Text(
+                  //         'Have an account?',
+                  //         style: TextStyle(
+                  //           color: Color.fromRGBO(71, 66, 221, 0.7),
+                  //           fontSize: 16,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     TextButton(
+                  //       onPressed: () {},
+                  //       child: const Text(
+                  //         'Log in',
+                  //         style: TextStyle(
+                  //           color: Color(0xFF1B3284),
+                  //           fontSize: 16,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // )
                 ],
               ),
             ),
