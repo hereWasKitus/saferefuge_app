@@ -73,15 +73,26 @@ import 'package:protect_ua_women/profile/view/profile_view.dart';
       transitionsBuilder: TransitionsBuilders.slideLeft,
       durationInMilliseconds: defaultAnimationDuration,
       children: [
-        AutoRoute(
+        CustomRoute(
           path: '',
           name: 'ProfileFormRoute',
           page: ProfileForm,
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+          durationInMilliseconds: defaultAnimationDuration,
         ),
-        AutoRoute(
+        CustomRoute(
           path: 'requests',
           name: 'ProfileRequestsRoute',
           page: Requests,
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+          durationInMilliseconds: defaultAnimationDuration,
+        ),
+        CustomRoute(
+          path: 'branches',
+          name: 'ProfileBranchesRoute',
+          page: BranchesList,
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+          durationInMilliseconds: defaultAnimationDuration,
         )
       ],
     )

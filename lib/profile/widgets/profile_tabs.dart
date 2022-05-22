@@ -1,10 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:protect_ua_women/config/constants.dart';
-import 'package:protect_ua_women/routes/router.gr.dart';
 
 class ProfileTabs extends StatefulWidget {
-  const ProfileTabs({Key? key}) : super(key: key);
+  const ProfileTabs({Key? key, required this.activeIndex, required this.onClick}) : super(key: key);
+
+  final int activeIndex;
+  final Function(int index) onClick;
 
   @override
   State<ProfileTabs> createState() => _ProfileTabsState();
@@ -30,11 +31,9 @@ class _ProfileTabsState extends State<ProfileTabs> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _TabButton(
-            text: AutoRouter.of(context).currentChild!.path,
-            isActive: true,
-            onPressed: () {
-              AutoRouter.of(context).push(const ProfileRequestsRoute());
-            },
+            text: 'Branches',
+            isActive: widget.activeIndex == 1,
+            onPressed: () => widget.onClick(1),
           ),
           const VerticalDivider(
             width: 20,
@@ -45,10 +44,8 @@ class _ProfileTabsState extends State<ProfileTabs> {
           ),
           _TabButton(
             text: 'Profile',
-            isActive: false,
-            onPressed: () {
-              AutoRouter.of(context).push(const ProfileFormRoute());
-            },
+            isActive: widget.activeIndex == 0,
+            onPressed: () => widget.onClick(0),
           ),
         ],
       ),
@@ -61,7 +58,7 @@ class _TabButton extends StatelessWidget {
 
   final String text;
   final bool isActive;
-  void Function() onPressed;
+  final void Function() onPressed;
 
   final ButtonStyle _activeStyle = TextButton.styleFrom(
     primary: Colors.white,

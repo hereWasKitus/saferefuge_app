@@ -93,12 +93,31 @@ class AppRouter extends _i6.RootStackRouter {
           routeData: routeData, child: const _i3.ThankYouView());
     },
     ProfileFormRoute.name: (routeData) {
-      return _i6.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i5.ProfileForm());
+      return _i6.CustomPage<dynamic>(
+          routeData: routeData,
+          child: const _i5.ProfileForm(),
+          transitionsBuilder: _i6.TransitionsBuilders.fadeIn,
+          durationInMilliseconds: 300,
+          opaque: true,
+          barrierDismissible: false);
     },
     ProfileRequestsRoute.name: (routeData) {
-      return _i6.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i5.Requests());
+      return _i6.CustomPage<dynamic>(
+          routeData: routeData,
+          child: const _i5.Requests(),
+          transitionsBuilder: _i6.TransitionsBuilders.fadeIn,
+          durationInMilliseconds: 300,
+          opaque: true,
+          barrierDismissible: false);
+    },
+    ProfileBranchesRoute.name: (routeData) {
+      return _i6.CustomPage<dynamic>(
+          routeData: routeData,
+          child: const _i5.BranchesList(),
+          transitionsBuilder: _i6.TransitionsBuilders.fadeIn,
+          durationInMilliseconds: 300,
+          opaque: true,
+          barrierDismissible: false);
     }
   };
 
@@ -125,7 +144,9 @@ class AppRouter extends _i6.RootStackRouter {
           _i6.RouteConfig(ProfileFormRoute.name,
               path: '', parent: ProfileRoute.name),
           _i6.RouteConfig(ProfileRequestsRoute.name,
-              path: 'requests', parent: ProfileRoute.name)
+              path: 'requests', parent: ProfileRoute.name),
+          _i6.RouteConfig(ProfileBranchesRoute.name,
+              path: 'branches', parent: ProfileRoute.name)
         ])
       ];
 }
@@ -281,4 +302,13 @@ class ProfileRequestsRoute extends _i6.PageRouteInfo<void> {
       : super(ProfileRequestsRoute.name, path: 'requests');
 
   static const String name = 'ProfileRequestsRoute';
+}
+
+/// generated route for
+/// [_i5.BranchesList]
+class ProfileBranchesRoute extends _i6.PageRouteInfo<void> {
+  const ProfileBranchesRoute()
+      : super(ProfileBranchesRoute.name, path: 'branches');
+
+  static const String name = 'ProfileBranchesRoute';
 }

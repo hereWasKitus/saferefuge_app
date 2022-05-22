@@ -10,6 +10,7 @@ class MyFormField extends StatelessWidget {
   void Function(String?)? onSaved;
   void Function(String?)? onChanged;
   TextEditingController? controller;
+  String? initialValue;
 
   MyFormField({
     Key? key,
@@ -21,6 +22,7 @@ class MyFormField extends StatelessWidget {
     this.onSaved,
     this.onChanged,
     this.controller,
+    this.initialValue,
   }) : super(key: key);
 
   OutlineInputBorder borderStyle({Color color = primaryColor}) => OutlineInputBorder(
@@ -56,13 +58,17 @@ class MyFormField extends StatelessWidget {
             hintStyle: const TextStyle(
               color: Color.fromRGBO(27, 50, 132, 0.2),
             ),
-            contentPadding: const EdgeInsets.symmetric(vertical: 1, horizontal: 16),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 1,
+              horizontal: 16,
+            ),
           ),
           obscureText: isPassword,
           enableSuggestions: !isPassword,
           autocorrect: !isPassword,
           validator: validator,
           onChanged: onChanged,
+          initialValue: initialValue,
         )
       ],
     );

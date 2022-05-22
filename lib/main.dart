@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protect_ua_women/config/constants.dart';
+import 'package:protect_ua_women/profile/profile.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 
 import 'auth/registration/registration.dart';
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => RegistrationBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ProfileBloc(),
         )
       ],
       child: MaterialApp.router(
