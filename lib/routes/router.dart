@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:protect_ua_women/app/app.dart';
+import 'package:protect_ua_women/auth/login/login.dart';
 import 'package:protect_ua_women/auth/registration/registration.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/home/home.dart';
@@ -36,6 +37,13 @@ import 'package:protect_ua_women/profile/view/profile_view.dart';
       page: MapView,
       name: 'MapScreenRoute',
       path: '/choosePoint',
+    ),
+    CustomRoute(
+      page: LoginView,
+      name: 'LoginRoute',
+      path: '/login',
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+      durationInMilliseconds: defaultAnimationDuration,
     ),
     CustomRoute(
       path: '/registration',

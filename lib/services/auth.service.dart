@@ -36,6 +36,24 @@ class AuthService {
 
     return data;
   }
+
+  static Future login({String email = '', String password = ''}) async {
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request('POST', Uri.parse('$apiURL/aaa/login'));
+
+    request.body = json.encode({
+      'username': email,
+      'password': password,
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    ResponseData data =
+        ResponseData(statusCode: response.statusCode, data: json.decode(await response.stream.bytesToString()));
+
+    return data;
+  }
 }
 
 class ResponseData {

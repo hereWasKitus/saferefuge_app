@@ -42,7 +42,7 @@ class HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 25),
             child: MenuButton(
-              onPressed: () => AutoRouter.of(context).pushNamed('/profile'),
+              onPressed: () => AutoRouter.of(context).pushNamed('/registration'),
             ),
           ),
         ],
