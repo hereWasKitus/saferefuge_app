@@ -43,6 +43,12 @@ dependencies:
   equatable: ^2.0.3
   flutter_spinkit: ^5.1.0
   flutter_launcher_icons: ^0.9.2
+  shared_preferences: ^2.0.15
+  dio: ^4.0.6
+  safeway_api:
+    path: 'packages/safeway_api'
+  auth_repository:
+    path: 'packages/auth_repository'
 
 dev_dependencies:
   flutter_test:

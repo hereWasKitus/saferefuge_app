@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:protect_ua_women/app/app.dart';
-import 'package:protect_ua_women/auth/login/login.dart';
-import 'package:protect_ua_women/auth/registration/registration.dart';
+import 'package:protect_ua_women/login/login.dart';
+import 'package:protect_ua_women/registration/registration.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/home/home.dart';
 import 'package:protect_ua_women/profile/profile.dart';

@@ -14,6 +14,8 @@ class ProfileState extends Equatable {
     this.registrationNumber = '',
     this.services = const [],
     this.branches = const [],
+    this.isAuthorized = false,
+    this.token = '',
   });
 
   final bool formChanged;
@@ -28,6 +30,8 @@ class ProfileState extends Equatable {
   final String organizationPosition;
   final List services;
   final List branches;
+  final bool isAuthorized;
+  final String token;
 
   ProfileState copyWith({
     bool? formChanged,
@@ -42,6 +46,8 @@ class ProfileState extends Equatable {
     String? organizationPosition,
     List? services,
     List? branches,
+    bool? isAuthorized,
+    String? token,
   }) =>
       ProfileState(
         formChanged: formChanged ?? this.formChanged,
@@ -56,6 +62,8 @@ class ProfileState extends Equatable {
         organizationPosition: organizationPosition ?? this.organizationPosition,
         services: services ?? this.services,
         branches: branches ?? this.branches,
+        isAuthorized: isAuthorized ?? this.isAuthorized,
+        token: token ?? this.token,
       );
 
   @override
@@ -72,6 +80,8 @@ class ProfileState extends Equatable {
         organizationPosition,
         services,
         branches,
+        isAuthorized,
+        token,
       ];
 }
 

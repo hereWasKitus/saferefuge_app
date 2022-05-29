@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:protect_ua_women/auth/registration/registration.dart';
+import 'package:protect_ua_women/registration/registration.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
 import 'package:protect_ua_women/profile/profile.dart';
 

@@ -50,8 +50,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<void> _loadPOIs(LoadPOIsEvent event, Emitter<HomeState> emit) async {
-    List<POI> pois = await MapService().fetchPOIs();
-    emit(state.copyWith(pois: pois, poisLoaded: true));
+    try {
+      List<POI> pois = await MapService().fetchPOIs();
+      emit(state.copyWith(pois: pois, poisLoaded: true));
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> _loadCategories(LoadCategoriesEvent event, Emitter<HomeState> emit) async {

@@ -8,6 +8,7 @@ class MapService {
   Future<List<POI>> fetchPOIs() async {
     Uri url = Uri.parse('$apiURL/poi?limit=0');
     var response = await http.get(url);
+    print(response);
     var json = POIResponse.fromJSON(convert.jsonDecode(response.body));
     List<POI> pois = json.count == 0 ? [] : json.items.map((poi) => POI.fromJSON(poi)).toList();
     return pois;
