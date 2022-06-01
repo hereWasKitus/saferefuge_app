@@ -114,3 +114,44 @@ class RegistrationWebsiteChanged extends RegistrationEvent {
   @override
   List<Object> get props => [website];
 }
+
+class RegistrationRequestEvent extends RegistrationEvent {
+  final String email;
+  final String password;
+  final String fullName;
+
+  const RegistrationRequestEvent(this.fullName, this.email, this.password);
+
+  @override
+  List<Object> get props => [];
+}
+
+class RegistrationFormChangedEvent extends RegistrationEvent {
+  final String? email;
+  final String? password;
+  final String? name;
+  final String? organizationName;
+  final String? organizationAddress;
+  final String? organizationPhone;
+  final String? registrationNumber;
+  final String? organizationEmail;
+  final String? organizationWhatsapp;
+  final String? organizationTelegram;
+  final String? organizationPosition;
+  final List<String>? services;
+
+  const RegistrationFormChangedEvent({
+    this.email,
+    this.password,
+    this.name,
+    this.organizationAddress,
+    this.organizationEmail,
+    this.organizationName,
+    this.organizationPhone,
+    this.organizationPosition,
+    this.organizationTelegram,
+    this.organizationWhatsapp,
+    this.registrationNumber,
+    this.services,
+  });
+}

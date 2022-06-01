@@ -1,3 +1,4 @@
+import 'package:auth_repository/auth_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -6,7 +7,9 @@ part 'registration_event.dart';
 part 'registration_state.dart';
 
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
-  RegistrationBloc() : super(const RegistrationState()) {
+  RegistrationBloc({required AuthRepository authRepository})
+      : _authRepository = authRepository,
+        super(const RegistrationState()) {
     on<RegistrationEmailChanged>(_onEmailChanged);
     on<RegistrationPasswordChanged>(_onPasswordChanged);
     on<RegistrationFullNameChanged>(_onFullNameChanged);
@@ -19,7 +22,11 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationCompleted>(_onRegistrationCompleted);
     on<RegistrationLoading>(_onRegistrationLoading);
     on<RegistrationWebsiteChanged>(_onRegistrationWebsiteChanged);
+    on<RegistrationRequestEvent>(_onRegistrationRequest);
+    on<RegistrationFormChangedEvent>(_onRegistrationFormChanged);
   }
+
+  final AuthRepository _authRepository;
 
   _onEmailChanged(RegistrationEmailChanged event, Emitter<RegistrationState> emit) {
     emit(state.copyWith(email: event.email));
@@ -67,5 +74,31 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
   _onRegistrationWebsiteChanged(RegistrationWebsiteChanged event, Emitter<RegistrationState> emit) {
     emit(state.copyWith(website: event.website));
+  }
+
+  _onRegistrationRequest(RegistrationRequestEvent event, Emitter<RegistrationState> emit) async {
+    emit(state.copyWith(registrationStatus: RegistrationStatus.loading));
+
+    var res = await _authRepository.register(event.fullName, event.email, event.password);
+    RegistrationStatus status = res.success ? RegistrationStatus.success : RegistrationStatus.failed;
+
+    emit(state.copyWith(registrationStatus: status));
+  }
+
+  _onRegistrationFormChanged(RegistrationFormChangedEvent event, Emitter<RegistrationState> emit) async {
+    emit(state.copyWith(
+      fullName: event.name,
+      email: event.email,
+      password: event.password,
+      organizationName: event.organizationName,
+      organizationAddress: event.organizationAddress,
+      organizationPhone: event.organizationPhone,
+      registrationNumber: event.registrationNumber,
+      organizationEmail: event.organizationEmail,
+      organizationWhatsapp: event.organizationWhatsapp,
+      organizationTelegram: event.organizationTelegram,
+      organizationPosition: event.organizationPosition,
+      services: event.services,
+    ));
   }
 }

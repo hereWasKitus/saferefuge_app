@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:safeway_api/src/models/models.dart';
+import 'package:safeway_api/src/models/registration_response.model.dart';
 
 class SafeWayAPI {
   SafeWayAPI();
@@ -23,6 +26,25 @@ class SafeWayAPI {
       return LoginResponse(success: true, data: response.data);
     } on DioError catch (e) {
       return LoginResponse(success: false, err: e.message, data: e.response!.data);
+    }
+  }
+
+  Future<RegistrationResponse> register(String fullName, String email, String password) async {
+    try {
+      Response response = await _dio.post(
+        'aaa/register',
+        options: Options(headers: {'content-type': 'application/json'}),
+        data: json.encode({
+          'username': email,
+          'email': email,
+          'password': password,
+          'full_name': fullName,
+        }),
+      );
+
+      return RegistrationResponse(success: true, data: response.data);
+    } on DioError catch (e) {
+      return RegistrationResponse(success: false, err: e.message, data: e.response!.data);
     }
   }
 }

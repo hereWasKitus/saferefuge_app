@@ -14,4 +14,16 @@ class AuthRepository {
 
     return response;
   }
+
+  Future register(String fullName, String email, String password) async {
+    RegistrationResponse registrationResponse = await _api.register(fullName, email, password);
+
+    if (!registrationResponse.success) {
+      return registrationResponse;
+    }
+
+    LoginResponse loginResponse = await login(email, password);
+
+    return loginResponse;
+  }
 }

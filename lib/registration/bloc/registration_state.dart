@@ -1,5 +1,7 @@
 part of 'registration_bloc.dart';
 
+enum RegistrationStatus { initial, failed, success, loading }
+
 class RegistrationState extends Equatable {
   const RegistrationState({
     this.email = '',
@@ -14,6 +16,9 @@ class RegistrationState extends Equatable {
     this.firstStepCompleted = false,
     this.registrationCompleted = false,
     this.isLoading = false,
+    this.registrationNumber = '',
+    this.organizationEmail = '',
+    this.registrationStatus = RegistrationStatus.initial,
   });
 
   final String email;
@@ -22,12 +27,15 @@ class RegistrationState extends Equatable {
   final String organizationName;
   final String organizationAddress;
   final String organizationPhone;
+  final String registrationNumber;
+  final String organizationEmail;
   final List<String> services;
   final LatLng? position;
   final String? website;
   final bool firstStepCompleted;
   final bool registrationCompleted;
   final bool isLoading;
+  final RegistrationStatus registrationStatus;
 
   // isFilled(String? value) => value != null || value!.isNotEmpty;
 
@@ -59,15 +67,18 @@ class RegistrationState extends Equatable {
     String? email,
     String? password,
     String? fullName,
+    String? registrationNumber,
     String? organizationName,
     String? organizationAddress,
     String? organizationPhone,
+    String? organizationEmail,
     List<String>? services,
     LatLng? position,
     String? website,
     bool? firstStepCompleted,
     bool? registrationCompleted,
     bool? isLoading,
+    RegistrationStatus? registrationStatus,
   }) =>
       RegistrationState(
         email: email ?? this.email,
@@ -82,6 +93,9 @@ class RegistrationState extends Equatable {
         firstStepCompleted: firstStepCompleted ?? this.firstStepCompleted,
         registrationCompleted: registrationCompleted ?? this.registrationCompleted,
         isLoading: isLoading ?? this.isLoading,
+        registrationStatus: registrationStatus ?? this.registrationStatus,
+        registrationNumber: registrationNumber ?? this.registrationNumber,
+        organizationEmail: organizationEmail ?? this.organizationEmail,
       );
 
   @override
@@ -97,5 +111,8 @@ class RegistrationState extends Equatable {
         firstStepCompleted,
         registrationCompleted,
         isLoading,
+        registrationStatus,
+        registrationNumber,
+        organizationEmail,
       ];
 }

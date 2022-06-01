@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
             ..add(LoadCategoriesEvent()),
         ),
         BlocProvider(
-          create: (context) => RegistrationBloc(),
+          create: (context) => RegistrationBloc(authRepository: _authRepository),
         ),
         BlocProvider(
           create: (context) => ProfileBloc(),
