@@ -15,6 +15,5 @@ dev_dependencies:
   test: ^1.16.0
 
 dependencies:
-  shared_preferences: ^2.0.15
   safeway_api:
     path: '../safeway_api'

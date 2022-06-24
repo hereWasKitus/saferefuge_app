@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:map_repository/map_repository.dart';
 import 'package:protect_ua_women/config/constants.dart';
 
 import '../home.dart';
@@ -66,7 +67,7 @@ class MapCategoryChip extends StatelessWidget {
     return FilterChip(
       label: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Text(
-          category.id,
+          category.name!,
           style: const TextStyle(
             color: Colors.white,
             fontSize: 12,
@@ -78,6 +79,7 @@ class MapCategoryChip extends StatelessWidget {
       showCheckmark: false,
       backgroundColor: const Color.fromRGBO(
           44, 83, 218, 0.8), // for some reason there is still white background underneath my background
+      // backgroundColor: primaryColorTemp,
       selectedColor: const Color.fromRGBO(27, 50, 132, 1),
       visualDensity: VisualDensity.compact,
       selected: isSelected,

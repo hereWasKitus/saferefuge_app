@@ -12,6 +12,7 @@ typedef SetSearchQueryCallback = void Function(String query);
 typedef OnSubmitCallback = void Function(double lat, double lng);
 
 class MapSearchField extends StatelessWidget {
+  final _focusNode = FocusNode();
   final OnSubmitCallback onSubmit;
   var timer;
 
@@ -53,6 +54,7 @@ class MapSearchField extends StatelessWidget {
       placeholderStyle: const TextStyle(color: Color.fromRGBO(27, 50, 132, 0.2)),
       onChanged: (value) => {_searchPlaces(value, context)},
       onSubmitted: (value) => _handleSubmit(value, context),
+      focusNode: _focusNode,
     );
   }
 }

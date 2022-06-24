@@ -1,9 +1,25 @@
 part of 'profile_bloc.dart';
 
+enum AuthStatus {
+  unknown,
+  authorized,
+  unauthorized,
+}
+
+enum FormStatus {
+  initial,
+  changed,
+  loading,
+  updateFail,
+  updateSucceed,
+}
+
 class ProfileState extends Equatable {
   const ProfileState({
     this.formChanged = false,
+    this.id = '',
     this.name = '',
+    this.email = '',
     this.organizationAddress = '',
     this.organizationEmail = '',
     this.organizationName = '',
@@ -12,14 +28,18 @@ class ProfileState extends Equatable {
     this.organizationTelegram = '',
     this.organizationWhatsapp = '',
     this.registrationNumber = '',
-    this.services = const [],
+    this.services = const <String>[],
     this.branches = const [],
-    this.isAuthorized = false,
-    this.token = '',
+    this.authStatus = AuthStatus.unknown,
+    this.isLoading = false,
+    this.formStatus = FormStatus.initial,
+    this.errorMessage = '',
   });
 
   final bool formChanged;
   final String name;
+  final String id;
+  final String email;
   final String organizationName;
   final String organizationAddress;
   final String organizationPhone;
@@ -28,14 +48,17 @@ class ProfileState extends Equatable {
   final String organizationWhatsapp;
   final String organizationTelegram;
   final String organizationPosition;
-  final List services;
+  final List<String> services;
   final List branches;
-  final bool isAuthorized;
-  final String token;
+  final AuthStatus authStatus;
+  final bool isLoading;
+  final FormStatus formStatus;
+  final String errorMessage;
 
   ProfileState copyWith({
     bool? formChanged,
     String? name,
+    String? id,
     String? organizationName,
     String? organizationAddress,
     String? organizationPhone,
@@ -44,10 +67,13 @@ class ProfileState extends Equatable {
     String? organizationWhatsapp,
     String? organizationTelegram,
     String? organizationPosition,
-    List? services,
+    List<String>? services,
     List? branches,
-    bool? isAuthorized,
-    String? token,
+    AuthStatus? authStatus,
+    bool? isLoading,
+    String? email,
+    FormStatus? formStatus,
+    String? errorMessage,
   }) =>
       ProfileState(
         formChanged: formChanged ?? this.formChanged,
@@ -62,14 +88,19 @@ class ProfileState extends Equatable {
         organizationPosition: organizationPosition ?? this.organizationPosition,
         services: services ?? this.services,
         branches: branches ?? this.branches,
-        isAuthorized: isAuthorized ?? this.isAuthorized,
-        token: token ?? this.token,
+        authStatus: authStatus ?? this.authStatus,
+        id: id ?? this.id,
+        isLoading: isLoading ?? this.isLoading,
+        email: email ?? this.email,
+        formStatus: formStatus ?? this.formStatus,
+        errorMessage: errorMessage ?? this.errorMessage,
       );
 
   @override
   List<Object> get props => [
         formChanged,
         name,
+        email,
         organizationName,
         organizationAddress,
         organizationPhone,
@@ -80,8 +111,11 @@ class ProfileState extends Equatable {
         organizationPosition,
         services,
         branches,
-        isAuthorized,
-        token,
+        authStatus,
+        id,
+        isLoading,
+        formStatus,
+        errorMessage,
       ];
 }
 

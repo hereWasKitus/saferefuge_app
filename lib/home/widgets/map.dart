@@ -16,7 +16,7 @@ import '../home.dart';
 class MapMain extends StatefulWidget {
   CameraPosition defaultCameraPosition;
   Completer<GoogleMapController> controllerCompleter;
-  List<POI> pois;
+  List<POIMarker> pois;
 
   MapMain({
     Key? key,
@@ -43,10 +43,11 @@ class _HomeState extends State<MapMain> {
   }
 
   ClusterManager _initClusterManager() {
-    return ClusterManager<POI>(
+    return ClusterManager<POIMarker>(
       widget.pois,
       _updateMarkers,
       markerBuilder: _markerBuilder,
+      levels: const [1, 4.25, 6.75, 8.25, 11.5, 14.5, 16.0, 16.5, 20.0],
     );
   }
 
@@ -70,7 +71,6 @@ class _HomeState extends State<MapMain> {
   }
 
   Future<LatLng> determinePosition() async {
-    bool serviceEnabled;
     LocationPermission permission;
 
     // serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -95,28 +95,32 @@ class _HomeState extends State<MapMain> {
     return LatLng(position.latitude, position.longitude);
   }
 
-  Future<void> _zoomToCluster(Cluster<POI> cluster) async {
+  Future<void> _zoomToCluster(Cluster<POIMarker> cluster) async {
     var zoomLevel = await _controller.getZoomLevel();
     _controller.animateCamera(
       CameraUpdate.newLatLngZoom(cluster.location, zoomLevel + 2),
     );
   }
 
-  Future<Marker> Function(Cluster<POI>) get _markerBuilder => (cluster) async {
+  Future<Marker> Function(Cluster<POIMarker>) get _markerBuilder => (cluster) async {
         return Marker(
           markerId: MarkerId(cluster.getId()),
           position: cluster.location,
-          icon: await _getMarkerBitmap(cluster.isMultiple ? 125 : 75,
-              text: cluster.isMultiple ? cluster.count.toString() : null),
+          icon: await _getMarkerBitmap(
+            cluster.isMultiple ? 125 : 75,
+            text: cluster.isMultiple ? cluster.count.toString() : null,
+          ),
           onTap: () async {
-            if (cluster.items.length > 5) {
+            if (cluster.items.length > 10) {
               _zoomToCluster(cluster);
             } else {
-              LatLng myPosition = await determinePosition();
-              AutoRouter.of(context).push(OrganizationListRoute(
-                pois: cluster.items.toList(),
-                currentPosition: myPosition,
-              ));
+              // LatLng myPosition = await determinePosition();
+              AutoRouter.of(context).push(
+                OrganizationListRoute(
+                  pois: cluster.items.map((item) => item.poi).toList(),
+                  currentPosition: determinePosition(),
+                ),
+              );
             }
           },
         );
@@ -126,7 +130,9 @@ class _HomeState extends State<MapMain> {
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint1 = Paint()..color = primaryColor;
-    final Paint paint2 = Paint()..color = const Color.fromRGBO(71, 66, 221, 0.7);
+    // final Paint paint2 = Paint()
+    //   ..color = const Color.fromRGBO(71, 66, 221, 0.7);
+    final Paint paint2 = Paint()..color = primaryColor;
 
     canvas.drawCircle(Offset(size / 2, size / 2), size / 2.0, paint1);
     canvas.drawCircle(Offset(size / 2, size / 2), size / 2.2, paint2);
@@ -158,7 +164,8 @@ class _HomeState extends State<MapMain> {
         return (previous.selectedCategories != current.selectedCategories || previous.pois != current.pois);
       },
       listener: (context, state) {
-        List<POI> filteredPOIs = state.pois.where((poi) => poi.containsCategories(state.selectedCategories)).toList();
+        List<POIMarker> filteredPOIs =
+            state.pois.where((item) => item.poi.containsCategories(state.selectedCategories)).toList();
 
         _manager.setItems(filteredPOIs.isEmpty ? state.pois : filteredPOIs);
         _manager.updateMap();

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auth_repository/auth_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -27,9 +29,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   _onLoginRequest(LoginRequestEvent event, Emitter<LoginState> emit) async {
     emit(state.copyWith(loginStatus: LoginStatus.loading));
 
-    var res = await _authRepository.login(event.email, event.password);
-    LoginStatus status = res.success ? LoginStatus.success : LoginStatus.failed;
-
-    emit(state.copyWith(loginStatus: status));
+    try {
+      User user = await _authRepository.login(event.email, event.password);
+      emit(state.copyWith(loginStatus: LoginStatus.success, user: user, errorMessage: ''));
+    } on LoginFailure catch (e) {
+      emit(state.copyWith(loginStatus: LoginStatus.failed, errorMessage: e.message));
+    }
   }
 }

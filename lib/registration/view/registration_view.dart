@@ -18,13 +18,17 @@ class _RegistrationViewState extends State<RegistrationView> {
     return BlocBuilder<RegistrationBloc, RegistrationState>(
       buildWhen: (prev, curr) =>
           prev.firstStepCompleted != curr.firstStepCompleted ||
+          prev.secondStepCompleted != curr.secondStepCompleted ||
+          prev.branch != curr.branch ||
           prev.registrationCompleted != curr.registrationCompleted,
       builder: (context, state) {
         return AutoRouter.declarative(routes: (_) {
           return [
-            const RegistrationFirstStepRoute(),
-            // const RegistrationThirdStepRoute(),
+            // const RegistrationFirstStepRoute(),
+            const RegistrationSecondStepRoute(),
             if (state.firstStepCompleted) const RegistrationSecondStepRoute(),
+            if (state.secondStepCompleted) const RegistrationThirdStepRoute(),
+            if (state.branch.address != null) const RegistrationFourthStepRoute(),
             if (state.registrationCompleted) const ThankYouRoute(),
           ];
         });

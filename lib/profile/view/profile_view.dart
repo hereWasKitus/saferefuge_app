@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/home/widgets/menu_button.dart';
 import 'package:protect_ua_women/profile/profile.dart';
@@ -44,13 +45,18 @@ class _ProfileViewState extends State<ProfileView> {
             ],
           ),
           floatingActionButton: BlocBuilder<ProfileBloc, ProfileState>(
+            buildWhen: (previous, current) => (previous.formStatus != current.formStatus),
             builder: (context, state) {
-              if (state.formChanged) {
+              if (state.formStatus == FormStatus.changed || state.formStatus == FormStatus.loading) {
                 return FloatingActionButton(
                   onPressed: () {
-                    context.read<ProfileBloc>().add(const ProfileFormHasChangedEvent(false));
+                    context.read<ProfileBloc>().add(const ProfileUpdateRequest());
                   },
-                  child: const Text('Save'),
+                  child: state.formStatus == FormStatus.loading
+                      ? const SpinKitCircle(
+                          color: Colors.white,
+                        )
+                      : const Text('Save'),
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(defaultBorderRadius),
@@ -60,7 +66,7 @@ class _ProfileViewState extends State<ProfileView> {
                 );
               }
 
-              return Container();
+              return const SizedBox.shrink();
             },
           ),
           body: SingleChildScrollView(
@@ -73,24 +79,29 @@ class _ProfileViewState extends State<ProfileView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                RichText(
-                  text: const TextSpan(
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 36,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: 'Rubik',
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Alisa,\r\n',
-                        style: TextStyle(
-                          color: Color(0xFF1B3284),
+                BlocBuilder<ProfileBloc, ProfileState>(
+                  buildWhen: (previos, current) => previos.name != current.name,
+                  builder: (context, state) {
+                    return RichText(
+                      text: TextSpan(
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 36,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Rubik',
                         ),
+                        children: [
+                          TextSpan(
+                            text: '${state.name},\r\n',
+                            style: const TextStyle(
+                              color: Color(0xFF1B3284),
+                            ),
+                          ),
+                          const TextSpan(text: 'here is your'),
+                        ],
                       ),
-                      TextSpan(text: 'here is your'),
-                    ],
-                  ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 24),
                 ProfileTabs(

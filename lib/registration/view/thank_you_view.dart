@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/home/widgets/menu_button.dart';
+import 'package:protect_ua_women/routes/router.gr.dart';
 
 import '../registration.dart';
 
@@ -36,6 +37,7 @@ class ThankYouView extends StatelessWidget {
             padding: const EdgeInsets.only(
               left: defaultPadding,
               right: defaultPadding,
+              bottom: 60,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -47,7 +49,9 @@ class ThankYouView extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: state.fullName,
-                        style: const TextStyle(color: Color(0xFF1B3284), fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            color: Color(0xFF1B3284),
+                            fontWeight: FontWeight.bold),
                       ),
                       const TextSpan(
                         text: ', \r\nwelcome to\r\nSafeWay community!',
@@ -82,6 +86,22 @@ class ThankYouView extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 24,
+                  ),
+                ),
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () {
+                    context.router.popAndPush(const ProfileRoute());
+                  },
+                  child: const Text('Go to profile'),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 60),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(defaultBorderRadius),
+                      ),
+                    ),
+                    primary: const Color.fromRGBO(27, 50, 132, 1),
                   ),
                 )
               ],

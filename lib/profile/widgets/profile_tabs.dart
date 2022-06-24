@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:protect_ua_women/config/constants.dart';
 
 class ProfileTabs extends StatefulWidget {
-  const ProfileTabs({Key? key, required this.activeIndex, required this.onClick}) : super(key: key);
+  const ProfileTabs(
+      {Key? key, required this.activeIndex, required this.onClick})
+      : super(key: key);
 
   final int activeIndex;
   final Function(int index) onClick;
@@ -54,7 +56,12 @@ class _ProfileTabsState extends State<ProfileTabs> {
 }
 
 class _TabButton extends StatelessWidget {
-  _TabButton({Key? key, required this.text, this.isActive = false, required this.onPressed}) : super(key: key);
+  _TabButton(
+      {Key? key,
+      required this.text,
+      this.isActive = false,
+      required this.onPressed})
+      : super(key: key);
 
   final String text;
   final bool isActive;

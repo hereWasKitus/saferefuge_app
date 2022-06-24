@@ -2,10 +2,13 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:protect_ua_women/config/constants.dart';
+import 'package:protect_ua_women/profile/profile.dart';
+import 'package:protect_ua_women/routes/router.gr.dart';
 
 import '../home.dart';
 
@@ -41,8 +44,21 @@ class HomeScreenState extends State<HomeScreen> {
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 25),
-            child: MenuButton(
-              onPressed: () => AutoRouter.of(context).pushNamed('/registration'),
+            child: BlocBuilder<ProfileBloc, ProfileState>(
+              buildWhen: (previous, current) => previous.authStatus != current.authStatus,
+              builder: (context, state) {
+                return MenuButton(
+                  // onPressed: () => AutoRouter.of(context).push(const RegistrationRoute()),
+                  onPressed: () {
+                    if (context.read<ProfileBloc>().state.authStatus != AuthStatus.authorized) {
+                      AutoRouter.of(context).push(const RegistrationRoute());
+                    } else {
+                      // AutoRouter.of(context).push(const RegistrationRoute());
+                      AutoRouter.of(context).push(const ProfileRoute());
+                    }
+                  },
+                );
+              },
             ),
           ),
         ],
@@ -65,10 +81,47 @@ class HomeScreenState extends State<HomeScreen> {
           SuggestionsList(onLocationSelected: _goToPosition)
         ],
       ),
-      floatingActionButton: FloatingActionButton.small(
-        onPressed: _goToMyLocation,
-        backgroundColor: primaryColor,
-        child: SvgPicture.asset("assets/icons/location-arrow.svg"),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          BlocConsumer<HomeBloc, HomeState>(
+            listener: (previous, current) {
+              if (current.poiStatus == POIStatus.fail) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Failed to load poins on map. Click on refresh button to try again'),
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: red,
+                  ),
+                );
+              }
+            },
+            listenWhen: (previous, current) => previous.poiStatus != current.poiStatus,
+            buildWhen: (previous, current) => previous.poiStatus != current.poiStatus,
+            builder: (context, state) {
+              return FloatingActionButton.small(
+                heroTag: 'btn1',
+                onPressed: () {
+                  context.read<HomeBloc>().add(LoadPOIsEvent());
+                },
+                backgroundColor: primaryColor,
+                child: state.poiStatus != POIStatus.loading
+                    ? const Icon(Icons.refresh)
+                    : const SpinKitDualRing(
+                        color: Colors.white,
+                        size: 20,
+                        lineWidth: 2,
+                      ),
+              );
+            },
+          ),
+          FloatingActionButton.small(
+            heroTag: 'btn2',
+            onPressed: _goToMyLocation,
+            backgroundColor: primaryColor,
+            child: SvgPicture.asset("assets/icons/location-arrow.svg"),
+          ),
+        ],
       ),
       extendBodyBehindAppBar: true,
     );

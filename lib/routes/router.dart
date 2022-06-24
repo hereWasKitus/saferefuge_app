@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:protect_ua_women/app/app.dart';
 import 'package:protect_ua_women/login/login.dart';
+import 'package:protect_ua_women/map/map.dart';
 import 'package:protect_ua_women/registration/registration.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/home/home.dart';
@@ -38,6 +39,11 @@ import 'package:protect_ua_women/profile/view/profile_view.dart';
       name: 'MapScreenRoute',
       path: '/choosePoint',
     ),
+    AutoRoute(
+      page: MapScreen,
+      name: 'MapRoute',
+      path: '/map',
+    ),
     CustomRoute(
       page: LoginView,
       name: 'LoginRoute',
@@ -66,6 +72,11 @@ import 'package:protect_ua_women/profile/view/profile_view.dart';
           path: 'step3',
           name: 'RegistrationThirdStepRoute',
           page: RegistrationView3,
+        ),
+        AutoRoute(
+          path: 'step4',
+          name: 'RegistrationFourthStepRoute',
+          page: RegistrationView4,
         ),
         AutoRoute(
           path: 'thank-you',

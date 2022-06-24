@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/registration/registration.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
 import 'package:protect_ua_women/profile/profile.dart';
@@ -16,41 +18,73 @@ class _ProfileFormState extends State<ProfileForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      onChanged: () {
-        context.read<ProfileBloc>().add(const ProfileFormHasChangedEvent(true));
+    return BlocListener<ProfileBloc, ProfileState>(
+      listener: (context, state) {
+        switch (state.formStatus) {
+          case FormStatus.updateFail:
+            _showSnackBar(text: state.errorMessage, color: red);
+            break;
+          case FormStatus.updateSucceed:
+            _showSnackBar(text: 'Successfully updated!', color: green);
+            break;
+          default:
+        }
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const _FullName(),
-          const SizedBox(height: 8),
-          const _OrganizationName(),
-          const SizedBox(height: 8),
-          const _OrganizationAddress(),
-          const SizedBox(height: 8),
-          const _OrganizationPhone(),
-          const SizedBox(height: 8),
-          const _OrganizationRegistrationNumber(),
-          const SizedBox(height: 8),
-          const _OrganizationEmail(),
-          const SizedBox(height: 8),
-          const _OrganizationWhatsapp(),
-          const SizedBox(height: 8),
-          const _OrganizationTelegram(),
-          const SizedBox(height: 8),
-          const _YourPosition(),
-          const SizedBox(height: 8),
-          const Text(
-            'Services you provide',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
+      listenWhen: (previous, current) => previous.formStatus != current.formStatus,
+      child: Form(
+        key: _formKey,
+        onChanged: () {
+          context.read<ProfileBloc>().add(const ProfileFormStatusChanged(FormStatus.changed));
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const _FullName(),
+            const SizedBox(height: 8),
+            const _OrganizationName(),
+            const SizedBox(height: 8),
+            const _OrganizationAddress(),
+            const SizedBox(height: 8),
+            const _OrganizationPhone(),
+            const SizedBox(height: 8),
+            const _OrganizationRegistrationNumber(),
+            const SizedBox(height: 8),
+            const _OrganizationEmail(),
+            const SizedBox(height: 8),
+            const _OrganizationWhatsapp(),
+            const SizedBox(height: 8),
+            const _OrganizationTelegram(),
+            const SizedBox(height: 8),
+            const _YourPosition(),
+            const SizedBox(height: 8),
+            const Text(
+              'Services you provide',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
             ),
-          ),
-          CategoryList(onSelected: (cats) {}),
-        ],
+            BlocBuilder<ProfileBloc, ProfileState>(
+              buildWhen: (previous, current) => previous.services != current.services,
+              builder: (context, state) {
+                return CategoryList(
+                  onSelected: (cats) {},
+                  selected: state.services,
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showSnackBar({required String text, Color? color}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(text),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: color ?? primaryColor,
       ),
     );
   }
@@ -62,15 +96,19 @@ class _FullName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
-      buildWhen: (previous, current) => previous.name != current.name,
+      buildWhen: (previous, current) => previous.isLoading != current.isLoading,
       builder: (context, state) {
-        return MyFormField(
-          labelText: 'Your name',
-          onChanged: (value) {
-            context.read<ProfileBloc>().add(ProfileFormChangedEvent(name: value));
-          },
-          initialValue: state.name,
-        );
+        return state.isLoading
+            ? const SpinKitCircle(
+                color: primaryColor,
+              )
+            : MyFormField(
+                labelText: 'Your name',
+                onChanged: (value) {
+                  context.read<ProfileBloc>().add(ProfileFormChangedEvent(name: value));
+                },
+                initialValue: state.name,
+              );
       },
     );
   }

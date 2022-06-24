@@ -4,6 +4,6 @@
 library safeway_api;
 
 export 'src/safeway_api.dart';
-export 'src/models/models.dart';
+export 'package:dio/dio.dart';
 
 // TODO: Export any libraries intended for clients of this package.

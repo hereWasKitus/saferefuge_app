@@ -19,7 +19,6 @@ class SuggestionsList extends StatelessWidget {
     var json = convert.jsonDecode(response.body);
     var res = json['candidates'];
     Map<String, dynamic> location = res[0]['geometry']['location'];
-    // appStore.dispatch(SetSearchResultsAction([]));
     context.read<HomeBloc>().add(SetSearchResultsByQueryEvent(query: ''));
     onLocationSelected(location['lat'], location['lng']);
   }
@@ -33,7 +32,7 @@ class SuggestionsList extends StatelessWidget {
       builder: (BuildContext context, HomeState state) {
         if (state.toShowSuggestions) {
           return Positioned(
-            top: 85,
+            top: Scaffold.of(context).appBarMaxHeight! - 25,
             left: defaultPadding,
             width: _screenWidth,
             height: 300,

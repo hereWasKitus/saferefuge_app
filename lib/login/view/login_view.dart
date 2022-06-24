@@ -5,9 +5,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:protect_ua_women/login/login.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/home/home.dart';
+import 'package:protect_ua_women/profile/profile.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
-import 'package:safeway_api/safeway_api.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -21,73 +21,79 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
-        elevation: 0,
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 25),
-            child: RotatedBox(
-              quarterTurns: 1,
-              child: MenuButton(
-                onPressed: () {
-                  context.router.pop();
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(
-          top: 64,
-          left: defaultPadding,
-          right: defaultPadding,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  const _EmailField(),
-                  const SizedBox(height: 16),
-                  const _PasswordField(),
-                  const SizedBox(height: 24),
-                  _LoginButton(formKey: _formKey),
-                  const SizedBox(height: 32),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Don\'t have an account?',
-                        style: TextStyle(
-                          color: Color.fromRGBO(71, 66, 221, 0.7),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          context.router.replace(const RegistrationRoute());
-                        },
-                        child: const Text(
-                          'Sign up',
-                          style: TextStyle(
-                            color: Color(0xFF1B3284),
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+    return BlocListener<ProfileBloc, ProfileState>(
+      listener: (context, state) {
+        context.router.popAndPush(const ProfileRoute());
+      },
+      listenWhen: (previous, current) => previous.authStatus != current.authStatus,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.transparent,
+          elevation: 0,
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 25),
+              child: RotatedBox(
+                quarterTurns: 1,
+                child: MenuButton(
+                  onPressed: () {
+                    context.router.pop();
+                  },
+                ),
               ),
             ),
           ],
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.only(
+            top: 64,
+            left: defaultPadding,
+            right: defaultPadding,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    const _EmailField(),
+                    const SizedBox(height: 16),
+                    const _PasswordField(),
+                    const SizedBox(height: 24),
+                    _LoginButton(formKey: _formKey),
+                    const SizedBox(height: 32),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Don\'t have an account?',
+                          style: TextStyle(
+                            color: Color.fromRGBO(71, 66, 221, 0.7),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            context.router.replace(const RegistrationRoute());
+                          },
+                          child: const Text(
+                            'Sign up',
+                            style: TextStyle(
+                              color: Color(0xFF1B3284),
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -108,7 +114,9 @@ class _LoginButton extends StatelessWidget {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.loginStatus == LoginStatus.failed) {
-          _showSnackBar(context);
+          _showSnackBar(context, text: state.errorMessage);
+        } else if (state.loginStatus == LoginStatus.success) {
+          context.read<ProfileBloc>().add(const ProfileTryGetUser());
         }
       },
       listenWhen: (old, current) => old.loginStatus != current.loginStatus,
@@ -144,10 +152,10 @@ class _LoginButton extends StatelessWidget {
     );
   }
 
-  void _showSnackBar(BuildContext context) {
+  void _showSnackBar(BuildContext context, {String text = ''}) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Incorrect email or password'),
+      SnackBar(
+        content: Text(text),
         behavior: SnackBarBehavior.floating,
         backgroundColor: red,
       ),
@@ -164,8 +172,8 @@ class _EmailField extends StatelessWidget {
       buildWhen: (previous, current) => previous.emailField != current.emailField,
       builder: (context, state) {
         return MyFormField(
-          labelText: 'Email',
-          hintText: 'Enter your email',
+          labelText: 'Email or username',
+          hintText: 'Enter your email or username',
           keyboardType: TextInputType.emailAddress,
           initialValue: state.emailField,
           onChanged: (String? value) {
@@ -176,9 +184,9 @@ class _EmailField extends StatelessWidget {
               return 'This field is required';
             }
 
-            if (!state.isEmailValid) {
-              return 'Email is not valid!';
-            }
+            // if (!state.isEmailValid) {
+            //   return 'Email is not valid!';
+            // }
 
             return null;
           },

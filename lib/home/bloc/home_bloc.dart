@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:map_repository/map_repository.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
-import 'package:protect_ua_women/services/map.service.dart';
 
 import '../../config/secrets.dart';
 import '../models/models.dart';
@@ -13,14 +13,18 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(const HomeState()) {
+  HomeBloc({required MapRepository mapRepository})
+      : _mapRepository = mapRepository,
+        super(const HomeState()) {
     on<SetSearchResultsByQueryEvent>(_setSearchResults);
     on<SetCategoriesEvent>(_setCategories);
     on<SetSelectedCategoriesEvent>(_setSelectedCategories);
-    on<SetPOIsEvent>(_setPOIs);
     on<LoadPOIsEvent>(_loadPOIs);
     on<LoadCategoriesEvent>(_loadCategories);
+    on<LoadNearbyPOIsEvent>(_loadNearbyPOIs);
   }
+
+  final MapRepository _mapRepository;
 
   Future<void> _setSearchResults(SetSearchResultsByQueryEvent event, Emitter<HomeState> emit) async {
     if (event.query.isEmpty) {
@@ -45,21 +49,33 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(selectedCategories: event.selectedCategories));
   }
 
-  _setPOIs(SetPOIsEvent event, Emitter<HomeState> emit) {
-    emit(state.copyWith(pois: event.pois));
+  Future<void> _loadPOIs(LoadPOIsEvent event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(poiStatus: POIStatus.loading));
+
+    try {
+      List<POI> pois = await _mapRepository.getPOIs();
+      List<POIMarker> poiMarkers = pois.map((poi) => POIMarker(poi: poi)).toList();
+      emit(state.copyWith(pois: poiMarkers, poiStatus: POIStatus.succeed));
+    } catch (e) {
+      emit(state.copyWith(poiStatus: POIStatus.fail));
+    }
   }
 
-  Future<void> _loadPOIs(LoadPOIsEvent event, Emitter<HomeState> emit) async {
+  Future<void> _loadNearbyPOIs(LoadNearbyPOIsEvent event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(poiStatus: POIStatus.loading));
+
     try {
-      List<POI> pois = await MapService().fetchPOIs();
-      emit(state.copyWith(pois: pois, poisLoaded: true));
+      List<POI> pois =
+          await _mapRepository.getNearbyPOIs(lat: event.lat, lng: event.lng, maxDistance: event.maxDistance);
+      List<POIMarker> poiMarkers = pois.map((poi) => POIMarker(poi: poi)).toList();
+      emit(state.copyWith(pois: [...state.pois, ...poiMarkers], poiStatus: POIStatus.succeed));
     } catch (e) {
-      print(e);
+      emit(state.copyWith(poiStatus: POIStatus.fail));
     }
   }
 
   Future<void> _loadCategories(LoadCategoriesEvent event, Emitter<HomeState> emit) async {
-    List<Category> categories = await MapService().fetchCategories();
+    List<Category> categories = await _mapRepository.getCategories();
     emit(state.copyWith(categories: categories));
   }
 }

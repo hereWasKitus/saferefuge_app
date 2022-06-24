@@ -13,7 +13,11 @@ class MenuButton extends StatelessWidget {
         color: primaryColor,
         shape: CircleBorder(),
       ),
-      child: IconButton(splashRadius: 23, onPressed: onPressed, icon: const Icon(Icons.menu), color: Colors.white),
+      child: IconButton(
+          splashRadius: 23,
+          onPressed: onPressed,
+          icon: const Icon(Icons.menu),
+          color: Colors.white),
     );
   }
 }

@@ -98,7 +98,8 @@ class _MapViewState extends State<MapView> {
         else
           ElevatedButton(
             onPressed: () async {
-              Map<String, dynamic>? address = await _getAddressByLatLng(_markers.first.position);
+              Map<String, dynamic>? address =
+                  await _getAddressByLatLng(_markers.first.position);
 
               if (address != null) {
                 widget.onAddressFound(address, _markers.first.position);
@@ -118,7 +119,8 @@ class _MapViewState extends State<MapView> {
         const SizedBox(width: 8),
         ElevatedButton(
           onPressed: () async {
-            Map<String, dynamic>? address = await _getAddressByLatLng(_initialPosition.target);
+            Map<String, dynamic>? address =
+                await _getAddressByLatLng(_initialPosition.target);
 
             if (address != null) {
               widget.onAddressFound(address, _initialPosition.target);
@@ -177,7 +179,8 @@ class _MapViewState extends State<MapView> {
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint1 = Paint()..color = primaryColor;
-    final Paint paint2 = Paint()..color = const Color.fromRGBO(71, 66, 221, 0.7);
+    final Paint paint2 = Paint()
+      ..color = const Color.fromRGBO(71, 66, 221, 0.7);
 
     canvas.drawCircle(const Offset(size / 2, size / 2), size / 2.0, paint1);
     canvas.drawCircle(const Offset(size / 2, size / 2), size / 2.2, paint2);

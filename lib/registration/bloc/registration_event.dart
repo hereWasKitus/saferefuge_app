@@ -7,69 +7,6 @@ abstract class RegistrationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class RegistrationEmailChanged extends RegistrationEvent {
-  final String email;
-
-  const RegistrationEmailChanged(this.email);
-
-  @override
-  List<Object> get props => [email];
-}
-
-class RegistrationPasswordChanged extends RegistrationEvent {
-  final String password;
-
-  const RegistrationPasswordChanged(this.password);
-
-  @override
-  List<Object> get props => [password];
-}
-
-class RegistrationFullNameChanged extends RegistrationEvent {
-  final String fullName;
-
-  const RegistrationFullNameChanged(this.fullName);
-
-  @override
-  List<Object> get props => [fullName];
-}
-
-class RegistrationOrganizationNameChanged extends RegistrationEvent {
-  final String organizationName;
-
-  const RegistrationOrganizationNameChanged(this.organizationName);
-
-  @override
-  List<Object> get props => [organizationName];
-}
-
-class RegistrationOrganizationAddressChanged extends RegistrationEvent {
-  final String organizationAddress;
-
-  const RegistrationOrganizationAddressChanged(this.organizationAddress);
-
-  @override
-  List<Object> get props => [organizationAddress];
-}
-
-class RegistrationOrganizationPhoneChanged extends RegistrationEvent {
-  final String organizationPhone;
-
-  const RegistrationOrganizationPhoneChanged(this.organizationPhone);
-
-  @override
-  List<Object> get props => [organizationPhone];
-}
-
-class RegistrationServicesChanged extends RegistrationEvent {
-  final List<String> services;
-
-  const RegistrationServicesChanged(this.services);
-
-  @override
-  List<Object> get props => [services];
-}
-
 class RegistrationPositionChanged extends RegistrationEvent {
   final LatLng position;
 
@@ -88,6 +25,15 @@ class RegistrationFirstStepCompleted extends RegistrationEvent {
   List<Object> get props => [completed];
 }
 
+class RegistrationSecondStepCompleted extends RegistrationEvent {
+  final bool completed;
+
+  const RegistrationSecondStepCompleted(this.completed);
+
+  @override
+  List<Object> get props => [completed];
+}
+
 class RegistrationCompleted extends RegistrationEvent {
   final bool completed;
 
@@ -97,30 +43,8 @@ class RegistrationCompleted extends RegistrationEvent {
   List<Object> get props => [completed];
 }
 
-class RegistrationLoading extends RegistrationEvent {
-  final bool isLoading;
-
-  const RegistrationLoading(this.isLoading);
-
-  @override
-  List<Object> get props => [isLoading];
-}
-
-class RegistrationWebsiteChanged extends RegistrationEvent {
-  final String website;
-
-  const RegistrationWebsiteChanged(this.website);
-
-  @override
-  List<Object> get props => [website];
-}
-
 class RegistrationRequestEvent extends RegistrationEvent {
-  final String email;
-  final String password;
-  final String fullName;
-
-  const RegistrationRequestEvent(this.fullName, this.email, this.password);
+  const RegistrationRequestEvent();
 
   @override
   List<Object> get props => [];
@@ -137,8 +61,10 @@ class RegistrationFormChangedEvent extends RegistrationEvent {
   final String? organizationEmail;
   final String? organizationWhatsapp;
   final String? organizationTelegram;
-  final String? organizationPosition;
+  final LatLng? organizationPosition;
+  final String? organizationID;
   final List<String>? services;
+  final String? positionInOrganization;
 
   const RegistrationFormChangedEvent({
     this.email,
@@ -153,5 +79,30 @@ class RegistrationFormChangedEvent extends RegistrationEvent {
     this.organizationWhatsapp,
     this.registrationNumber,
     this.services,
+    this.organizationID,
+    this.positionInOrganization,
   });
+}
+
+class RegistrationBranchChanged extends RegistrationEvent {
+  final Branch branch;
+
+  const RegistrationBranchChanged(this.branch);
+
+  @override
+  List<Object> get props => [branch];
+}
+
+class RegistrationOrganizationCreationRequest extends RegistrationEvent {
+  const RegistrationOrganizationCreationRequest();
+
+  @override
+  List<Object> get props => [];
+}
+
+class RegistrationGetOrganizationsList extends RegistrationEvent {
+  const RegistrationGetOrganizationsList();
+
+  @override
+  List<Object> get props => [];
 }

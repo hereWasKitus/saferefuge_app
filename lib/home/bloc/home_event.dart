@@ -21,14 +21,17 @@ class SetSelectedCategoriesEvent extends HomeEvent {
   SetSelectedCategoriesEvent({required this.selectedCategories});
 }
 
-class SetPOIsEvent extends HomeEvent {
-  final List<POI> pois;
-
-  SetPOIsEvent({required this.pois});
-}
-
 class LoadPOIsEvent extends HomeEvent {
   LoadPOIsEvent();
+}
+
+class LoadNearbyPOIsEvent extends HomeEvent {
+  final double lat;
+  final double lng;
+  final int? limit;
+  final double? maxDistance;
+
+  LoadNearbyPOIsEvent({required this.lat, required this.lng, this.limit, this.maxDistance});
 }
 
 class LoadCategoriesEvent extends HomeEvent {

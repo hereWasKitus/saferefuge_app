@@ -4,15 +4,24 @@ import 'package:protect_ua_women/home/home.dart';
 
 class CategoryList extends StatefulWidget {
   final void Function(List<String> selected) onSelected;
+  final List<String> selected;
 
-  const CategoryList({Key? key, required this.onSelected}) : super(key: key);
+  const CategoryList({Key? key, required this.onSelected, this.selected = const <String>[]}) : super(key: key);
 
   @override
   State<CategoryList> createState() => _CategoryListState();
 }
 
 class _CategoryListState extends State<CategoryList> {
-  final _selected = <String>[];
+  List<String> _selected = [];
+
+  @override
+  void initState() {
+    setState(() {
+      _selected = widget.selected;
+    });
+    super.initState();
+  }
 
   _onSelected(bool selected, String value) {
     setState(() {
@@ -39,7 +48,7 @@ class _CategoryListState extends State<CategoryList> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      category.id,
+                      category.name!,
                       style: const TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     // const SizedBox(width: 6),

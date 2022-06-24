@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:protect_ua_women/config/constants.dart';
 
 class MyFormField extends StatelessWidget {
-  String labelText;
-  String hintText;
-  bool isPassword;
-  TextInputType? keyboardType;
-  String? Function(String?)? validator;
-  void Function(String?)? onSaved;
-  void Function(String?)? onChanged;
-  TextEditingController? controller;
-  String? initialValue;
+  final String labelText;
+  final String hintText;
+  final bool isPassword;
+  final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
+  final void Function(String?)? onSaved;
+  final void Function(String?)? onChanged;
+  final TextEditingController? controller;
+  final String? initialValue;
+  final Widget? suffixIcon;
+  final FocusNode? focusNode;
+  final bool? enabled;
 
-  MyFormField({
+  const MyFormField({
     Key? key,
     this.labelText = '',
     this.hintText = '',
@@ -23,9 +26,12 @@ class MyFormField extends StatelessWidget {
     this.onChanged,
     this.controller,
     this.initialValue,
+    this.suffixIcon,
+    this.focusNode,
+    this.enabled,
   }) : super(key: key);
 
-  OutlineInputBorder borderStyle({Color color = primaryColor}) => OutlineInputBorder(
+  OutlineInputBorder _borderStyle({Color color = primaryColor}) => OutlineInputBorder(
         borderRadius: BorderRadius.circular(defaultBorderRadius),
         borderSide: BorderSide(width: 1, color: color),
       );
@@ -49,11 +55,13 @@ class MyFormField extends StatelessWidget {
         TextFormField(
           controller: controller,
           onSaved: onSaved,
+          enabled: enabled,
           style: const TextStyle(fontSize: 16),
           decoration: InputDecoration(
-            border: borderStyle(),
-            enabledBorder: borderStyle(color: const Color.fromRGBO(44, 83, 218, 0.8)),
-            focusedBorder: borderStyle(),
+            border: _borderStyle(),
+            enabledBorder: _borderStyle(color: const Color.fromRGBO(44, 83, 218, 0.8)),
+            focusedBorder: _borderStyle(),
+            disabledBorder: _borderStyle(color: const Color.fromRGBO(44, 83, 218, 0.5)),
             hintText: hintText,
             hintStyle: const TextStyle(
               color: Color.fromRGBO(27, 50, 132, 0.2),
@@ -62,6 +70,8 @@ class MyFormField extends StatelessWidget {
               vertical: 1,
               horizontal: 16,
             ),
+            suffixIcon: suffixIcon,
+            // suffixIconConstraints: const BoxConstraints(maxHeight: 20, maxWidth: 20),
           ),
           obscureText: isPassword,
           enableSuggestions: !isPassword,
@@ -69,6 +79,7 @@ class MyFormField extends StatelessWidget {
           validator: validator,
           onChanged: onChanged,
           initialValue: initialValue,
+          focusNode: focusNode,
         )
       ],
     );
