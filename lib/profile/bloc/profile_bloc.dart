@@ -34,6 +34,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       organizationTelegram: event.organizationTelegram,
       organizationPosition: event.organizationPosition,
       services: event.services,
+      organizationCountry: event.organizationCountry,
     ));
   }
 
@@ -57,6 +58,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         organizationAddress: user.org?.address,
         organizationEmail: user.org?.email,
         organizationPhone: user.org?.phone,
+        organizationCountry: user.org?.country,
         services: user.org?.categories,
         isLoading: false,
       ));

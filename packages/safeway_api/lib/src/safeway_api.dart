@@ -144,6 +144,7 @@ class SafeWayAPI {
   Future<Response> getPOIs({int limit = 100}) {
     return _dio.get('poi/', queryParameters: {
       'limit': limit,
+      'fields': 'compact',
     });
   }
 

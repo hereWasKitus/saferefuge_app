@@ -34,6 +34,7 @@ class _RegistrationView1State extends State<RegistrationView1> {
             child: RotatedBox(
               quarterTurns: 1,
               child: MenuButton(
+                icon: const Icon(Icons.close),
                 onPressed: () {
                   context.router.pop();
                 },
@@ -118,6 +119,7 @@ class _RegistrationView1State extends State<RegistrationView1> {
                         ),
                         TextButton(
                           onPressed: () {
+                            // context.watchTabsRouter.navigate(const LoginRoute());
                             context.router.replace(const LoginRoute());
                           },
                           child: const Text(

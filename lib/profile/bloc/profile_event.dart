@@ -27,6 +27,7 @@ class ProfileFormChangedEvent extends ProfileEvent {
   final String? organizationTelegram;
   final String? organizationPosition;
   final List<String>? services;
+  final String? organizationCountry;
 
   const ProfileFormChangedEvent({
     this.name,
@@ -39,6 +40,7 @@ class ProfileFormChangedEvent extends ProfileEvent {
     this.organizationWhatsapp,
     this.registrationNumber,
     this.services,
+    this.organizationCountry,
   });
 }
 

@@ -65,6 +65,8 @@ class RegistrationFormChangedEvent extends RegistrationEvent {
   final String? organizationID;
   final List<String>? services;
   final String? positionInOrganization;
+  final String? website;
+  final String? organizationCountry;
 
   const RegistrationFormChangedEvent({
     this.email,
@@ -81,6 +83,8 @@ class RegistrationFormChangedEvent extends RegistrationEvent {
     this.services,
     this.organizationID,
     this.positionInOrganization,
+    this.website,
+    this.organizationCountry,
   });
 }
 

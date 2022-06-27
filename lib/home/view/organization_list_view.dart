@@ -73,7 +73,7 @@ class OrganizationListView extends StatelessWidget {
               );
             } else {
               return const Center(
-                child: SpinKitCircle(color: primaryColorTemp),
+                child: SpinKitCircle(color: primaryColor),
               );
             }
           },

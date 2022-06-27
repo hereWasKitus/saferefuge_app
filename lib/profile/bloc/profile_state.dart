@@ -28,6 +28,7 @@ class ProfileState extends Equatable {
     this.organizationTelegram = '',
     this.organizationWhatsapp = '',
     this.registrationNumber = '',
+    this.organizationCountry = '',
     this.services = const <String>[],
     this.branches = const [],
     this.authStatus = AuthStatus.unknown,
@@ -54,6 +55,7 @@ class ProfileState extends Equatable {
   final bool isLoading;
   final FormStatus formStatus;
   final String errorMessage;
+  final String organizationCountry;
 
   ProfileState copyWith({
     bool? formChanged,
@@ -74,6 +76,7 @@ class ProfileState extends Equatable {
     String? email,
     FormStatus? formStatus,
     String? errorMessage,
+    String? organizationCountry,
   }) =>
       ProfileState(
         formChanged: formChanged ?? this.formChanged,
@@ -94,6 +97,7 @@ class ProfileState extends Equatable {
         email: email ?? this.email,
         formStatus: formStatus ?? this.formStatus,
         errorMessage: errorMessage ?? this.errorMessage,
+        organizationCountry: organizationCountry ?? this.organizationCountry,
       );
 
   @override
@@ -116,6 +120,7 @@ class ProfileState extends Equatable {
         isLoading,
         formStatus,
         errorMessage,
+        organizationCountry,
       ];
 }
 

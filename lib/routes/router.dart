@@ -14,43 +14,50 @@ import 'package:protect_ua_women/profile/view/profile_view.dart';
     AutoRoute(
       page: Entrypoint,
       path: '/',
-      initial: true,
-      fullMatch: true,
+      name: 'Entrypoint',
+      children: [
+        AutoRoute(
+          page: HomeScreen,
+          path: 'home',
+          name: 'HomeRoute',
+        ),
+        CustomRoute(
+          page: ProfileView,
+          path: 'profile',
+          name: 'ProfileRoute',
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+          durationInMilliseconds: defaultAnimationDuration,
+          children: [
+            CustomRoute(
+              path: '',
+              name: 'ProfileFormRoute',
+              page: ProfileForm,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: defaultAnimationDuration,
+            ),
+            CustomRoute(
+              path: 'requests',
+              name: 'ProfileRequestsRoute',
+              page: Requests,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: defaultAnimationDuration,
+            ),
+            CustomRoute(
+              path: 'branches',
+              name: 'ProfileBranchesRoute',
+              page: BranchesList,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: defaultAnimationDuration,
+            )
+          ],
+        ),
+      ],
     ),
-    AutoRoute(
-      page: HomeScreen,
-      path: '/home',
-      name: 'HomeScreenRoute',
-    ),
-    AutoRoute(
-      page: SplashScreen,
-      path: '/splash',
-      name: 'SplashScreenRoute',
-    ),
-    CustomRoute(
-      transitionsBuilder: TransitionsBuilders.slideLeft,
-      page: OrganizationListView,
-      name: 'OrganizationListRoute',
-      path: '/organizations',
-      durationInMilliseconds: defaultAnimationDuration,
-    ),
-    AutoRoute(
-      page: MapView,
-      name: 'MapScreenRoute',
-      path: '/choosePoint',
-    ),
-    AutoRoute(
-      page: MapScreen,
-      name: 'MapRoute',
-      path: '/map',
-    ),
-    CustomRoute(
-      page: LoginView,
-      name: 'LoginRoute',
-      path: '/login',
-      transitionsBuilder: TransitionsBuilders.slideLeft,
-      durationInMilliseconds: defaultAnimationDuration,
-    ),
+    // AutoRoute(
+    //   page: SplashScreen,
+    //   path: '/splash',
+    //   name: 'SplashScreenRoute',
+    // ),
     CustomRoute(
       path: '/registration',
       name: 'RegistrationRoute',
@@ -86,35 +93,30 @@ import 'package:protect_ua_women/profile/view/profile_view.dart';
       ],
     ),
     CustomRoute(
-      page: ProfileView,
-      path: '/profile',
-      name: 'ProfileRoute',
+      page: LoginView,
+      path: '/login',
+      name: 'LoginRoute',
       transitionsBuilder: TransitionsBuilders.slideLeft,
       durationInMilliseconds: defaultAnimationDuration,
-      children: [
-        CustomRoute(
-          path: '',
-          name: 'ProfileFormRoute',
-          page: ProfileForm,
-          transitionsBuilder: TransitionsBuilders.fadeIn,
-          durationInMilliseconds: defaultAnimationDuration,
-        ),
-        CustomRoute(
-          path: 'requests',
-          name: 'ProfileRequestsRoute',
-          page: Requests,
-          transitionsBuilder: TransitionsBuilders.fadeIn,
-          durationInMilliseconds: defaultAnimationDuration,
-        ),
-        CustomRoute(
-          path: 'branches',
-          name: 'ProfileBranchesRoute',
-          page: BranchesList,
-          transitionsBuilder: TransitionsBuilders.fadeIn,
-          durationInMilliseconds: defaultAnimationDuration,
-        )
-      ],
-    )
+    ),
+    CustomRoute(
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+      page: OrganizationListView,
+      name: 'OrganizationListRoute',
+      path: '/organizations',
+      durationInMilliseconds: defaultAnimationDuration,
+    ),
+    AutoRoute(
+      // remove this later
+      page: MapView,
+      name: 'MapScreenRoute',
+      path: '/choosePoint',
+    ),
+    AutoRoute(
+      page: MapScreen,
+      name: 'MapRoute',
+      path: '/map',
+    ),
   ],
 )
 class $AppRouter {}

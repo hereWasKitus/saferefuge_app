@@ -31,7 +31,7 @@ class MapRepository {
 
   Future<List<POI>> getPOIs() async {
     try {
-      var response = await _api.getPOIs(limit: 0);
+      var response = await _api.getPOIs(limit: 2500);
       List pois = response.data['items'].map((item) => POI.fromMap(item)).toList();
       return List<POI>.from(pois);
     } on DioError catch (e) {

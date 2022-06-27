@@ -23,7 +23,11 @@ class _LoginViewState extends State<LoginView> {
 
     return BlocListener<ProfileBloc, ProfileState>(
       listener: (context, state) {
-        context.router.popAndPush(const ProfileRoute());
+        if (state.authStatus == AuthStatus.authorized) {
+          context.router.navigate(const Entrypoint(children: [
+            ProfileRoute(),
+          ]));
+        }
       },
       listenWhen: (previous, current) => previous.authStatus != current.authStatus,
       child: Scaffold(
@@ -37,6 +41,7 @@ class _LoginViewState extends State<LoginView> {
               child: RotatedBox(
                 quarterTurns: 1,
                 child: MenuButton(
+                  icon: const Icon(Icons.close),
                   onPressed: () {
                     context.router.pop();
                   },

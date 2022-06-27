@@ -42,6 +42,7 @@ class RegistrationState extends Equatable {
     this.userID = '',
     this.organizations = const [],
     this.organizationsLoaded = false,
+    this.organizationCountry = '',
   });
 
   final String email;
@@ -70,6 +71,7 @@ class RegistrationState extends Equatable {
   final String userID;
   final List<Organization> organizations;
   final bool organizationsLoaded;
+  final String organizationCountry;
 
   // isFilled(String? value) => value != null || value!.isNotEmpty;
 
@@ -128,6 +130,7 @@ class RegistrationState extends Equatable {
     String? userID,
     List<Organization>? organizations,
     bool? organizationsLoaded,
+    String? organizationCountry,
   }) =>
       RegistrationState(
         email: email ?? this.email,
@@ -156,6 +159,7 @@ class RegistrationState extends Equatable {
         userID: userID ?? this.userID,
         organizations: organizations ?? this.organizations,
         organizationsLoaded: organizationsLoaded ?? this.organizationsLoaded,
+        organizationCountry: organizationCountry ?? this.organizationCountry,
       );
 
   @override
@@ -183,5 +187,6 @@ class RegistrationState extends Equatable {
         positionInOrganization,
         organizations,
         organizationsLoaded,
+        organizationCountry,
       ];
 }

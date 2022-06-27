@@ -75,6 +75,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       position: event.organizationPosition,
       services: event.services,
       positionInOrganization: event.positionInOrganization,
+      website: event.website,
+      organizationCountry: event.organizationCountry,
     ));
   }
 

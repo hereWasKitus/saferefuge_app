@@ -28,15 +28,15 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          create: (context) => ProfileBloc(authRepository: _authRepository)..add(const ProfileTryGetUser()),
+        ),
+        BlocProvider(
           create: (context) => HomeBloc(mapRepository: _mapRepository)
             ..add(LoadPOIsEvent())
             ..add(LoadCategoriesEvent()),
         ),
         BlocProvider(
           create: (context) => RegistrationBloc(authRepository: _authRepository),
-        ),
-        BlocProvider(
-          create: (context) => ProfileBloc(authRepository: _authRepository)..add(const ProfileTryGetUser()),
         ),
         BlocProvider(
           create: (context) => LoginBloc(authRepository: _authRepository),

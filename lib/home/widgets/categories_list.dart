@@ -79,7 +79,7 @@ class MapCategoryChip extends StatelessWidget {
       showCheckmark: false,
       backgroundColor: const Color.fromRGBO(
           44, 83, 218, 0.8), // for some reason there is still white background underneath my background
-      // backgroundColor: primaryColorTemp,
+      // backgroundColor: primaryColor,
       selectedColor: const Color.fromRGBO(27, 50, 132, 1),
       visualDensity: VisualDensity.compact,
       selected: isSelected,

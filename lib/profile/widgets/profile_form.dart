@@ -43,36 +43,65 @@ class _ProfileFormState extends State<ProfileForm> {
             const SizedBox(height: 8),
             const _OrganizationName(),
             const SizedBox(height: 8),
-            const _OrganizationAddress(),
-            const SizedBox(height: 8),
-            const _OrganizationPhone(),
-            const SizedBox(height: 8),
-            const _OrganizationRegistrationNumber(),
-            const SizedBox(height: 8),
-            const _OrganizationEmail(),
-            const SizedBox(height: 8),
-            const _OrganizationWhatsapp(),
-            const SizedBox(height: 8),
-            const _OrganizationTelegram(),
-            const SizedBox(height: 8),
-            const _YourPosition(),
-            const SizedBox(height: 8),
-            const Text(
-              'Services you provide',
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-            ),
+            const _OrganizationCountry(),
+            const SizedBox(height: 24),
+            // const SizedBox(height: 8),
+            // const _OrganizationPhone(),
+            // const SizedBox(height: 8),
+            // const _OrganizationRegistrationNumber(),
+            // const SizedBox(height: 8),
+            // const _OrganizationEmail(),
+            // const SizedBox(height: 8),
+            // const _OrganizationWhatsapp(),
+            // const SizedBox(height: 8),
+            // const _OrganizationTelegram(),
+            // const SizedBox(height: 8),
+            // const _YourPosition(),
+            // const SizedBox(height: 8),
+            // const Text(
+            //   'Services you provide',
+            //   style: TextStyle(
+            //     fontWeight: FontWeight.w500,
+            //     fontSize: 16,
+            //   ),
+            // ),
+            // BlocBuilder<ProfileBloc, ProfileState>(
+            //   buildWhen: (previous, current) => previous.services != current.services,
+            //   builder: (context, state) {
+            //     return CategoryList(
+            //       onSelected: (cats) {},
+            //       selected: state.services,
+            //     );
+            //   },
+            // ),
             BlocBuilder<ProfileBloc, ProfileState>(
-              buildWhen: (previous, current) => previous.services != current.services,
+              buildWhen: (previous, current) =>
+                  (previous.formStatus != current.formStatus) || (previous.formChanged != current.formChanged),
               builder: (context, state) {
-                return CategoryList(
-                  onSelected: (cats) {},
-                  selected: state.services,
+                return ElevatedButton(
+                  onPressed: () {
+                    if (state.formChanged) {
+                      context.read<ProfileBloc>().add(const ProfileUpdateRequest());
+                    }
+                  },
+                  child: state.formStatus == FormStatus.loading
+                      ? const SpinKitCircle(color: Colors.white)
+                      : const Text('Save'),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 60),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(defaultBorderRadius),
+                      ),
+                    ),
+                    splashFactory: state.formChanged ? InkRipple.splashFactory : NoSplash.splashFactory,
+                    primary: state.formChanged
+                        ? const Color.fromRGBO(27, 50, 132, 1)
+                        : const Color.fromRGBO(27, 50, 132, .7),
+                  ),
                 );
               },
-            ),
+            )
           ],
         ),
       ),
@@ -123,6 +152,7 @@ class _OrganizationName extends StatelessWidget {
       buildWhen: (previous, current) => previous.organizationName != current.organizationName,
       builder: (context, state) {
         return MyFormField(
+          enabled: false,
           labelText: 'Organization name',
           onChanged: (value) => context.read<ProfileBloc>().add(ProfileFormChangedEvent(organizationName: value)),
           initialValue: state.organizationName,
@@ -144,6 +174,25 @@ class _OrganizationAddress extends StatelessWidget {
           labelText: 'Organization address',
           onChanged: (value) => context.read<ProfileBloc>().add(ProfileFormChangedEvent(organizationAddress: value)),
           initialValue: state.organizationAddress,
+        );
+      },
+    );
+  }
+}
+
+class _OrganizationCountry extends StatelessWidget {
+  const _OrganizationCountry({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      buildWhen: (previous, current) => previous.organizationCountry != current.organizationCountry,
+      builder: (context, state) {
+        return MyFormField(
+          enabled: false,
+          labelText: 'Organization country',
+          onChanged: (value) => context.read<ProfileBloc>().add(ProfileFormChangedEvent(organizationCountry: value)),
+          initialValue: state.organizationCountry,
         );
       },
     );

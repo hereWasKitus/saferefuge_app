@@ -47,13 +47,19 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      username: map['username'] ?? '',
+      username: map['email'] ?? '',
       fullName: map['full_name'] ?? '',
       id: map['_id'] ?? '',
       positionInOrganization: map['org_position'] ?? '',
       org: Organization(
         id: map['org_id'] ?? '',
         name: map['org_name'] ?? '',
+        email: map['org_email'] ?? '',
+        formalID: map['org_formal_id'] ?? '',
+        phone: map['org_phone'] ?? '',
+        website: map['org_url'] ?? '',
+        city: map['org_city'] ?? '',
+        country: map['org_country'] ?? '',
       ),
     );
   }

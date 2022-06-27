@@ -6,7 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:protect_ua_women/config/constants.dart';
-import 'package:protect_ua_women/home/widgets/menu_button.dart';
+import 'package:protect_ua_women/home/home.dart';
 import 'package:protect_ua_women/profile/profile.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
@@ -51,6 +51,7 @@ class _RegistrationView2State extends State<RegistrationView2> {
             child: RotatedBox(
               quarterTurns: 1,
               child: MenuButton(
+                icon: const Icon(Icons.close),
                 onPressed: () {
                   context.router.pop();
                 },
@@ -72,72 +73,77 @@ class _RegistrationView2State extends State<RegistrationView2> {
           }
 
           if (state.organizationRegistrationStatus == NGORegistrationStatus.success) {
-            context.read<ProfileBloc>().add(const ProfileTryGetUser());
+            context.read<ProfileBloc>().add(const ProfileTryGetUser()); // get user with organizatio fields
             context.read<RegistrationBloc>().add(const RegistrationSecondStepCompleted(true));
           }
         },
         listenWhen: (previous, current) =>
             previous.organizationRegistrationStatus != current.organizationRegistrationStatus,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.only(
-            left: defaultPadding,
-            right: defaultPadding,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: _gap),
-                    const _NGONameField(),
-                    SizedBox(height: _gap),
-                    _PositionInNGOField(),
-                    SizedBox(height: _gap),
-                    _NGOAddressField(),
-                    SizedBox(height: _gap),
-                    _NGOEmailField(),
-                    SizedBox(height: _gap),
-                    _NGOIDField(),
-                    SizedBox(height: _gap),
-                    _NGOPhoneField(),
-                    SizedBox(height: _gap),
-                    _NGOTelegramField(),
-                    SizedBox(height: _gap),
-                    _NGOWhatsappField(),
-                    SizedBox(height: _gap),
-                    const _NGOServices(),
-                    SizedBox(height: _gap),
-                    BlocBuilder<RegistrationBloc, RegistrationState>(
-                      builder: (context, state) {
-                        return ElevatedButton(
-                          onPressed: state.organizationRegistrationStatus == NGORegistrationStatus.loading
-                              ? () {}
-                              : _handleRegistration,
-                          child: state.organizationRegistrationStatus == NGORegistrationStatus.loading
-                              ? const SpinKitCircle(
-                                  color: Colors.white,
-                                )
-                              : const Text('Next step'),
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(double.infinity, 60),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(defaultBorderRadius),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(
+              top: 16,
+              left: defaultPadding,
+              right: defaultPadding,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Registrations for NGO\'s member',
+                        style: TextStyle(
+                          color: black,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: _gap),
+                      const _NGONameField(),
+                      SizedBox(height: _gap),
+                      _PositionInNGOField(),
+                      SizedBox(height: _gap),
+                      const _NGOCountry(),
+                      SizedBox(height: _gap),
+                      _NGOPhoneField(),
+                      SizedBox(height: _gap),
+                      _NGOWebsite(),
+                      SizedBox(height: _gap),
+                      _NGOIDField(),
+                      SizedBox(height: _gap),
+                      BlocBuilder<RegistrationBloc, RegistrationState>(
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed: state.organizationRegistrationStatus == NGORegistrationStatus.loading
+                                ? () {}
+                                : _handleRegistration,
+                            child: state.organizationRegistrationStatus == NGORegistrationStatus.loading
+                                ? const SpinKitCircle(
+                                    color: Colors.white,
+                                  )
+                                : const Text('Next step'),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 60),
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(defaultBorderRadius),
+                                ),
                               ),
+                              primary: const Color.fromRGBO(27, 50, 132, 1),
                             ),
-                            primary: const Color.fromRGBO(27, 50, 132, 1),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 24)
-                  ],
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 24)
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -218,55 +224,55 @@ class _NGONameField extends StatelessWidget {
   }
 }
 
-class _NGOAddressField extends StatelessWidget {
-  _NGOAddressField({Key? key}) : super(key: key);
-
-  final _controller = TextEditingController();
+class _NGOCountry extends StatelessWidget {
+  const _NGOCountry({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RegistrationBloc, RegistrationState>(
-      listener: (context, state) {
-        _controller.text = state.organizationAddress;
-      },
-      listenWhen: (previous, current) => previous.organizationAddress != current.organizationAddress,
-      buildWhen: (previous, current) => previous.organizationAddress != current.organizationAddress,
+    return BlocBuilder<RegistrationBloc, RegistrationState>(
       builder: (context, state) {
-        return MyFormField(
-          controller: _controller,
-          labelText: 'NGO\'s address*',
-          hintText: 'e.g  Poland, Krakow, Zwiska str, 14',
-          onSaved: (String? value) =>
-              context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationAddress: value ?? '')),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'This field is required';
-            }
+        return BlocBuilder<RegistrationBloc, RegistrationState>(
+          buildWhen: (previous, current) =>
+              (previous.isLoading != current.isLoading) || (previous.organizations != current.organizations),
+          builder: (context, state) {
+            return TextDropdown(
+              hideDropdown: state.isLoading,
+              label: 'NGO\'s country*',
+              hintText: 'Enter your organization country',
+              items: countryList
+                  .map((country) => DropdownItemModel(title: country['name']!, value: country['code']!))
+                  .toList(),
+              onChange: (value) =>
+                  context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationName: value ?? '')),
+              onItemSelect: (item) {},
+              suffixIcon: state.isLoading
+                  ? SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: LayoutBuilder(builder: (context, constraints) {
+                        return SpinKitCircle(
+                          color: primaryColor,
+                          size: constraints.maxWidth / 2,
+                        );
+                      }),
+                    )
+                  : null,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'This field is required';
+                }
 
-            if (!state.isOrganizationAddressValid) {
-              return 'This field need to contain at least 3 characters';
-            }
+                if (!state.isOrganizationNameValid) {
+                  return 'This field need to contain at least 3 characters';
+                }
 
-            return null;
+                return null;
+              },
+            );
           },
-          suffixIcon: IconButton(
-            icon: SvgPicture.asset('assets/icons/adress_action_button.svg'),
-            onPressed: () async {
-              AutoRouter.of(context).push(
-                MapScreenRoute(
-                  onAddressFound: (Map<String, dynamic> address, LatLng latLng) {
-                    context
-                        .read<RegistrationBloc>()
-                        .add(RegistrationFormChangedEvent(organizationAddress: address['formatted_address']));
-                    // controller.text = address['formatted_address'];
-
-                    context.read<RegistrationBloc>().add(RegistrationPositionChanged(latLng));
-                  },
-                ),
-              );
-            },
-          ),
         );
+
+        // return DropdownSearch();
       },
     );
   }
@@ -290,54 +296,20 @@ class _PositionInNGOField extends StatelessWidget {
           children: [
             MyFormField(
               controller: _controller,
-              labelText: 'Your position in NGO',
+              labelText: 'Your position in NGO*',
               hintText: 'Enter your position',
               onSaved: (String? value) => context
                   .read<RegistrationBloc>()
                   .add(RegistrationFormChangedEvent(positionInOrganization: value ?? '')),
               validator: (value) {
-                if (value != null && value.isNotEmpty && value.length < 3) {
-                  return 'This field need to contain at least 3 characters';
+                if (value == null || value.isEmpty) {
+                  return 'This field is required';
                 }
 
                 return null;
               },
             ),
           ],
-        );
-      },
-    );
-  }
-}
-
-class _NGOEmailField extends StatelessWidget {
-  _NGOEmailField({Key? key}) : super(key: key);
-
-  final _controller = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<RegistrationBloc, RegistrationState>(
-      listener: (context, state) {
-        _controller.text = state.organizationEmail;
-      },
-      listenWhen: (previous, current) => previous.organizationEmail != current.organizationEmail,
-      buildWhen: (previous, current) => previous.organizationEmail != current.organizationEmail,
-      builder: (context, state) {
-        return MyFormField(
-          controller: _controller,
-          labelText: 'NGO\' email*',
-          hintText: 'Enter email',
-          onSaved: (String? value) {
-            context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationEmail: value ?? ''));
-          },
-          validator: (value) {
-            if (!state.isNGOEmailValid) {
-              return 'Email is not valid!';
-            }
-
-            return null;
-          },
         );
       },
     );
@@ -360,13 +332,13 @@ class _NGOIDField extends StatelessWidget {
       builder: (context, state) {
         return MyFormField(
           controller: _controller,
-          labelText: 'NGO\' ID number',
+          labelText: 'NGO\' ID number*',
           hintText: 'ID number',
           onSaved: (String? value) =>
               context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationID: value ?? '')),
           validator: (value) {
-            if (value != null && value.isNotEmpty && value.length < 3) {
-              return 'This field need to contain at least 3 characters';
+            if (value == null || value.isEmpty) {
+              return 'This field is required';
             }
 
             return null;
@@ -386,7 +358,9 @@ class _NGOPhoneField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        _controller.text = state.organizationPhone;
+        if (_controller.text != state.organizationPhone) {
+          _controller.text = state.organizationPhone;
+        }
       },
       listenWhen: (previous, current) => previous.organizationPhone != current.organizationPhone,
       buildWhen: (previous, current) => previous.organizationPhone != current.organizationPhone,
@@ -396,7 +370,7 @@ class _NGOPhoneField extends StatelessWidget {
           labelText: 'NGO\'s phone number*',
           hintText: 'Enter your organization\'s phone number',
           keyboardType: TextInputType.phone,
-          onSaved: (String? value) =>
+          onChanged: (String? value) =>
               context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationPhone: value ?? '')),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -415,36 +389,8 @@ class _NGOPhoneField extends StatelessWidget {
   }
 }
 
-class _NGOServices extends StatelessWidget {
-  const _NGOServices({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(bottom: 8.0),
-          child: Text(
-            'Services you provide',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
-          ),
-        ),
-        CategoryList(
-          onSelected: (List<String> categories) {
-            context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(services: categories));
-          },
-        )
-      ],
-    );
-  }
-}
-
-class _NGOTelegramField extends StatelessWidget {
-  _NGOTelegramField({Key? key}) : super(key: key);
+class _NGOWebsite extends StatelessWidget {
+  _NGOWebsite({Key? key}) : super(key: key);
 
   final _controller = TextEditingController();
 
@@ -452,48 +398,18 @@ class _NGOTelegramField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        _controller.text = state.organizationTelegram;
+        _controller.text = state.website;
       },
-      listenWhen: (previous, current) => previous.organizationTelegram != current.organizationTelegram,
-      buildWhen: (previous, current) => previous.organizationTelegram != current.organizationTelegram,
+      listenWhen: (previous, current) => previous.website != current.website,
+      buildWhen: (previous, current) => previous.website != current.website,
       builder: (context, state) {
         return MyFormField(
           controller: _controller,
-          labelText: 'NGO\'s telegram number',
-          hintText: 'Enter your organization\'s telegram number',
-          keyboardType: TextInputType.phone,
+          labelText: 'NGO\'s website',
+          hintText: 'Enter your organization\'s website url',
+          keyboardType: TextInputType.url,
           onSaved: (String? value) =>
-              context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationTelegram: value ?? '')),
-          validator: (value) {
-            return null;
-          },
-        );
-      },
-    );
-  }
-}
-
-class _NGOWhatsappField extends StatelessWidget {
-  _NGOWhatsappField({Key? key}) : super(key: key);
-
-  final _controller = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<RegistrationBloc, RegistrationState>(
-      listener: (context, state) {
-        _controller.text = state.organizationWhatsapp;
-      },
-      listenWhen: (previous, current) => previous.organizationWhatsapp != current.organizationWhatsapp,
-      buildWhen: (previous, current) => previous.organizationWhatsapp != current.organizationWhatsapp,
-      builder: (context, state) {
-        return MyFormField(
-          controller: _controller,
-          labelText: 'NGO\'s whatsapp number',
-          hintText: 'Enter your organization\'s whatsapp number',
-          keyboardType: TextInputType.phone,
-          onSaved: (String? value) =>
-              context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationWhatsapp: value ?? '')),
+              context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(website: value ?? '')),
           validator: (value) {
             return null;
           },

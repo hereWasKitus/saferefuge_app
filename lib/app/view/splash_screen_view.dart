@@ -8,7 +8,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextStyle _heading = const TextStyle(
-      color: primaryColorTemp,
+      color: primaryColor,
       fontWeight: FontWeight.w500,
       fontSize: 36,
     );
