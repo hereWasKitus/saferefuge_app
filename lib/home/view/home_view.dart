@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -7,8 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:protect_ua_women/config/constants.dart';
-import 'package:protect_ua_women/profile/profile.dart';
-import 'package:protect_ua_women/routes/router.gr.dart';
 
 import '../home.dart';
 
@@ -41,27 +38,6 @@ class HomeScreenState extends State<HomeScreen> {
             onSubmit: _goToPosition,
           ),
         ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 25),
-            child: BlocBuilder<ProfileBloc, ProfileState>(
-              buildWhen: (previous, current) => previous.authStatus != current.authStatus,
-              builder: (context, state) {
-                return MenuButton(
-                  // onPressed: () => AutoRouter.of(context).push(const RegistrationRoute()),
-                  onPressed: () {
-                    if (context.read<ProfileBloc>().state.authStatus != AuthStatus.authorized) {
-                      AutoRouter.of(context).push(const RegistrationRoute());
-                    } else {
-                      // AutoRouter.of(context).push(const RegistrationRoute());
-                      AutoRouter.of(context).push(const ProfileRoute());
-                    }
-                  },
-                );
-              },
-            ),
-          ),
-        ],
         bottom: const PreferredSize(
           child: CategoriesList(),
           preferredSize: Size.fromHeight(32),

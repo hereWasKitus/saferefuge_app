@@ -28,55 +28,52 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => MapRepository(apiKey: googleMapAPIkey),
-      child: BlocProvider(
-        create: (context) => MapBloc(repository: context.read<MapRepository>()),
-        child: Builder(builder: (context) {
-          return Scaffold(
-            appBar: AppBar(
-              leadingWidth: 44 + 12,
-              leading: Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: Ink(
-                  decoration: const ShapeDecoration(
-                    color: primaryColor,
-                    shape: CircleBorder(),
-                  ),
-                  child: IconButton(
-                    splashRadius: 23,
-                    onPressed: () {
-                      AutoRouter.of(context).pop();
-                    },
-                    icon: const Icon(Icons.arrow_back),
-                    color: Colors.white,
-                  ),
+    return BlocProvider(
+      create: (context) => MapBloc(repository: context.read<MapRepository>()),
+      child: Builder(builder: (context) {
+        return Scaffold(
+          appBar: AppBar(
+            leadingWidth: 44 + 12,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 12),
+              child: Ink(
+                decoration: const ShapeDecoration(
+                  color: primaryColor,
+                  shape: CircleBorder(),
+                ),
+                child: IconButton(
+                  splashRadius: 23,
+                  onPressed: () {
+                    AutoRouter.of(context).pop();
+                  },
+                  icon: const Icon(Icons.arrow_back),
+                  color: Colors.white,
                 ),
               ),
-              automaticallyImplyLeading: false,
-              title: const MapSearchBar(),
-              backgroundColor: Colors.transparent,
-              foregroundColor: Colors.transparent,
-              elevation: 0,
             ),
-            extendBodyBehindAppBar: true,
-            extendBody: true,
-            resizeToAvoidBottomInset: false,
-            body: Stack(
-              children: [
-                const MapWidget(),
-                const MapSuggestionsList(),
-                MapBottom(
-                  onButtonClicked: () {
-                    _handleButtonClick(context);
-                  },
-                ),
-                // widget.bottomWidgetsBuilder(bloc)
-              ],
-            ),
-          );
-        }),
-      ),
+            automaticallyImplyLeading: false,
+            title: const MapSearchBar(),
+            backgroundColor: Colors.transparent,
+            foregroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+          extendBodyBehindAppBar: true,
+          extendBody: true,
+          resizeToAvoidBottomInset: false,
+          body: Stack(
+            children: [
+              const MapWidget(),
+              const MapSuggestionsList(),
+              MapBottom(
+                onButtonClicked: () {
+                  _handleButtonClick(context);
+                },
+              ),
+              // widget.bottomWidgetsBuilder(bloc)
+            ],
+          ),
+        );
+      }),
     );
   }
 
@@ -86,9 +83,7 @@ class _MapScreenState extends State<MapScreen> {
     try {
       context.read<MapBloc>().add(const MapStatusChanged(MapStatus.loading));
 
-      var response = await context
-          .read<MapRepository>()
-          .getAddressByLocation(location.latitude, location.longitude);
+      var response = await context.read<MapRepository>().getAddressByLocation(location.latitude, location.longitude);
 
       widget.onPointSelected(response['results'][0], context);
     } catch (e) {

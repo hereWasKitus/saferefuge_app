@@ -6,15 +6,17 @@ class SafeWayAPI {
   final Dio _dio = Dio(BaseOptions(
     baseUrl: 'https://c4u-match-org.ew.r.appspot.com/',
     headers: {'content-type': 'application/json'},
+    connectTimeout: 20000,
+    receiveTimeout: 20000,
   ));
+  final SharedPreferences _prefs;
 
-  SafeWayAPI() {
+  SafeWayAPI({required SharedPreferences prefs}) : _prefs = prefs {
     _init();
   }
 
   void _init() async {
-    var pref = await SharedPreferences.getInstance();
-    String? token = pref.getString('token');
+    String? token = _prefs.getString('token');
     _dio.options.headers['Authorization'] = token != null ? 'Bearer $token' : '';
   }
 
@@ -141,11 +143,61 @@ class SafeWayAPI {
     );
   }
 
-  Future<Response> getPOIs({int limit = 100}) {
-    return _dio.get('poi/', queryParameters: {
+  Future<Response> getPOIs({
+    List<String>? ids,
+    int limit = 100,
+    String mode = 'compact',
+    int skip = 0,
+    List<String>? categories,
+    List<String>? organizations,
+    String? city,
+    String? country,
+    bool? approved,
+    String? author,
+  }) async {
+    if (ids != null && ids.isNotEmpty) {
+      return await _dio.get(
+        'poi/',
+        queryParameters: {
+          'ids': ids.join(','),
+          'limit': limit,
+          'mode': mode,
+          'skip': skip,
+        },
+      );
+    }
+
+    Map<String, dynamic> queryParameters = {
       'limit': limit,
-      'fields': 'compact',
-    });
+      'fields': mode,
+      'skip': skip,
+    };
+
+    if (categories != null) {
+      queryParameters['categories'] = categories.join(',');
+    }
+
+    if (organizations != null) {
+      queryParameters['organizations'] = organizations.join(',');
+    }
+
+    if (city != null) {
+      queryParameters['city'] = city;
+    }
+
+    if (country != null) {
+      queryParameters['country'] = country;
+    }
+
+    if (approved != null) {
+      queryParameters['approved'] = approved;
+    }
+
+    if (author != null) {
+      queryParameters['author'] = author;
+    }
+
+    return _dio.get('poi/search', queryParameters: queryParameters);
   }
 
   Future<Response> getNearbyPOIs({required double lat, required double lng, int? limit, double? maxDistance}) {
@@ -167,5 +219,59 @@ class SafeWayAPI {
     return _dio.get('common/', queryParameters: {
       'limit': limit,
     });
+  }
+
+  Future<Response> createPOI(Map<String, dynamic> poi) {
+    return _dio.post(
+      'poi/',
+      data: json.encode(
+        <String, dynamic>{
+          'name': poi['name'],
+          'description': poi['description'],
+          'latilong': [
+            poi['latitude'],
+            poi['longitude'],
+          ],
+          'categories': poi['categories'],
+          'city': poi['city'],
+          'country': poi['country'],
+          'languages': poi['languages'],
+          'phone': poi['phone'],
+          'contact_person': poi['contactPerson'],
+          'address': poi['address'],
+          'telegram': poi['telegram'],
+          'whatsapp': poi['whatsapp'],
+          'url': poi['url'],
+          // add telegram and whatsapp later
+        },
+      ),
+    );
+  }
+
+  Future<Response> updatePOI(Map<String, dynamic> poi) {
+    return _dio.put(
+      'poi/',
+      queryParameters: {
+        'id': poi['id'],
+      },
+      data: json.encode(
+        <String, dynamic>{
+          'name': poi['name'],
+          'description': poi['description'],
+          // 'latilong': [
+          //   poi['latitude'],
+          //   poi['longitude'],
+          // ],
+          'categories': poi['categories'],
+          'city': poi['city'],
+          'country': poi['country'],
+          'languages': poi['languages'],
+          'phone': poi['phone'],
+          'contact_person': poi['contactPerson'],
+          'url': poi['url'],
+          // add telegram and whatsapp later
+        },
+      ),
+    );
   }
 }

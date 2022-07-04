@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:map_repository/map_repository.dart';
 import 'package:protect_ua_women/home/home.dart';
 
 class CategoryList extends StatefulWidget {
@@ -18,7 +19,7 @@ class _CategoryListState extends State<CategoryList> {
   @override
   void initState() {
     setState(() {
-      _selected = widget.selected;
+      _selected = [...widget.selected];
     });
     super.initState();
   }
@@ -54,11 +55,11 @@ class _CategoryListState extends State<CategoryList> {
                     // const SizedBox(width: 6),
                   ],
                 ),
-                onSelected: (bool selected) => _onSelected(selected, category.id),
+                onSelected: (bool selected) => _onSelected(selected, category.name!),
                 showCheckmark: false,
                 backgroundColor: const Color.fromRGBO(44, 83, 218, 0.8),
                 selectedColor: const Color.fromRGBO(27, 50, 132, 1),
-                selected: _selected.contains(category.id),
+                selected: _selected.contains(category.name!),
               );
             },
           ).toList(),

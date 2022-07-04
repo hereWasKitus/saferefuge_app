@@ -13,7 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 class OrganizationListView extends StatelessWidget {
   const OrganizationListView({Key? key, required this.pois, required this.currentPosition}) : super(key: key);
 
-  final List<POI> pois;
+  final Future<List<POI>> pois;
   final Future<LatLng> currentPosition;
 
   @override
@@ -58,16 +58,18 @@ class OrganizationListView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 40, 16, 0),
         child: FutureBuilder(
-          future: currentPosition,
-          builder: (BuildContext context, AsyncSnapshot<LatLng> snapshot) {
+          future: pois,
+          builder: (BuildContext context, AsyncSnapshot<List<POI>> snapshot) {
             if (snapshot.hasData) {
+              List<POI> poiList = snapshot.data ?? [];
               return ListView.builder(
-                itemCount: pois.length,
+                itemCount: poiList.length,
                 itemBuilder: (BuildContext context, int index) => Padding(
                   padding: const EdgeInsets.only(bottom: 32),
                   child: OrganizationCard(
-                    poi: pois[index],
-                    currentPosition: snapshot.data!,
+                    poi: poiList[index],
+                    currentPosition: currentPosition,
+                    // currentPosition: snapshot.data!,
                   ),
                 ),
               );
@@ -87,9 +89,51 @@ class OrganizationCard extends StatelessWidget {
   const OrganizationCard({Key? key, required this.poi, this.currentPosition}) : super(key: key);
 
   final POI poi;
-  final LatLng? currentPosition;
+  // this is definnetly not the best way to do this, but it works for now
+  final Future<LatLng>? currentPosition;
 
   final TextStyle titleStyle = const TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Color.fromRGBO(71, 66, 221, 1),
+        borderRadius: BorderRadius.all(Radius.circular(defaultBorderRadius)),
+      ),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          buildTitleRow(),
+          const SizedBox(
+            height: 8,
+          ),
+          buildAddressRow(),
+          const SizedBox(
+            height: 16,
+          ),
+          buildContactPersonRow(),
+          const SizedBox(
+            height: 16,
+          ),
+          buildDescriptionRow(),
+          const SizedBox(
+            height: 16,
+          ),
+          buildLanguagesRow(),
+          const SizedBox(
+            height: 12,
+          ),
+          buildContactRow(),
+          const SizedBox(
+            height: 12,
+          ),
+          buildFooterRow(),
+        ],
+      ),
+    );
+  }
 
   double calculateDistance(LatLng from, LatLng to) {
     var res = Geolocator.distanceBetween(
@@ -138,7 +182,32 @@ class OrganizationCard extends StatelessWidget {
           const SizedBox(width: 10),
           Flexible(
             child: Text(
-              poi.address ?? "No address",
+              poi.address.isEmpty ? "No address" : poi.address,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+              ),
+            ),
+          )
+        ],
+      );
+
+  Widget buildDescriptionRow() => Row(
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+        children: [
+          const Text(
+            'Description: ',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Flexible(
+            child: Text(
+              poi.address.isEmpty ? "No description" : poi.description,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -149,61 +218,57 @@ class OrganizationCard extends StatelessWidget {
       );
 
   Widget buildContactPersonRow() {
-    return poi.contactPerson != null && poi.contactPerson!.isNotEmpty
-        ? Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              const Text(
-                'Contact person: ',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Flexible(
-                child: Text(
-                  poi.contactPerson!,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
-                ),
-              )
-            ],
-          )
-        : const SizedBox.shrink();
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        const Text(
+          'Contact person: ',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Flexible(
+          child: Text(
+            poi.contactPerson.isNotEmpty ? poi.contactPerson : 'Not specified',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+            ),
+          ),
+        )
+      ],
+    );
   }
 
   Widget buildLanguagesRow() {
-    return poi.languages != null && poi.languages!.isNotEmpty
-        ? Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              const Text(
-                'Languages we speak: ',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Flexible(
-                child: Text(
-                  poi.languages!.join(', '),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
-                ),
-              )
-            ],
-          )
-        : const SizedBox.shrink();
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        const Text(
+          'Languages we speak: ',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Flexible(
+          child: Text(
+            poi.languages.isNotEmpty ? poi.languages.join(', ') : 'Not specified',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+            ),
+          ),
+        )
+      ],
+    );
   }
 
   Widget buildContactRow() => Row(
@@ -211,23 +276,23 @@ class OrganizationCard extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (poi.phone != null && poi.phone!.isNotEmpty)
+              if (poi.phone.isNotEmpty)
                 URLButton(
                   url: 'tel:${poi.phone}',
                   icon: SvgPicture.asset(
                     'assets/icons/org-phone.svg',
                   ),
                 ),
-              if (poi.whatsapp != null && poi.whatsapp!.isNotEmpty)
+              if (poi.whatsapp.isNotEmpty)
                 URLButton(
                   url: 'https://wa.me/${poi.whatsapp}',
                   icon: SvgPicture.asset(
                     'assets/icons/org-whatsapp.svg',
                   ),
                 ),
-              if (poi.url != null && poi.url!.isNotEmpty)
+              if (poi.url.isNotEmpty)
                 URLButton(
-                  url: poi.url!,
+                  url: poi.url,
                   icon: SvgPicture.asset(
                     'assets/icons/org-website.svg',
                   ),
@@ -238,58 +303,28 @@ class OrganizationCard extends StatelessWidget {
       );
 
   Widget buildFooterRow() {
-    double? distance =
-        currentPosition != null ? calculateDistance(LatLng(poi.latitude, poi.longitude), currentPosition!) : null;
-    return Row(
-      children: [
-        SvgPicture.asset('assets/icons/transport.svg'),
-        const SizedBox(
-          width: 8,
-        ),
-        if (distance != null)
-          Text(
-            '$distance km from you',
-            style: const TextStyle(fontSize: 14, color: Colors.white70),
-          )
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Color.fromRGBO(71, 66, 221, 1),
-        borderRadius: BorderRadius.all(Radius.circular(defaultBorderRadius)),
-      ),
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          buildTitleRow(),
-          const SizedBox(
-            height: 8,
-          ),
-          buildAddressRow(),
-          const SizedBox(
-            height: 16,
-          ),
-          buildContactPersonRow(),
-          const SizedBox(
-            height: 16,
-          ),
-          buildLanguagesRow(),
-          const SizedBox(
-            height: 12,
-          ),
-          buildContactRow(),
-          const SizedBox(
-            height: 12,
-          ),
-          buildFooterRow(),
-        ],
-      ),
-    );
+    return FutureBuilder(
+        future: currentPosition,
+        builder: (BuildContext context, AsyncSnapshot<LatLng> snapshot) {
+          String distanceText = 'Loading...';
+          if (snapshot.hasData) {
+            distanceText = snapshot.data is LatLng
+                ? calculateDistance(LatLng(poi.latitude, poi.longitude), snapshot.data!).toString()
+                : 'Unknown';
+          }
+          return Row(
+            children: [
+              SvgPicture.asset('assets/icons/transport.svg'),
+              const SizedBox(
+                width: 8,
+              ),
+              Text(
+                distanceText,
+                style: const TextStyle(fontSize: 14, color: Colors.white70),
+              )
+            ],
+          );
+        });
   }
 }
 

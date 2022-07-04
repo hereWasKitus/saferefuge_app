@@ -2,7 +2,9 @@ import 'package:safeway_api/safeway_api.dart';
 import 'models/models.dart';
 
 class AuthRepository {
-  final SafeWayAPI _api = SafeWayAPI();
+  final SafeWayAPI _api;
+
+  AuthRepository({required SafeWayAPI api}) : _api = api;
 
   Future<User> login(String email, String password) async {
     try {
@@ -103,39 +105,6 @@ class AuthRepository {
       return user;
     } catch (e) {
       return User.empty();
-    }
-  }
-
-  Future<void> updateProfile({
-    required userID,
-    required String userEmail,
-    String? userFullName,
-    String? userPassword,
-    String? organizationName,
-    String? organizationEmail,
-    String? organizationPhone,
-  }) async {
-    Map<String, dynamic> organizationRequest = {};
-    Map<String, dynamic> userRequest = {};
-
-    if (organizationName != null) organizationRequest['name'] = organizationName;
-    if (organizationEmail != null) organizationRequest['email'] = organizationEmail;
-    if (organizationPhone != null) organizationRequest['phone'] = organizationPhone;
-    if (userFullName != null) userRequest['full_name'];
-    if (userPassword != null) userRequest['password'];
-
-    try {
-      await _api.updateUser(userID: userID, email: userEmail);
-      await _api.updateOrganization(
-        username: userEmail,
-        organizationEmail: organizationEmail,
-        organizationName: organizationName,
-        organizationPhone: organizationPhone,
-      );
-    } on DioError catch (e) {
-      throw APIException.fromDioError(e);
-    } catch (e) {
-      throw APIException.unknown();
     }
   }
 

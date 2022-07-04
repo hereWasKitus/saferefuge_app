@@ -14,6 +14,13 @@ enum FormStatus {
   updateSucceed,
 }
 
+enum AddBranchStatus {
+  initial,
+  loading,
+  success,
+  fail,
+}
+
 class ProfileState extends Equatable {
   const ProfileState({
     this.formChanged = false,
@@ -30,11 +37,12 @@ class ProfileState extends Equatable {
     this.registrationNumber = '',
     this.organizationCountry = '',
     this.services = const <String>[],
-    this.branches = const [],
+    this.branches = const <POI>[],
     this.authStatus = AuthStatus.unknown,
     this.isLoading = false,
     this.formStatus = FormStatus.initial,
     this.errorMessage = '',
+    this.addBranchStatus = AddBranchStatus.initial,
   });
 
   final bool formChanged;
@@ -50,12 +58,13 @@ class ProfileState extends Equatable {
   final String organizationTelegram;
   final String organizationPosition;
   final List<String> services;
-  final List branches;
+  final List<POI> branches;
   final AuthStatus authStatus;
   final bool isLoading;
   final FormStatus formStatus;
   final String errorMessage;
   final String organizationCountry;
+  final AddBranchStatus addBranchStatus;
 
   ProfileState copyWith({
     bool? formChanged,
@@ -70,13 +79,14 @@ class ProfileState extends Equatable {
     String? organizationTelegram,
     String? organizationPosition,
     List<String>? services,
-    List? branches,
+    List<POI>? branches,
     AuthStatus? authStatus,
     bool? isLoading,
     String? email,
     FormStatus? formStatus,
     String? errorMessage,
     String? organizationCountry,
+    AddBranchStatus? addBranchStatus,
   }) =>
       ProfileState(
         formChanged: formChanged ?? this.formChanged,
@@ -98,6 +108,7 @@ class ProfileState extends Equatable {
         formStatus: formStatus ?? this.formStatus,
         errorMessage: errorMessage ?? this.errorMessage,
         organizationCountry: organizationCountry ?? this.organizationCountry,
+        addBranchStatus: addBranchStatus ?? this.addBranchStatus,
       );
 
   @override
@@ -121,6 +132,7 @@ class ProfileState extends Equatable {
         formStatus,
         errorMessage,
         organizationCountry,
+        addBranchStatus,
       ];
 }
 

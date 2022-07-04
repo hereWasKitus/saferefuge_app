@@ -2,7 +2,8 @@ import 'package:auth_repository/auth_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:protect_ua_women/profile/profile.dart';
+import 'package:map_repository/map_repository.dart';
+import 'package:safeway_api/safeway_api.dart';
 
 part 'registration_event.dart';
 part 'registration_state.dart';
@@ -57,6 +58,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       return;
     } on LoginFailure catch (e) {
       emit(state.copyWith(registrationStatus: RegistrationStatus.failed, errorMessage: 'Login error: ${e.message}'));
+    } catch (e) {
+      emit(state.copyWith(
+          registrationStatus: RegistrationStatus.failed, errorMessage: 'Registration error: ${e.toString()}'));
     }
   }
 

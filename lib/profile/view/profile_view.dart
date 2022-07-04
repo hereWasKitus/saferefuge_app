@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protect_ua_women/config/constants.dart';
-import 'package:protect_ua_women/home/widgets/menu_button.dart';
 import 'package:protect_ua_women/profile/profile.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 
@@ -30,7 +29,6 @@ class _ProfileViewState extends State<ProfileView> {
               padding: const EdgeInsets.only(
                 left: defaultPadding,
                 right: defaultPadding,
-                // bottom: 60,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

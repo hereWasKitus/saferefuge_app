@@ -89,7 +89,7 @@ class RegistrationFormChangedEvent extends RegistrationEvent {
 }
 
 class RegistrationBranchChanged extends RegistrationEvent {
-  final Branch branch;
+  final POI branch;
 
   const RegistrationBranchChanged(this.branch);
 

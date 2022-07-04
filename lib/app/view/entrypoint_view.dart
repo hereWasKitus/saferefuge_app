@@ -34,6 +34,8 @@ class _EntrypointState extends State<Entrypoint> {
       builder: (context, state) {
         List<PageRouteInfo<dynamic>> _routes = [
           const HomeRoute(),
+          // mb add dump route here, remove later
+          const EmptyRoute(),
           const ProfileRoute(),
         ];
 
@@ -41,11 +43,16 @@ class _EntrypointState extends State<Entrypoint> {
           routes: _routes,
           bottomNavigationBuilder: (_, tabsRouter) {
             return BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
               selectedItemColor: primaryColor,
-              items: const [
+              items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),
                   label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.add),
+                  label: 'Add point',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person),
@@ -54,8 +61,18 @@ class _EntrypointState extends State<Entrypoint> {
               ],
               currentIndex: tabsRouter.activeIndex,
               onTap: (int index) {
+                // this is shit, refactor it
+                if (index == 1) {
+                  if (state.authStatus != AuthStatus.authorized) {
+                    context.navigateTo(const RegistrationRoute());
+                  } else {
+                    context.navigateTo(AddBranchRoute());
+                  }
+
+                  return;
+                }
+
                 if (index == _routes.length - 1 && state.authStatus != AuthStatus.authorized) {
-                  // context.router.topRoute.;
                   context.navigateTo(const RegistrationRoute());
                 } else {
                   tabsRouter.setActiveIndex(index);

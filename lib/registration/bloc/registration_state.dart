@@ -35,7 +35,7 @@ class RegistrationState extends Equatable {
     this.registrationStatus = RegistrationStatus.initial,
     this.organizationRegistrationStatus = NGORegistrationStatus.initial,
     this.errorMessage = '',
-    this.branch = const Branch(),
+    this.branch = const POI(),
     this.organizationTelegram = '',
     this.organizationWhatsapp = '',
     this.positionInOrganization = '',
@@ -64,7 +64,7 @@ class RegistrationState extends Equatable {
   final NGORegistrationStatus organizationRegistrationStatus;
   final String errorMessage;
   final String organizationID;
-  final Branch branch;
+  final POI branch;
   final String organizationWhatsapp;
   final String organizationTelegram;
   final String positionInOrganization;
@@ -123,7 +123,7 @@ class RegistrationState extends Equatable {
     NGORegistrationStatus? organizationRegistrationStatus,
     String? errorMessage,
     String? organizationID,
-    Branch? branch,
+    POI? branch,
     String? organizationTelegram,
     String? organizationWhatsapp,
     String? positionInOrganization,

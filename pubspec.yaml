@@ -50,6 +50,8 @@ dependencies:
     path: 'packages/auth_repository'
   map_repository:
     path: 'packages/map_repository'
+  profile_repository:
+    path: 'packages/profile_repository'
   url_launcher: ^6.1.3
 
 dev_dependencies:

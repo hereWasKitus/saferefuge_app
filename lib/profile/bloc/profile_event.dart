@@ -66,3 +66,28 @@ class ProfileFormStatusChanged extends ProfileEvent {
   @override
   List<Object> get props => [status];
 }
+
+class ProfileAddBranchRequest extends ProfileEvent {
+  final POI branch;
+
+  const ProfileAddBranchRequest(this.branch);
+
+  @override
+  List<Object> get props => [branch];
+}
+
+class ProfileFetchBranchesRequest extends ProfileEvent {
+  const ProfileFetchBranchesRequest();
+
+  @override
+  List<Object> get props => [];
+}
+
+class ProfileUpdateBranchRequest extends ProfileEvent {
+  final POI branch;
+
+  const ProfileUpdateBranchRequest(this.branch);
+
+  @override
+  List<Object> get props => [branch];
+}

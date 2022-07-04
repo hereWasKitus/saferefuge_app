@@ -10,19 +10,18 @@
 //
 // ignore_for_file: type=lint
 
-import 'dart:async' as _i11;
+import 'dart:async' as _i10;
 
 import 'package:auto_route/auto_route.dart' as _i8;
 import 'package:flutter/material.dart' as _i9;
-import 'package:google_maps_flutter/google_maps_flutter.dart' as _i12;
-import 'package:map_repository/map_repository.dart' as _i10;
+import 'package:google_maps_flutter/google_maps_flutter.dart' as _i11;
+import 'package:map_repository/map_repository.dart' as _i7;
 
 import '../app/app.dart' as _i1;
 import '../home/home.dart' as _i4;
 import '../login/login.dart' as _i3;
 import '../map/map.dart' as _i5;
-import '../profile/profile.dart' as _i7;
-import '../profile/view/profile_view.dart' as _i6;
+import '../profile/profile.dart' as _i6;
 import '../registration/registration.dart' as _i2;
 
 class AppRouter extends _i8.RootStackRouter {
@@ -31,7 +30,11 @@ class AppRouter extends _i8.RootStackRouter {
 
   @override
   final Map<String, _i8.PageFactory> pagesMap = {
-    Entrypoint.name: (routeData) {
+    SplashScreenRoute.name: (routeData) {
+      return _i8.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i1.SplashScreen());
+    },
+    EntrypointRoute.name: (routeData) {
       return _i8.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i1.Entrypoint());
     },
@@ -80,9 +83,21 @@ class AppRouter extends _i8.RootStackRouter {
           child: _i5.MapScreen(
               key: args.key, onPointSelected: args.onPointSelected));
     },
+    AddBranchRoute.name: (routeData) {
+      final args = routeData.argsAs<AddBranchRouteArgs>(
+          orElse: () => const AddBranchRouteArgs());
+      return _i8.MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: _i6.AddBranchView(
+              key: args.key, initialBranchState: args.initialBranchState));
+    },
     HomeRoute.name: (routeData) {
       return _i8.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i4.HomeScreen());
+    },
+    EmptyRoute.name: (routeData) {
+      return _i8.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i8.EmptyRouterPage());
     },
     ProfileRoute.name: (routeData) {
       return _i8.CustomPage<dynamic>(
@@ -96,7 +111,7 @@ class AppRouter extends _i8.RootStackRouter {
     ProfileFormRoute.name: (routeData) {
       return _i8.CustomPage<dynamic>(
           routeData: routeData,
-          child: const _i7.ProfileForm(),
+          child: const _i6.ProfileForm(),
           transitionsBuilder: _i8.TransitionsBuilders.fadeIn,
           durationInMilliseconds: 150,
           opaque: true,
@@ -105,7 +120,7 @@ class AppRouter extends _i8.RootStackRouter {
     ProfileRequestsRoute.name: (routeData) {
       return _i8.CustomPage<dynamic>(
           routeData: routeData,
-          child: const _i7.Requests(),
+          child: const _i6.Requests(),
           transitionsBuilder: _i8.TransitionsBuilders.fadeIn,
           durationInMilliseconds: 150,
           opaque: true,
@@ -114,7 +129,7 @@ class AppRouter extends _i8.RootStackRouter {
     ProfileBranchesRoute.name: (routeData) {
       return _i8.CustomPage<dynamic>(
           routeData: routeData,
-          child: const _i7.BranchesList(),
+          child: const _i6.BranchesList(),
           transitionsBuilder: _i8.TransitionsBuilders.fadeIn,
           durationInMilliseconds: 150,
           opaque: true,
@@ -144,12 +159,15 @@ class AppRouter extends _i8.RootStackRouter {
 
   @override
   List<_i8.RouteConfig> get routes => [
-        _i8.RouteConfig(Entrypoint.name, path: '/', children: [
+        _i8.RouteConfig(SplashScreenRoute.name, path: '/'),
+        _i8.RouteConfig(EntrypointRoute.name, path: '/root', children: [
           _i8.RouteConfig(HomeRoute.name,
-              path: 'home', parent: Entrypoint.name),
+              path: 'home', parent: EntrypointRoute.name),
+          _i8.RouteConfig(EmptyRoute.name,
+              path: 'empty', parent: EntrypointRoute.name),
           _i8.RouteConfig(ProfileRoute.name,
               path: 'profile',
-              parent: Entrypoint.name,
+              parent: EntrypointRoute.name,
               children: [
                 _i8.RouteConfig(ProfileFormRoute.name,
                     path: '', parent: ProfileRoute.name),
@@ -176,17 +194,26 @@ class AppRouter extends _i8.RootStackRouter {
         _i8.RouteConfig(LoginRoute.name, path: '/login'),
         _i8.RouteConfig(OrganizationListRoute.name, path: '/organizations'),
         _i8.RouteConfig(MapScreenRoute.name, path: '/choosePoint'),
-        _i8.RouteConfig(MapRoute.name, path: '/map')
+        _i8.RouteConfig(MapRoute.name, path: '/map'),
+        _i8.RouteConfig(AddBranchRoute.name, path: '/add-branch')
       ];
 }
 
 /// generated route for
-/// [_i1.Entrypoint]
-class Entrypoint extends _i8.PageRouteInfo<void> {
-  const Entrypoint({List<_i8.PageRouteInfo>? children})
-      : super(Entrypoint.name, path: '/', initialChildren: children);
+/// [_i1.SplashScreen]
+class SplashScreenRoute extends _i8.PageRouteInfo<void> {
+  const SplashScreenRoute() : super(SplashScreenRoute.name, path: '/');
 
-  static const String name = 'Entrypoint';
+  static const String name = 'SplashScreenRoute';
+}
+
+/// generated route for
+/// [_i1.Entrypoint]
+class EntrypointRoute extends _i8.PageRouteInfo<void> {
+  const EntrypointRoute({List<_i8.PageRouteInfo>? children})
+      : super(EntrypointRoute.name, path: '/root', initialChildren: children);
+
+  static const String name = 'EntrypointRoute';
 }
 
 /// generated route for
@@ -213,8 +240,8 @@ class OrganizationListRoute
     extends _i8.PageRouteInfo<OrganizationListRouteArgs> {
   OrganizationListRoute(
       {_i9.Key? key,
-      required List<_i10.POI> pois,
-      required _i11.Future<_i12.LatLng> currentPosition})
+      required _i10.Future<List<_i7.POI>> pois,
+      required _i10.Future<_i11.LatLng> currentPosition})
       : super(OrganizationListRoute.name,
             path: '/organizations',
             args: OrganizationListRouteArgs(
@@ -229,9 +256,9 @@ class OrganizationListRouteArgs {
 
   final _i9.Key? key;
 
-  final List<_i10.POI> pois;
+  final _i10.Future<List<_i7.POI>> pois;
 
-  final _i11.Future<_i12.LatLng> currentPosition;
+  final _i10.Future<_i11.LatLng> currentPosition;
 
   @override
   String toString() {
@@ -244,7 +271,7 @@ class OrganizationListRouteArgs {
 class MapScreenRoute extends _i8.PageRouteInfo<MapScreenRouteArgs> {
   MapScreenRoute(
       {_i9.Key? key,
-      required void Function(Map<String, dynamic>, _i12.LatLng) onAddressFound})
+      required void Function(Map<String, dynamic>, _i11.LatLng) onAddressFound})
       : super(MapScreenRoute.name,
             path: '/choosePoint',
             args: MapScreenRouteArgs(key: key, onAddressFound: onAddressFound));
@@ -257,7 +284,7 @@ class MapScreenRouteArgs {
 
   final _i9.Key? key;
 
-  final void Function(Map<String, dynamic>, _i12.LatLng) onAddressFound;
+  final void Function(Map<String, dynamic>, _i11.LatLng) onAddressFound;
 
   @override
   String toString() {
@@ -293,11 +320,45 @@ class MapRouteArgs {
 }
 
 /// generated route for
+/// [_i6.AddBranchView]
+class AddBranchRoute extends _i8.PageRouteInfo<AddBranchRouteArgs> {
+  AddBranchRoute({_i9.Key? key, _i7.POI initialBranchState = const _i7.POI()})
+      : super(AddBranchRoute.name,
+            path: '/add-branch',
+            args: AddBranchRouteArgs(
+                key: key, initialBranchState: initialBranchState));
+
+  static const String name = 'AddBranchRoute';
+}
+
+class AddBranchRouteArgs {
+  const AddBranchRouteArgs(
+      {this.key, this.initialBranchState = const _i7.POI()});
+
+  final _i9.Key? key;
+
+  final _i7.POI initialBranchState;
+
+  @override
+  String toString() {
+    return 'AddBranchRouteArgs{key: $key, initialBranchState: $initialBranchState}';
+  }
+}
+
+/// generated route for
 /// [_i4.HomeScreen]
 class HomeRoute extends _i8.PageRouteInfo<void> {
   const HomeRoute() : super(HomeRoute.name, path: 'home');
 
   static const String name = 'HomeRoute';
+}
+
+/// generated route for
+/// [_i8.EmptyRouterPage]
+class EmptyRoute extends _i8.PageRouteInfo<void> {
+  const EmptyRoute() : super(EmptyRoute.name, path: 'empty');
+
+  static const String name = 'EmptyRoute';
 }
 
 /// generated route for
@@ -310,7 +371,7 @@ class ProfileRoute extends _i8.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.ProfileForm]
+/// [_i6.ProfileForm]
 class ProfileFormRoute extends _i8.PageRouteInfo<void> {
   const ProfileFormRoute() : super(ProfileFormRoute.name, path: '');
 
@@ -318,7 +379,7 @@ class ProfileFormRoute extends _i8.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.Requests]
+/// [_i6.Requests]
 class ProfileRequestsRoute extends _i8.PageRouteInfo<void> {
   const ProfileRequestsRoute()
       : super(ProfileRequestsRoute.name, path: 'requests');
@@ -327,7 +388,7 @@ class ProfileRequestsRoute extends _i8.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.BranchesList]
+/// [_i6.BranchesList]
 class ProfileBranchesRoute extends _i8.PageRouteInfo<void> {
   const ProfileBranchesRoute()
       : super(ProfileBranchesRoute.name, path: 'branches');

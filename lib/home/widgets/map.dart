@@ -8,17 +8,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:map_repository/map_repository.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 
 import '../home.dart';
 
 class MapMain extends StatefulWidget {
-  CameraPosition defaultCameraPosition;
-  Completer<GoogleMapController> controllerCompleter;
-  List<POIMarker> pois;
+  final CameraPosition defaultCameraPosition;
+  final Completer<GoogleMapController> controllerCompleter;
+  final List<POIMarker> pois;
 
-  MapMain({
+  const MapMain({
     Key? key,
     required this.defaultCameraPosition,
     required this.controllerCompleter,
@@ -115,9 +116,11 @@ class _HomeState extends State<MapMain> {
               _zoomToCluster(cluster);
             } else {
               // LatLng myPosition = await determinePosition();
+              List<String> ids = cluster.items.map((item) => item.poi.id).toList();
+
               AutoRouter.of(context).push(
                 OrganizationListRoute(
-                  pois: cluster.items.map((item) => item.poi).toList(),
+                  pois: context.read<MapRepository>().getPOIsByID(ids),
                   currentPosition: determinePosition(),
                 ),
               );

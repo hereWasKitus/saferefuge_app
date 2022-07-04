@@ -6,20 +6,30 @@ import 'package:protect_ua_women/registration/registration.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/home/home.dart';
 import 'package:protect_ua_women/profile/profile.dart';
-import 'package:protect_ua_women/profile/view/profile_view.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
     AutoRoute(
-      page: Entrypoint,
+      page: SplashScreen,
       path: '/',
-      name: 'Entrypoint',
+      name: 'SplashScreenRoute',
+      initial: true,
+    ),
+    AutoRoute(
+      page: Entrypoint,
+      path: '/root',
+      name: 'EntrypointRoute',
       children: [
         AutoRoute(
           page: HomeScreen,
           path: 'home',
           name: 'HomeRoute',
+        ),
+        AutoRoute(
+          page: EmptyRouterPage,
+          path: 'empty',
+          name: 'EmptyRoute',
         ),
         CustomRoute(
           page: ProfileView,
@@ -48,16 +58,11 @@ import 'package:protect_ua_women/profile/view/profile_view.dart';
               page: BranchesList,
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: defaultAnimationDuration,
-            )
+            ),
           ],
         ),
       ],
     ),
-    // AutoRoute(
-    //   page: SplashScreen,
-    //   path: '/splash',
-    //   name: 'SplashScreenRoute',
-    // ),
     CustomRoute(
       path: '/registration',
       name: 'RegistrationRoute',
@@ -116,6 +121,11 @@ import 'package:protect_ua_women/profile/view/profile_view.dart';
       page: MapScreen,
       name: 'MapRoute',
       path: '/map',
+    ),
+    AutoRoute(
+      page: AddBranchView,
+      name: 'AddBranchRoute',
+      path: '/add-branch',
     ),
   ],
 )

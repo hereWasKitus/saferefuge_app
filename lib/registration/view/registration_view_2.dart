@@ -183,6 +183,8 @@ class _NGONameField extends StatelessWidget {
                 Organization org = state.organizations.firstWhere((org) => org.id == item.value);
                 context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(
                       organizationAddress: org.address,
+                      organizationCountry: org.country,
+                      website: org.website,
                       organizationPhone: org.phone,
                       organizationEmail: org.email,
                       organizationID: org.formalID,
@@ -232,8 +234,7 @@ class _NGOCountry extends StatelessWidget {
     return BlocBuilder<RegistrationBloc, RegistrationState>(
       builder: (context, state) {
         return BlocBuilder<RegistrationBloc, RegistrationState>(
-          buildWhen: (previous, current) =>
-              (previous.isLoading != current.isLoading) || (previous.organizations != current.organizations),
+          buildWhen: (previous, current) => (previous.organizationCountry != current.organizationCountry),
           builder: (context, state) {
             return TextDropdown(
               hideDropdown: state.isLoading,
@@ -243,20 +244,8 @@ class _NGOCountry extends StatelessWidget {
                   .map((country) => DropdownItemModel(title: country['name']!, value: country['code']!))
                   .toList(),
               onChange: (value) =>
-                  context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationName: value ?? '')),
+                  context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationCountry: value ?? '')),
               onItemSelect: (item) {},
-              suffixIcon: state.isLoading
-                  ? SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: LayoutBuilder(builder: (context, constraints) {
-                        return SpinKitCircle(
-                          color: primaryColor,
-                          size: constraints.maxWidth / 2,
-                        );
-                      }),
-                    )
-                  : null,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'This field is required';
@@ -287,7 +276,9 @@ class _PositionInNGOField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        _controller.text = state.positionInOrganization;
+        if (_controller.text != state.positionInOrganization) {
+          _controller.text = state.positionInOrganization;
+        }
       },
       listenWhen: (previous, current) => previous.positionInOrganization != current.positionInOrganization,
       buildWhen: (previous, current) => previous.positionInOrganization != current.positionInOrganization,
@@ -325,7 +316,9 @@ class _NGOIDField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        _controller.text = state.organizationID;
+        if (_controller.text != state.organizationID) {
+          _controller.text = state.organizationID;
+        }
       },
       listenWhen: (previous, current) => previous.organizationID != current.organizationID,
       buildWhen: (previous, current) => previous.organizationID != current.organizationID,

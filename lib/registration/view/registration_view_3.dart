@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:map_repository/map_repository.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/home/widgets/menu_button.dart';
 import 'package:protect_ua_women/profile/profile.dart';
@@ -132,13 +133,12 @@ class _RegistrationView3State extends State<RegistrationView3> {
     }
 
     RegistrationState curState = context.read<RegistrationBloc>().state;
-    Branch newBranch = curState.branch.copyWith(
+    POI newBranch = curState.branch.copyWith(
       address: address,
       latitude: data['geometry']['location']['lat'],
       longitude: data['geometry']['location']['lng'],
       telegram: curState.organizationTelegram,
       whatsapp: curState.organizationWhatsapp,
-      organization: curState.organizationName,
       country: countryComponent['long_name'] ?? '',
       city: cityComponent['long_name'] ?? '',
     );

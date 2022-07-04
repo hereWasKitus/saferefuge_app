@@ -1,22 +1,35 @@
 import 'package:auth_repository/auth_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:map_repository/map_repository.dart';
+import 'package:profile_repository/profile_repository.dart';
+import 'package:safeway_api/safeway_api.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  ProfileBloc({required authRepository})
-      : _authRepository = authRepository,
+  ProfileBloc({
+    required authRepository,
+    required profileRepository,
+    required mapRepository,
+  })  : _authRepository = authRepository,
+        _profileRepository = profileRepository,
+        _mapRepository = mapRepository,
         super(ProfileInitial()) {
     on<ProfileFormHasChangedEvent>(_onProfileFormIsChanged);
     on<ProfileFormChangedEvent>(_onProfileFormChanged);
     on<ProfileTryGetUser>(_onTryGetUser);
     on<ProfileUpdateRequest>(_onSaveForm);
     on<ProfileFormStatusChanged>(_onFormStatusChanged);
+    on<ProfileAddBranchRequest>(_onAddBranchRequest);
+    on<ProfileFetchBranchesRequest>(_onFetchBranchesRequest);
+    on<ProfileUpdateBranchRequest>(_onUpdateBranchRequest);
   }
 
   final AuthRepository _authRepository;
+  final ProfileRepository _profileRepository;
+  final MapRepository _mapRepository;
 
   _onProfileFormIsChanged(ProfileFormHasChangedEvent event, Emitter<ProfileState> emit) {
     emit(state.copyWith(formChanged: event.profileFormChanged));
@@ -69,7 +82,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(state.copyWith(formStatus: FormStatus.loading, errorMessage: ''));
 
     try {
-      await _authRepository.updateProfile(
+      await _profileRepository.updateProfile(
         userID: state.id,
         userEmail: state.email,
         userFullName: state.name,
@@ -85,5 +98,43 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   _onFormStatusChanged(ProfileFormStatusChanged event, Emitter<ProfileState> emit) {
     emit(state.copyWith(formStatus: event.status));
+  }
+
+  _onAddBranchRequest(ProfileAddBranchRequest event, Emitter<ProfileState> emit) async {
+    emit(state.copyWith(addBranchStatus: AddBranchStatus.loading, errorMessage: ''));
+
+    try {
+      await _mapRepository.createPOI(event.branch.toMap());
+      emit(state.copyWith(addBranchStatus: AddBranchStatus.success, errorMessage: ''));
+    } on APIException catch (e) {
+      emit(state.copyWith(addBranchStatus: AddBranchStatus.fail, errorMessage: e.message));
+    }
+  }
+
+  _onFetchBranchesRequest(ProfileFetchBranchesRequest event, Emitter<ProfileState> emit) async {
+    emit(state.copyWith(addBranchStatus: AddBranchStatus.loading, errorMessage: ''));
+
+    try {
+      List<POI> branches = await _mapRepository.getPOIsByUsername(state.email);
+      emit(state.copyWith(
+        branches: branches,
+        addBranchStatus: AddBranchStatus.success,
+      ));
+    } on APIException catch (e) {
+      emit(state.copyWith(addBranchStatus: AddBranchStatus.fail, errorMessage: e.message));
+    }
+  }
+
+  _onUpdateBranchRequest(ProfileUpdateBranchRequest event, Emitter<ProfileState> emit) async {
+    emit(state.copyWith(addBranchStatus: AddBranchStatus.loading, errorMessage: ''));
+
+    try {
+      await _mapRepository.updatePOI(event.branch.toMap());
+      emit(state.copyWith(
+        addBranchStatus: AddBranchStatus.success,
+      ));
+    } on APIException catch (e) {
+      emit(state.copyWith(addBranchStatus: AddBranchStatus.fail, errorMessage: e.message));
+    }
   }
 }

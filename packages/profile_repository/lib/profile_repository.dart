@@ -1,10 +1,8 @@
 /// Support for doing something awesome.
 ///
 /// More dartdocs go here.
-library safeway_api;
+library profile_repository;
 
-export 'src/safeway_api.dart';
-export 'src/models/models.dart';
-export 'package:dio/dio.dart';
+export 'src/profile_repository.dart';
 
 // TODO: Export any libraries intended for clients of this package.

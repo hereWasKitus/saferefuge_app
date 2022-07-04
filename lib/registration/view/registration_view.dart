@@ -25,10 +25,9 @@ class _RegistrationViewState extends State<RegistrationView> {
         return AutoRouter.declarative(routes: (_) {
           return [
             const RegistrationFirstStepRoute(),
-            // const RegistrationSecondStepRoute(),
             if (state.firstStepCompleted) const RegistrationSecondStepRoute(),
             if (state.secondStepCompleted) const RegistrationThirdStepRoute(),
-            if (state.branch.address != null) const RegistrationFourthStepRoute(),
+            if (state.branch.address.isNotEmpty) const RegistrationFourthStepRoute(),
             if (state.registrationCompleted) const ThankYouRoute(),
           ];
         });
