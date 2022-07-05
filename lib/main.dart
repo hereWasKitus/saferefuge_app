@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => HomeBloc(mapRepository: context.read<MapRepository>())
-              // ..add(LoadPOIsEvent())
+              ..add(LoadPOIsEvent())
               ..add(LoadCategoriesEvent()),
           ),
           BlocProvider(

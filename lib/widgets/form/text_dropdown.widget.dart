@@ -12,6 +12,7 @@ class TextDropdown extends StatefulWidget {
     this.hideDropdown = false,
     this.suffixIcon,
     this.validator,
+    this.controller,
   }) : super(key: key);
 
   final Function(String?) onChange;
@@ -22,6 +23,7 @@ class TextDropdown extends StatefulWidget {
   final bool hideDropdown;
   final Widget? suffixIcon;
   final String? Function(String?)? validator;
+  final TextEditingController? controller;
 
   @override
   State<TextDropdown> createState() => _TextDropdownState();
@@ -38,7 +40,7 @@ class _TextDropdownState extends State<TextDropdown> {
   void initState() {
     super.initState();
 
-    _controller = TextEditingController();
+    _controller = widget.controller ?? TextEditingController();
     _filteredItems = widget.items;
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _showOverlay());
 

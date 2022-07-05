@@ -51,9 +51,10 @@ class _RegistrationView3State extends State<RegistrationView3> {
           children: [
             BlocBuilder<RegistrationBloc, RegistrationState>(
               builder: (context, state) {
-                return const Text(
-                  'Alisa,',
-                  style: TextStyle(
+                // final years = context.select((RegistrationBloc bloc) => bloc.state.fullName);
+                return Text(
+                  '${state.fullName},',
+                  style: const TextStyle(
                     color: Color(0xFF1B3284),
                     fontWeight: FontWeight.bold,
                     fontSize: 36,
@@ -71,8 +72,8 @@ class _RegistrationView3State extends State<RegistrationView3> {
             const Text(
               'Adding branches to our map will allow people to get more help quickly!',
               style: TextStyle(
-                color: red,
-                fontSize: 24,
+                color: Color.fromRGBO(27, 50, 132, 1),
+                fontSize: 16,
               ),
             ),
             const Spacer(),
@@ -127,13 +128,20 @@ class _RegistrationView3State extends State<RegistrationView3> {
     String address = '';
 
     try {
-      address = '${streetNumberComponent['long_name']}, ${routeComponent['long_name']}';
+      address = [
+        countryComponent['long_name'],
+        cityComponent['long_name'],
+        streetNumberComponent['long_name'],
+        routeComponent['long_name'],
+      ].join(', ');
     } catch (e) {
       address = data['formatted_address'];
     }
 
     RegistrationState curState = context.read<RegistrationBloc>().state;
+    final orgName = context.select((RegistrationState state) => state.organizationName);
     POI newBranch = curState.branch.copyWith(
+      name: '$orgName | branch 1',
       address: address,
       latitude: data['geometry']['location']['lat'],
       longitude: data['geometry']['location']['lng'],

@@ -15,18 +15,6 @@ class Entrypoint extends StatefulWidget {
 }
 
 class _EntrypointState extends State<Entrypoint> {
-  bool isReady = false;
-
-  @override
-  void initState() {
-    Timer(const Duration(seconds: 2), () {
-      setState(() {
-        isReady = true;
-      });
-    });
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(

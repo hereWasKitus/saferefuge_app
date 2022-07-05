@@ -43,6 +43,21 @@ class _BranchFormState extends State<BranchForm> {
       child: Column(
         children: [
           MyFormField(
+            labelText: 'Branch name*',
+            initialValue: _branch.name,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'This field is required';
+              }
+
+              return null;
+            },
+            onSaved: (value) {
+              _branch = _branch.copyWith(name: value);
+            },
+          ),
+          SizedBox(height: _gap),
+          MyFormField(
             labelText: 'Contact person*',
             initialValue: _branch.contactPerson,
             validator: (value) {

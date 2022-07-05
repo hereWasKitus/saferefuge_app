@@ -107,7 +107,7 @@ class _RegistrationView2State extends State<RegistrationView2> {
                       SizedBox(height: _gap),
                       _PositionInNGOField(),
                       SizedBox(height: _gap),
-                      const _NGOCountry(),
+                      _NGOCountry(),
                       SizedBox(height: _gap),
                       _NGOPhoneField(),
                       SizedBox(height: _gap),
@@ -151,12 +151,10 @@ class _RegistrationView2State extends State<RegistrationView2> {
   }
 
   _handleRegistration() async {
-    _formKey.currentState!.save();
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
       // context.read<RegistrationBloc>().add(const RegistrationSecondStepCompleted(true));
       // context.read<RegistrationBloc>().add(const RegistrationFormChangedEvent());
-      // context.read<RegistrationBloc>().add(const RegistrationOrganizationCreationRequest());
+      context.read<RegistrationBloc>().add(const RegistrationOrganizationCreationRequest());
     }
   }
 }
@@ -167,97 +165,94 @@ class _NGONameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RegistrationBloc, RegistrationState>(
+      buildWhen: (previous, current) =>
+          (previous.isLoading != current.isLoading) || (previous.organizations != current.organizations),
       builder: (context, state) {
-        return BlocBuilder<RegistrationBloc, RegistrationState>(
-          buildWhen: (previous, current) =>
-              (previous.isLoading != current.isLoading) || (previous.organizations != current.organizations),
-          builder: (context, state) {
-            return TextDropdown(
-              hideDropdown: state.isLoading,
-              label: 'NGO\'s name*',
-              hintText: 'Enter your organization name',
-              items: state.organizations.map((org) => DropdownItemModel(title: org.name, value: org.id)).toList(),
-              onChange: (value) =>
-                  context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationName: value ?? '')),
-              onItemSelect: (item) {
-                Organization org = state.organizations.firstWhere((org) => org.id == item.value);
-                context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(
-                      organizationAddress: org.address,
-                      organizationCountry: org.country,
-                      website: org.website,
-                      organizationPhone: org.phone,
-                      organizationEmail: org.email,
-                      organizationID: org.formalID,
-                      organizationName: org.name,
-                      organizationTelegram: org.telegram,
-                      organizationWhatsapp: org.whatsapp,
-                    ));
-              },
-              suffixIcon: state.isLoading
-                  ? SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: LayoutBuilder(builder: (context, constraints) {
-                        return SpinKitCircle(
-                          color: primaryColor,
-                          size: constraints.maxWidth / 2,
-                        );
-                      }),
-                    )
-                  : null,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'This field is required';
-                }
+        return TextDropdown(
+          hideDropdown: state.isLoading,
+          label: 'NGO\'s name*',
+          hintText: 'Enter your organization name',
+          items: state.organizations.map((org) => DropdownItemModel(title: org.name, value: org.id)).toList(),
+          onChange: (value) =>
+              context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationName: value ?? '')),
+          onItemSelect: (item) {
+            Organization org = state.organizations.firstWhere((org) => org.id == item.value);
+            context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(
+                  organizationAddress: org.address,
+                  organizationCountry: org.country,
+                  website: org.website,
+                  organizationPhone: org.phone,
+                  organizationEmail: org.email,
+                  organizationID: org.formalID,
+                  organizationName: org.name,
+                  organizationTelegram: org.telegram,
+                  organizationWhatsapp: org.whatsapp,
+                ));
+          },
+          suffixIcon: state.isLoading
+              ? SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    return SpinKitCircle(
+                      color: primaryColor,
+                      size: constraints.maxWidth / 2,
+                    );
+                  }),
+                )
+              : null,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'This field is required';
+            }
 
-                if (!state.isOrganizationNameValid) {
-                  return 'This field need to contain at least 3 characters';
-                }
-
-                return null;
-              },
-            );
+            return null;
           },
         );
-
-        // return DropdownSearch();
       },
     );
+
+    // return DropdownSearch();
   }
 }
 
 class _NGOCountry extends StatelessWidget {
-  const _NGOCountry({Key? key}) : super(key: key);
+  _NGOCountry({Key? key}) : super(key: key);
+
+  final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegistrationBloc, RegistrationState>(
+    return BlocConsumer<RegistrationBloc, RegistrationState>(
+      listener: (context, state) {
+        if (_controller.text != state.organizationCountry) {
+          _controller.text = state.organizationCountry;
+        }
+      },
+      listenWhen: (previous, current) => previous.organizationCountry != current.organizationCountry,
+      buildWhen: (previous, current) => (previous.organizationCountry != current.organizationCountry),
       builder: (context, state) {
-        return BlocBuilder<RegistrationBloc, RegistrationState>(
-          buildWhen: (previous, current) => (previous.organizationCountry != current.organizationCountry),
-          builder: (context, state) {
-            return TextDropdown(
-              hideDropdown: state.isLoading,
-              label: 'NGO\'s country*',
-              hintText: 'Enter your organization country',
-              items: countryList
-                  .map((country) => DropdownItemModel(title: country['name']!, value: country['code']!))
-                  .toList(),
-              onChange: (value) =>
-                  context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationCountry: value ?? '')),
-              onItemSelect: (item) {},
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'This field is required';
-                }
+        return TextDropdown(
+          controller: _controller,
+          hideDropdown: state.isLoading,
+          label: 'NGO\'s country*',
+          hintText: 'Enter your organization country',
+          items: countryList
+              .map((country) => DropdownItemModel(title: country['name']!, value: country['code']!))
+              .toList(),
+          onChange: (value) =>
+              context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationCountry: value ?? '')),
+          onItemSelect: (item) {},
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'This field is required';
+            }
 
-                if (!state.isOrganizationNameValid) {
-                  return 'This field need to contain at least 3 characters';
-                }
+            if (!state.isOrganizationNameValid) {
+              return 'This field need to contain at least 3 characters';
+            }
 
-                return null;
-              },
-            );
+            return null;
           },
         );
 
@@ -289,7 +284,7 @@ class _PositionInNGOField extends StatelessWidget {
               controller: _controller,
               labelText: 'Your position in NGO*',
               hintText: 'Enter your position',
-              onSaved: (String? value) => context
+              onChanged: (String? value) => context
                   .read<RegistrationBloc>()
                   .add(RegistrationFormChangedEvent(positionInOrganization: value ?? '')),
               validator: (value) {
@@ -327,7 +322,7 @@ class _NGOIDField extends StatelessWidget {
           controller: _controller,
           labelText: 'NGO\' ID number*',
           hintText: 'ID number',
-          onSaved: (String? value) =>
+          onChanged: (String? value) =>
               context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationID: value ?? '')),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -391,7 +386,9 @@ class _NGOWebsite extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        _controller.text = state.website;
+        if (_controller.text != state.website) {
+          _controller.text = state.website;
+        }
       },
       listenWhen: (previous, current) => previous.website != current.website,
       buildWhen: (previous, current) => previous.website != current.website,
@@ -401,7 +398,7 @@ class _NGOWebsite extends StatelessWidget {
           labelText: 'NGO\'s website',
           hintText: 'Enter your organization\'s website url',
           keyboardType: TextInputType.url,
-          onSaved: (String? value) =>
+          onChanged: (String? value) =>
               context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(website: value ?? '')),
           validator: (value) {
             return null;

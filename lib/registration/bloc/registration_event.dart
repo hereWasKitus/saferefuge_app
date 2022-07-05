@@ -110,3 +110,10 @@ class RegistrationGetOrganizationsList extends RegistrationEvent {
   @override
   List<Object> get props => [];
 }
+
+class RegistrationEraseProgress extends RegistrationEvent {
+  const RegistrationEraseProgress();
+
+  @override
+  List<Object> get props => [];
+}

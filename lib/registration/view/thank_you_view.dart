@@ -23,6 +23,7 @@ class ThankYouView extends StatelessWidget {
             child: RotatedBox(
               quarterTurns: 1,
               child: MenuButton(
+                icon: const Icon(Icons.close),
                 onPressed: () {
                   AutoRouter.of(context).pop();
                 },
@@ -31,6 +32,7 @@ class ThankYouView extends StatelessWidget {
           ),
         ],
       ),
+      resizeToAvoidBottomInset: false,
       body: BlocBuilder<RegistrationBloc, RegistrationState>(
         builder: (context, state) {
           return Padding(
@@ -49,9 +51,7 @@ class ThankYouView extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: state.fullName,
-                        style: const TextStyle(
-                            color: Color(0xFF1B3284),
-                            fontWeight: FontWeight.bold),
+                        style: const TextStyle(color: Color(0xFF1B3284), fontWeight: FontWeight.bold),
                       ),
                       const TextSpan(
                         text: ', \r\nwelcome to\r\nSafeWay community!',
@@ -91,7 +91,13 @@ class ThankYouView extends StatelessWidget {
                 const Spacer(),
                 ElevatedButton(
                   onPressed: () {
-                    context.router.popAndPush(const ProfileRoute());
+                    context.router.navigate(
+                      const EntrypointRoute(
+                        children: [
+                          ProfileRoute(),
+                        ],
+                      ),
+                    );
                   },
                   child: const Text('Go to profile'),
                   style: ElevatedButton.styleFrom(

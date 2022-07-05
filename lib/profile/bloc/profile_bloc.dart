@@ -136,8 +136,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-  _onLogoutRequest(ProfileLogoutRequest event, Emitter<ProfileState> emit) async {
-    emit(state.copyWith(isLoading: true));
+  _onLogoutRequest(ProfileLogoutRequest event, Emitter<ProfileState> emit) {
+    emit(state.copyWith(formStatus: FormStatus.loading, errorMessage: ''));
 
     _authRepository.logout();
 

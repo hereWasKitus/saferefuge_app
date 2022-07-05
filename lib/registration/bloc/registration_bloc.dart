@@ -21,6 +21,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationBranchChanged>(_onBranchChanged);
     on<RegistrationOrganizationCreationRequest>(_onOrganizationCreationRequest);
     on<RegistrationGetOrganizationsList>(_onGetOrganizationsList);
+    on<RegistrationEraseProgress>(_onEraseProgress);
   }
 
   final AuthRepository _authRepository;
@@ -81,6 +82,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       positionInOrganization: event.positionInOrganization,
       website: event.website,
       organizationCountry: event.organizationCountry,
+      organizationID: event.organizationID,
     ));
   }
 
@@ -118,5 +120,33 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     emit(state.copyWith(isLoading: true));
     List<Organization> organizations = await _authRepository.getOrganizations();
     emit(state.copyWith(organizations: organizations, isLoading: false, organizationsLoaded: true));
+  }
+
+  _onEraseProgress(RegistrationEraseProgress event, Emitter<RegistrationState> emit) {
+    emit(state.copyWith(
+      fullName: '',
+      email: '',
+      password: '',
+      organizationName: '',
+      organizationAddress: '',
+      organizationPhone: '',
+      registrationNumber: '',
+      organizationEmail: '',
+      organizationWhatsapp: '',
+      organizationTelegram: '',
+      position: const LatLng(0, 0),
+      services: [],
+      positionInOrganization: '',
+      website: '',
+      organizationCountry: '',
+      organizationID: '',
+      organizationRegistrationStatus: NGORegistrationStatus.initial,
+      errorMessage: '',
+      registrationStatus: RegistrationStatus.initial,
+      registrationCompleted: false,
+      firstStepCompleted: false,
+      secondStepCompleted: false,
+      organizationsLoaded: false,
+    ));
   }
 }

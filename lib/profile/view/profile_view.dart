@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/profile/profile.dart';
+import 'package:protect_ua_women/registration/registration.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 
 class ProfileView extends StatefulWidget {
@@ -18,7 +19,10 @@ class _ProfileViewState extends State<ProfileView> {
     return BlocListener<ProfileBloc, ProfileState>(
       listener: (context, state) {
         if (state.authStatus != AuthStatus.authorized) {
+          context.read<RegistrationBloc>().add(const RegistrationEraseProgress());
           context.tabsRouter.navigate(const HomeRoute());
+        } else {
+          context.read<ProfileBloc>().add(const ProfileFetchBranchesRequest());
         }
       },
       listenWhen: (previous, current) => previous.authStatus != current.authStatus,
@@ -43,7 +47,9 @@ class _ProfileViewState extends State<ProfileView> {
                   children: [
                     BlocBuilder<ProfileBloc, ProfileState>(
                       buildWhen: (previos, current) =>
-                          previos.formStatus != current.formStatus && current.formStatus == FormStatus.updateSucceed,
+                          (previos.formStatus != current.formStatus &&
+                              current.formStatus == FormStatus.updateSucceed) ||
+                          previos.authStatus != current.authStatus,
                       builder: (context, state) {
                         return RichText(
                           text: TextSpan(

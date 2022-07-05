@@ -114,7 +114,7 @@ class _FullName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
-      buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+      // buildWhen: (previous, current) => previous.name != current.name,
       builder: (context, state) {
         return MyFormField(
           labelText: 'Your name',
