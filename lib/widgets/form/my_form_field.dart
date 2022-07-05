@@ -14,6 +14,7 @@ class MyFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final FocusNode? focusNode;
   final bool? enabled;
+  final int? maxLines;
 
   const MyFormField({
     Key? key,
@@ -29,6 +30,7 @@ class MyFormField extends StatelessWidget {
     this.suffixIcon,
     this.focusNode,
     this.enabled,
+    this.maxLines = 1,
   }) : super(key: key);
 
   OutlineInputBorder _borderStyle({Color color = primaryColor}) => OutlineInputBorder(
@@ -58,6 +60,7 @@ class MyFormField extends StatelessWidget {
           onSaved: onSaved,
           enabled: enabled,
           style: const TextStyle(fontSize: 16),
+          maxLines: maxLines,
           decoration: InputDecoration(
             border: _borderStyle(),
             enabledBorder: _borderStyle(color: const Color.fromRGBO(44, 83, 218, 0.8)),
@@ -67,8 +70,8 @@ class MyFormField extends StatelessWidget {
             hintStyle: const TextStyle(
               color: Color.fromRGBO(27, 50, 132, 0.2),
             ),
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 1,
+            contentPadding: EdgeInsets.symmetric(
+              vertical: maxLines! > 1 ? 8 : 1,
               horizontal: 16,
             ),
             suffixIcon: suffixIcon,

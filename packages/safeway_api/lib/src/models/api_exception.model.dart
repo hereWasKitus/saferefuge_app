@@ -7,7 +7,7 @@ class APIException implements Exception {
   APIException({required this.message, required this.statusCode});
 
   factory APIException.fromDioError(DioError error) {
-    if (error.response!.statusCode == 402) {
+    if (error.response != null && error.response!.statusCode == 402) {
       return APIException(
         message: error.response!.data['detail']['msg'],
         statusCode: error.response!.statusCode,

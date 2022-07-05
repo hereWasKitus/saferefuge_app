@@ -82,7 +82,12 @@ class _BranchesListState extends State<BranchesList> {
     String address = '';
 
     try {
-      address = '${streetNumberComponent['long_name']}, ${routeComponent['long_name']}';
+      address = [
+        countryComponent['long_name'],
+        cityComponent['long_name'],
+        streetNumberComponent['long_name'],
+        routeComponent['long_name'],
+      ].join(', ');
     } catch (e) {
       address = data['formatted_address'];
     }
@@ -101,9 +106,6 @@ class _BranchesListState extends State<BranchesList> {
     mapContext.router.replace(AddBranchRoute(
       initialBranchState: newBranch,
     ));
-    // context.router.replace(AddBranchRoute(
-    //   initialBranchState: newBranch,
-    // ));
   }
 }
 

@@ -80,11 +80,14 @@ class HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   context.read<HomeBloc>().add(LoadPOIsEvent());
                 },
-                backgroundColor: primaryColor,
+                backgroundColor: Colors.white,
                 child: state.poiStatus != POIStatus.loading
-                    ? const Icon(Icons.refresh)
+                    ? const Icon(
+                        Icons.refresh,
+                        color: primaryColor,
+                      )
                     : const SpinKitDualRing(
-                        color: Colors.white,
+                        color: primaryColor,
                         size: 20,
                         lineWidth: 2,
                       ),

@@ -138,6 +138,16 @@ class _BranchFormState extends State<BranchForm> {
             },
           ),
           SizedBox(height: _gap),
+          MyFormField(
+            labelText: 'Description',
+            initialValue: _branch.description,
+            maxLines: 6,
+            onSaved: (value) {
+              _branch = _branch.copyWith(description: value);
+            },
+            hintText: 'Please, describe the branch activity prefferably in english',
+          ),
+          SizedBox(height: _gap),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
