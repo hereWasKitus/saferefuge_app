@@ -277,4 +277,8 @@ class SafeWayAPI {
       ),
     );
   }
+
+  void logout() {
+    _dio.options.headers['Authorization'] = '';
+  }
 }

@@ -67,7 +67,6 @@ class _BranchesListState extends State<BranchesList> {
         );
       },
     );
-    // return Text('branches');
   }
 
   void _onPointSelected(data, BuildContext mapContext) {

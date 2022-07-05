@@ -120,4 +120,14 @@ class AuthRepository {
       return List<Organization>.from(organizations);
     }
   }
+
+  void logout() async {
+    try {
+      _api.logout();
+    } on DioError catch (e) {
+      throw APIException.fromDioError(e);
+    } catch (e) {
+      throw APIException.unknown();
+    }
+  }
 }

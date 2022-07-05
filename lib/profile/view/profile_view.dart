@@ -15,65 +15,73 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: AutoTabsRouter(
-        routes: const [
-          ProfileFormRoute(),
-          ProfileBranchesRoute(),
-        ],
-        builder: (context, child, animation) {
-          final tabsRouter = AutoTabsRouter.of(context);
+    return BlocListener<ProfileBloc, ProfileState>(
+      listener: (context, state) {
+        if (state.authStatus != AuthStatus.authorized) {
+          context.tabsRouter.navigate(const HomeRoute());
+        }
+      },
+      listenWhen: (previous, current) => previous.authStatus != current.authStatus,
+      child: SafeArea(
+        child: AutoTabsRouter(
+          routes: const [
+            ProfileFormRoute(),
+            ProfileBranchesRoute(),
+          ],
+          builder: (context, child, animation) {
+            final tabsRouter = AutoTabsRouter.of(context);
 
-          return Scaffold(
-            body: SingleChildScrollView(
-              padding: const EdgeInsets.only(
-                left: defaultPadding,
-                right: defaultPadding,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  BlocBuilder<ProfileBloc, ProfileState>(
-                    buildWhen: (previos, current) =>
-                        previos.formStatus != current.formStatus && current.formStatus == FormStatus.updateSucceed,
-                    builder: (context, state) {
-                      return RichText(
-                        text: TextSpan(
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 36,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'Rubik',
-                          ),
-                          children: [
-                            TextSpan(
-                              text: '${state.name},\r\n',
-                              style: const TextStyle(
-                                color: Color(0xFF1B3284),
-                              ),
+            return Scaffold(
+              body: SingleChildScrollView(
+                padding: const EdgeInsets.only(
+                  left: defaultPadding,
+                  right: defaultPadding,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    BlocBuilder<ProfileBloc, ProfileState>(
+                      buildWhen: (previos, current) =>
+                          previos.formStatus != current.formStatus && current.formStatus == FormStatus.updateSucceed,
+                      builder: (context, state) {
+                        return RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 36,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Rubik',
                             ),
-                            const TextSpan(text: 'here is your'),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  ProfileTabs(
-                    onClick: (int index) => tabsRouter.setActiveIndex(index),
-                    activeIndex: tabsRouter.activeIndex,
-                  ),
-                  const SizedBox(height: 16),
-                  FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  )
-                ],
+                            children: [
+                              TextSpan(
+                                text: '${state.name},\r\n',
+                                style: const TextStyle(
+                                  color: Color(0xFF1B3284),
+                                ),
+                              ),
+                              const TextSpan(text: 'here is your'),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    ProfileTabs(
+                      onClick: (int index) => tabsRouter.setActiveIndex(index),
+                      activeIndex: tabsRouter.activeIndex,
+                    ),
+                    const SizedBox(height: 16),
+                    FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    )
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

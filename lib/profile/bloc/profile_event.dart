@@ -91,3 +91,10 @@ class ProfileUpdateBranchRequest extends ProfileEvent {
   @override
   List<Object> get props => [branch];
 }
+
+class ProfileLogoutRequest extends ProfileEvent {
+  const ProfileLogoutRequest();
+
+  @override
+  List<Object> get props => [];
+}

@@ -25,6 +25,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileAddBranchRequest>(_onAddBranchRequest);
     on<ProfileFetchBranchesRequest>(_onFetchBranchesRequest);
     on<ProfileUpdateBranchRequest>(_onUpdateBranchRequest);
+    on<ProfileLogoutRequest>(_onLogoutRequest);
   }
 
   final AuthRepository _authRepository;
@@ -133,5 +134,30 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     } on APIException catch (e) {
       emit(state.copyWith(addBranchStatus: AddBranchStatus.fail, errorMessage: e.message));
     }
+  }
+
+  _onLogoutRequest(ProfileLogoutRequest event, Emitter<ProfileState> emit) async {
+    emit(state.copyWith(isLoading: true));
+
+    _authRepository.logout();
+
+    emit(state.copyWith(
+      name: '',
+      id: '',
+      organizationName: '',
+      organizationAddress: '',
+      organizationEmail: '',
+      organizationPhone: '',
+      organizationCountry: '',
+      services: [],
+      branches: [],
+      addBranchStatus: AddBranchStatus.initial,
+      formStatus: FormStatus.initial,
+      organizationPosition: '',
+      organizationWhatsapp: '',
+      organizationTelegram: '',
+      authStatus: AuthStatus.unauthorized,
+      isLoading: false,
+    ));
   }
 }
