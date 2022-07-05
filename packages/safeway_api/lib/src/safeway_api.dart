@@ -121,10 +121,9 @@ class SafeWayAPI {
   }
 
   Future<Response> updateUser({
-    required String userID,
     String? email,
     String? fullName,
-    String? password,
+    String? orgPosition,
   }) async {
     Map<String, dynamic> request = {};
 
@@ -133,13 +132,17 @@ class SafeWayAPI {
       request['email'] = email;
     }
 
-    if (fullName != null) request['full_name'];
-    if (password != null) request['password'];
+    if (fullName != null) {
+      request['full_name'] = fullName;
+    }
+
+    if (orgPosition != null) {
+      request['org_position'] = orgPosition;
+    }
 
     return await _dio.patch(
-      'aaa/user/patch',
+      'users/me/',
       data: json.encode(request),
-      queryParameters: {'_id': userID},
     );
   }
 

@@ -51,7 +51,7 @@ class _ProfileFormState extends State<ProfileForm> {
               builder: (context, state) {
                 return ElevatedButton(
                   onPressed: () {
-                    if (state.formChanged) {
+                    if (state.formStatus == FormStatus.changed || state.formStatus == FormStatus.updateFail) {
                       context.read<ProfileBloc>().add(const ProfileUpdateRequest());
                     }
                   },

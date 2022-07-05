@@ -36,8 +36,7 @@ class _ProfileViewState extends State<ProfileView> {
                 children: [
                   BlocBuilder<ProfileBloc, ProfileState>(
                     buildWhen: (previos, current) =>
-                        (previos.name != current.name) &&
-                        (previos.formStatus != current.formStatus && current.formStatus == FormStatus.updateSucceed),
+                        previos.formStatus != current.formStatus && current.formStatus == FormStatus.updateSucceed,
                     builder: (context, state) {
                       return RichText(
                         text: TextSpan(

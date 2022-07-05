@@ -83,12 +83,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     try {
       await _profileRepository.updateProfile(
-        userID: state.id,
         userEmail: state.email,
         userFullName: state.name,
-        organizationName: state.organizationName,
-        organizationEmail: state.organizationEmail,
-        organizationPhone: state.organizationPhone,
+        organizationPosition: state.organizationPosition,
       );
       emit(state.copyWith(formStatus: FormStatus.updateSucceed));
     } on APIException catch (e) {
