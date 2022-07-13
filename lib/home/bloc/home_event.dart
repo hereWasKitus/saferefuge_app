@@ -37,3 +37,9 @@ class LoadNearbyPOIsEvent extends HomeEvent {
 class LoadCategoriesEvent extends HomeEvent {
   LoadCategoriesEvent();
 }
+
+class HomeSetSearchStatusEvent extends HomeEvent {
+  final SearchStatus status;
+
+  HomeSetSearchStatusEvent({required this.status});
+}

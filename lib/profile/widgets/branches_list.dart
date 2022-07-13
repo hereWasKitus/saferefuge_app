@@ -27,6 +27,7 @@ class _BranchesListState extends State<BranchesList> {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         return Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             ElevatedButton(
               onPressed: () {

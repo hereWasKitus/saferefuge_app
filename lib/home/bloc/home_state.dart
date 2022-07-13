@@ -7,6 +7,13 @@ enum POIStatus {
   succeed,
 }
 
+enum SearchStatus {
+  initial,
+  loading,
+  fail,
+  succeed,
+}
+
 @immutable
 class HomeState extends Equatable {
   const HomeState({
@@ -16,6 +23,7 @@ class HomeState extends Equatable {
     this.pois = const <POIMarker>[],
     this.poisLoaded = false,
     this.poiStatus = POIStatus.initial,
+    this.searchStatus = SearchStatus.initial,
   });
 
   final List<MapPlace> searchResults;
@@ -24,6 +32,7 @@ class HomeState extends Equatable {
   final List<POIMarker> pois;
   final bool poisLoaded;
   final POIStatus poiStatus;
+  final SearchStatus searchStatus;
 
   bool get toShowSuggestions => searchResults.isNotEmpty;
 
@@ -34,6 +43,7 @@ class HomeState extends Equatable {
     List<POIMarker>? pois,
     bool? poisLoaded,
     POIStatus? poiStatus,
+    SearchStatus? searchStatus,
   }) =>
       HomeState(
         searchResults: searchResults ?? this.searchResults,
@@ -42,8 +52,17 @@ class HomeState extends Equatable {
         pois: pois ?? this.pois,
         poisLoaded: poisLoaded ?? this.poisLoaded,
         poiStatus: poiStatus ?? this.poiStatus,
+        searchStatus: searchStatus ?? this.searchStatus,
       );
 
   @override
-  List<Object?> get props => [searchResults, categories, selectedCategories, pois, poisLoaded, poiStatus];
+  List<Object?> get props => [
+        searchResults,
+        categories,
+        selectedCategories,
+        pois,
+        poisLoaded,
+        poiStatus,
+        searchStatus,
+      ];
 }
