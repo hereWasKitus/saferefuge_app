@@ -21,7 +21,7 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidgetState extends State<MapWidget> {
   final double _defaultZoomLevel = 14.5;
-  late GoogleMapController _controller;
+  // late GoogleMapController _controller;
   final Completer<GoogleMapController> _completer = Completer();
 
   @override
@@ -51,7 +51,7 @@ class _MapWidgetState extends State<MapWidget> {
             // _manager.setMapId(controller.mapId);
 
             setState(() {
-              _controller = controller;
+              // _controller = controller;
               context.read<MapBloc>().add(MapControllerCreated(controller));
             });
           },
@@ -70,27 +70,23 @@ class _MapWidgetState extends State<MapWidget> {
     // final BitmapDescriptor icon = await _bitmapDescriptorFromSvgAsset(context, 'assetName');
     final Marker marker = Marker(
       markerId: const MarkerId('1'),
-      icon: await _bitmapDescriptorFromSvgAsset(
-          context, 'assets/icons/location_marker.svg'),
+      icon: await _bitmapDescriptorFromSvgAsset(context, 'assets/icons/location_marker.svg'),
       position: latlng,
     );
 
     context.read<MapBloc>().add(MapMarkersChanged({marker}));
   }
 
-  Future<BitmapDescriptor> _bitmapDescriptorFromSvgAsset(
-      BuildContext context, String assetName) async {
+  Future<BitmapDescriptor> _bitmapDescriptorFromSvgAsset(BuildContext context, String assetName) async {
     // Read SVG file as String
-    String svgString =
-        await DefaultAssetBundle.of(context).loadString(assetName);
+    String svgString = await DefaultAssetBundle.of(context).loadString(assetName);
     // Create DrawableRoot from SVG String
     DrawableRoot svgDrawableRoot = await svg.fromSvgString(svgString, '1');
 
     // toPicture() and toImage() don't seem to be pixel ratio aware, so we calculate the actual sizes here
     MediaQueryData queryData = MediaQuery.of(context);
     double devicePixelRatio = queryData.devicePixelRatio;
-    double width =
-        32 * devicePixelRatio; // where 32 is your SVG's original width
+    double width = 32 * devicePixelRatio; // where 32 is your SVG's original width
     double height = 32 * devicePixelRatio; // same thing
 
     // Convert to ui.Picture
@@ -127,8 +123,7 @@ class _MapWidgetState extends State<MapWidget> {
     //       'Location permissions are permanently denied, we cannot request permissions.');
     // }
 
-    final Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    final Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     return position;
   }
 
@@ -143,16 +138,13 @@ class _MapWidgetState extends State<MapWidget> {
       context.read<MapBloc>().add(
             MapCameraPositionChanged(
               CameraPosition(
-                target:
-                    LatLng(currentPosition.latitude, currentPosition.longitude),
+                target: LatLng(currentPosition.latitude, currentPosition.longitude),
                 zoom: _defaultZoomLevel,
               ),
             ),
           );
     } catch (e) {
-      context
-          .read<MapBloc>()
-          .add(MapCameraPositionChanged(fallbackCameraPosition));
+      context.read<MapBloc>().add(MapCameraPositionChanged(fallbackCameraPosition));
     }
   }
 }

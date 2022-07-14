@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_repository/map_repository.dart';
 import 'package:protect_ua_women/config/constants.dart';
-import 'package:protect_ua_women/config/secrets.dart';
 
 import '../map.dart';
 

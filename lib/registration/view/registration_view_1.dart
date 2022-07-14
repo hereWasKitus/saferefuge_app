@@ -7,7 +7,6 @@ import 'package:protect_ua_women/home/home.dart';
 import 'package:protect_ua_women/profile/profile.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
-import 'package:protect_ua_women/widgets/form/text_dropdown.widget.dart';
 
 import '../registration.dart';
 

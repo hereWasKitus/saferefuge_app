@@ -8,9 +8,9 @@ import 'package:http/http.dart' as http;
 import '../home.dart';
 
 class SuggestionsList extends StatelessWidget {
-  Function onLocationSelected;
+  final Function onLocationSelected;
 
-  SuggestionsList({Key? key, required this.onLocationSelected}) : super(key: key);
+  const SuggestionsList({Key? key, required this.onLocationSelected}) : super(key: key);
 
   _goToLocation(String input, BuildContext context) async {
     Uri url = Uri.parse(

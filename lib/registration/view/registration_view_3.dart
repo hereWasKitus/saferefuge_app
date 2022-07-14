@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:map_repository/map_repository.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/home/widgets/menu_button.dart';
-import 'package:protect_ua_women/profile/profile.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 
 import '../registration.dart';

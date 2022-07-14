@@ -23,7 +23,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   late final MapRepository _mapRepository;
 
   _onSearchFieldChanged(
-      MapSearchFieldChanged event, Emitter<MapState> emit) async {
+    MapSearchFieldChanged event,
+    Emitter<MapState> emit,
+  ) async {
     if (event.value.isEmpty) {
       emit(state.copyWith(suggestionList: []));
       return;
@@ -33,18 +35,14 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     try {
       List result = await _mapRepository.autocomplete(event.value);
-      List<MapLocation> suggestions =
-          result.map((item) => MapLocation.fromJson(item)).toList();
+      List<MapLocation> suggestions = result.map((item) => MapLocation.fromJson(item)).toList();
       emit(state.copyWith(suggestionList: suggestions));
-    } catch (e) {
-      print(e);
     } finally {
       emit(state.copyWith(status: MapStatus.initial));
     }
   }
 
-  _onCameraPositionChanged(
-      MapCameraPositionChanged event, Emitter<MapState> emit) {
+  _onCameraPositionChanged(MapCameraPositionChanged event, Emitter<MapState> emit) {
     emit(state.copyWith(cameraPosition: event.cameraPosition, cameraSet: true));
   }
 
@@ -56,14 +54,12 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     emit(state.copyWith(controller: event.controller));
   }
 
-  _onSuggestionSelected(
-      MapSuggestionSelected event, Emitter<MapState> emit) async {
+  _onSuggestionSelected(MapSuggestionSelected event, Emitter<MapState> emit) async {
     emit(state.copyWith(status: MapStatus.loading));
 
     try {
       var response = await _mapRepository.searchPlaces(event.suggestion);
-      Map<String, dynamic> location =
-          response['candidates'][0]['geometry']['location'];
+      Map<String, dynamic> location = response['candidates'][0]['geometry']['location'];
       emit(state.copyWith(suggestionList: []));
       state.controller!.animateCamera(
         CameraUpdate.newCameraPosition(
@@ -73,8 +69,6 @@ class MapBloc extends Bloc<MapEvent, MapState> {
           ),
         ),
       );
-    } catch (e) {
-      print(e);
     } finally {
       emit(state.copyWith(status: MapStatus.initial));
     }

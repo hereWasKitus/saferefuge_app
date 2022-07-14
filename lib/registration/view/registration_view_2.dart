@@ -3,12 +3,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/home/home.dart';
 import 'package:protect_ua_women/profile/profile.dart';
-import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
 import 'package:protect_ua_women/widgets/form/text_dropdown.widget.dart';
 

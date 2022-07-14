@@ -10,8 +10,6 @@ class Requests extends StatefulWidget {
 class _RequestsState extends State<Requests> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const Text('requests'),
-    );
+    return const SizedBox.shrink();
   }
 }
