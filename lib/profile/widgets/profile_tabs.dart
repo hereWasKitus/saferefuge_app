@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:protect_ua_women/config/constants.dart';
 
 class ProfileTabs extends StatefulWidget {
   const ProfileTabs({Key? key, required this.activeIndex, required this.onClick}) : super(key: key);
@@ -17,15 +16,9 @@ class _ProfileTabsState extends State<ProfileTabs> {
     // return AutoTabsScaffold(routes: routes)
     return Container(
       constraints: const BoxConstraints(
-        maxHeight: 64,
+        maxHeight: 44,
       ),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(defaultBorderRadius),
-        ),
-        color: Color(0xFF6461BC),
-      ),
-      padding: const EdgeInsets.all(10),
+      // padding: const EdgeInsets.all(10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -35,13 +28,7 @@ class _ProfileTabsState extends State<ProfileTabs> {
             isActive: widget.activeIndex == 0,
             onPressed: () => widget.onClick(0),
           ),
-          const VerticalDivider(
-            width: 20,
-            thickness: 1,
-            color: Colors.white,
-            indent: 10,
-            endIndent: 10,
-          ),
+          const SizedBox(width: 10),
           _TabButton(
             text: 'Branches',
             isActive: widget.activeIndex == 1,
@@ -62,17 +49,21 @@ class _TabButton extends StatelessWidget {
 
   final ButtonStyle _activeStyle = TextButton.styleFrom(
     primary: Colors.white,
-    backgroundColor: const Color(0xFF7B61FF),
+    backgroundColor: const Color.fromRGBO(54, 83, 185, 1),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(
         Radius.circular(8),
       ),
     ),
-    elevation: 10,
   );
 
   final ButtonStyle _normalStyle = TextButton.styleFrom(
-    primary: Colors.white,
+    primary: const Color.fromRGBO(54, 83, 185, 1),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(8),
+      ),
+    ),
   );
 
   @override

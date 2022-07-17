@@ -22,7 +22,7 @@ class _EntrypointState extends State<Entrypoint> {
           const HomeRoute(),
           // mb add dump route here, remove later
           const EmptyRoute(),
-          const ProfileRoute(),
+          const ProfileRouter(),
         ];
 
         return AutoTabsScaffold(

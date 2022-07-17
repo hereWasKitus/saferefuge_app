@@ -74,23 +74,6 @@ class _ProfileFormState extends State<ProfileForm> {
                 );
               },
             ),
-            const SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () {
-                context.read<ProfileBloc>().add(const ProfileLogoutRequest());
-              },
-              child: const Text('Logout'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 60),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(defaultBorderRadius),
-                  ),
-                ),
-                primary: const Color.fromRGBO(27, 50, 132, 1),
-              ),
-            ),
-            const SizedBox(height: 24),
           ],
         ),
       ),

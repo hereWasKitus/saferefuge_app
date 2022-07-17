@@ -25,7 +25,7 @@ class _LoginViewState extends State<LoginView> {
       listener: (context, state) {
         if (state.authStatus == AuthStatus.authorized) {
           context.router.navigate(const EntrypointRoute(children: [
-            ProfileRoute(),
+            ProfileRouter(),
           ]));
         }
       },

@@ -4,3 +4,4 @@ export 'requests.dart';
 export 'branches_list.dart';
 export 'branch_form.widget.dart';
 export 'branch_card.widget.dart';
+export 'profile_menu.widget.dart';

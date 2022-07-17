@@ -94,7 +94,7 @@ class ThankYouView extends StatelessWidget {
                     context.router.navigate(
                       const EntrypointRoute(
                         children: [
-                          ProfileRoute(),
+                          ProfileRouter(),
                         ],
                       ),
                     );

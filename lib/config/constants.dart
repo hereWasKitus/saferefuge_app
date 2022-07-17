@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 // Colors
 // const Color primaryColor = Color.fromARGB(255, 65, 45, 111);
 const Color primaryColor = Color(0xFF4742DD);
+const Color actionColor = Color(0xFF1B3284);
 const Color bgColor = Color(0xFFFFFFFF);
 const Color red = Color(0xFFE73C3C);
 const Color green = Color(0xFF5A995C);
 const Color yellow = Color(0xFFE4BA22);
 const Color black = Color.fromRGBO(35, 40, 36, 1);
+const Color grey = Color(0xFF484848);
 
 // Sizes
 const double defaultPadding = 25;

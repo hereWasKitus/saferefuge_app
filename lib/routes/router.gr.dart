@@ -99,28 +99,44 @@ class AppRouter extends _i8.RootStackRouter {
       return _i8.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i8.EmptyRouterPage());
     },
-    ProfileRoute.name: (routeData) {
+    ProfileRouter.name: (routeData) {
       return _i8.CustomPage<dynamic>(
           routeData: routeData,
-          child: const _i6.ProfileView(),
+          child: const _i8.EmptyRouterPage(),
           transitionsBuilder: _i8.TransitionsBuilders.slideLeft,
           durationInMilliseconds: 150,
           opaque: true,
           barrierDismissible: false);
     },
-    ProfileFormRoute.name: (routeData) {
+    ProfileView.name: (routeData) {
       return _i8.CustomPage<dynamic>(
           routeData: routeData,
-          child: const _i6.ProfileForm(),
-          transitionsBuilder: _i8.TransitionsBuilders.fadeIn,
+          child: const _i6.ProfileView(),
+          opaque: true,
+          barrierDismissible: false);
+    },
+    ProfilePersonalInformationRoute.name: (routeData) {
+      return _i8.CustomPage<dynamic>(
+          routeData: routeData,
+          child: const _i6.ProfilePersonalInformationView(),
+          transitionsBuilder: _i8.TransitionsBuilders.slideLeft,
           durationInMilliseconds: 150,
           opaque: true,
           barrierDismissible: false);
     },
-    ProfileRequestsRoute.name: (routeData) {
+    ProfileSecurityRouter.name: (routeData) {
       return _i8.CustomPage<dynamic>(
           routeData: routeData,
-          child: const _i6.Requests(),
+          child: const _i8.EmptyRouterPage(),
+          transitionsBuilder: _i8.TransitionsBuilders.slideLeft,
+          durationInMilliseconds: 150,
+          opaque: true,
+          barrierDismissible: false);
+    },
+    ProfileMenuRoute.name: (routeData) {
+      return _i8.CustomPage<dynamic>(
+          routeData: routeData,
+          child: const _i6.ProfileMenu(),
           transitionsBuilder: _i8.TransitionsBuilders.fadeIn,
           durationInMilliseconds: 150,
           opaque: true,
@@ -131,6 +147,28 @@ class AppRouter extends _i8.RootStackRouter {
           routeData: routeData,
           child: const _i6.BranchesList(),
           transitionsBuilder: _i8.TransitionsBuilders.fadeIn,
+          durationInMilliseconds: 150,
+          opaque: true,
+          barrierDismissible: false);
+    },
+    ProfileSecurityView.name: (routeData) {
+      return _i8.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i6.ProfileSecurityView());
+    },
+    ProfileChangePasswordRoute.name: (routeData) {
+      return _i8.CustomPage<dynamic>(
+          routeData: routeData,
+          child: const _i6.ProfileChangePasswordView(),
+          transitionsBuilder: _i8.TransitionsBuilders.slideLeft,
+          durationInMilliseconds: 150,
+          opaque: true,
+          barrierDismissible: false);
+    },
+    ProfileChangeEmailRoute.name: (routeData) {
+      return _i8.CustomPage<dynamic>(
+          routeData: routeData,
+          child: const _i6.ProfileChangeEmailView(),
+          transitionsBuilder: _i8.TransitionsBuilders.slideLeft,
           durationInMilliseconds: 150,
           opaque: true,
           barrierDismissible: false);
@@ -165,16 +203,34 @@ class AppRouter extends _i8.RootStackRouter {
               path: 'home', parent: EntrypointRoute.name),
           _i8.RouteConfig(EmptyRoute.name,
               path: 'empty', parent: EntrypointRoute.name),
-          _i8.RouteConfig(ProfileRoute.name,
+          _i8.RouteConfig(ProfileRouter.name,
               path: 'profile',
               parent: EntrypointRoute.name,
               children: [
-                _i8.RouteConfig(ProfileFormRoute.name,
-                    path: '', parent: ProfileRoute.name),
-                _i8.RouteConfig(ProfileRequestsRoute.name,
-                    path: 'requests', parent: ProfileRoute.name),
-                _i8.RouteConfig(ProfileBranchesRoute.name,
-                    path: 'branches', parent: ProfileRoute.name)
+                _i8.RouteConfig(ProfileView.name,
+                    path: '',
+                    parent: ProfileRouter.name,
+                    children: [
+                      _i8.RouteConfig(ProfileMenuRoute.name,
+                          path: 'menu', parent: ProfileView.name),
+                      _i8.RouteConfig(ProfileBranchesRoute.name,
+                          path: 'branches', parent: ProfileView.name)
+                    ]),
+                _i8.RouteConfig(ProfilePersonalInformationRoute.name,
+                    path: 'personal-information', parent: ProfileRouter.name),
+                _i8.RouteConfig(ProfileSecurityRouter.name,
+                    path: 'security',
+                    parent: ProfileRouter.name,
+                    children: [
+                      _i8.RouteConfig(ProfileSecurityView.name,
+                          path: '', parent: ProfileSecurityRouter.name),
+                      _i8.RouteConfig(ProfileChangePasswordRoute.name,
+                          path: 'change-password',
+                          parent: ProfileSecurityRouter.name),
+                      _i8.RouteConfig(ProfileChangeEmailRoute.name,
+                          path: 'change-email',
+                          parent: ProfileSecurityRouter.name)
+                    ])
               ])
         ]),
         _i8.RouteConfig(RegistrationRoute.name,
@@ -362,29 +418,49 @@ class EmptyRoute extends _i8.PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [_i8.EmptyRouterPage]
+class ProfileRouter extends _i8.PageRouteInfo<void> {
+  const ProfileRouter({List<_i8.PageRouteInfo>? children})
+      : super(ProfileRouter.name, path: 'profile', initialChildren: children);
+
+  static const String name = 'ProfileRouter';
+}
+
+/// generated route for
 /// [_i6.ProfileView]
-class ProfileRoute extends _i8.PageRouteInfo<void> {
-  const ProfileRoute({List<_i8.PageRouteInfo>? children})
-      : super(ProfileRoute.name, path: 'profile', initialChildren: children);
+class ProfileView extends _i8.PageRouteInfo<void> {
+  const ProfileView({List<_i8.PageRouteInfo>? children})
+      : super(ProfileView.name, path: '', initialChildren: children);
 
-  static const String name = 'ProfileRoute';
+  static const String name = 'ProfileView';
 }
 
 /// generated route for
-/// [_i6.ProfileForm]
-class ProfileFormRoute extends _i8.PageRouteInfo<void> {
-  const ProfileFormRoute() : super(ProfileFormRoute.name, path: '');
+/// [_i6.ProfilePersonalInformationView]
+class ProfilePersonalInformationRoute extends _i8.PageRouteInfo<void> {
+  const ProfilePersonalInformationRoute()
+      : super(ProfilePersonalInformationRoute.name,
+            path: 'personal-information');
 
-  static const String name = 'ProfileFormRoute';
+  static const String name = 'ProfilePersonalInformationRoute';
 }
 
 /// generated route for
-/// [_i6.Requests]
-class ProfileRequestsRoute extends _i8.PageRouteInfo<void> {
-  const ProfileRequestsRoute()
-      : super(ProfileRequestsRoute.name, path: 'requests');
+/// [_i8.EmptyRouterPage]
+class ProfileSecurityRouter extends _i8.PageRouteInfo<void> {
+  const ProfileSecurityRouter({List<_i8.PageRouteInfo>? children})
+      : super(ProfileSecurityRouter.name,
+            path: 'security', initialChildren: children);
 
-  static const String name = 'ProfileRequestsRoute';
+  static const String name = 'ProfileSecurityRouter';
+}
+
+/// generated route for
+/// [_i6.ProfileMenu]
+class ProfileMenuRoute extends _i8.PageRouteInfo<void> {
+  const ProfileMenuRoute() : super(ProfileMenuRoute.name, path: 'menu');
+
+  static const String name = 'ProfileMenuRoute';
 }
 
 /// generated route for
@@ -394,6 +470,32 @@ class ProfileBranchesRoute extends _i8.PageRouteInfo<void> {
       : super(ProfileBranchesRoute.name, path: 'branches');
 
   static const String name = 'ProfileBranchesRoute';
+}
+
+/// generated route for
+/// [_i6.ProfileSecurityView]
+class ProfileSecurityView extends _i8.PageRouteInfo<void> {
+  const ProfileSecurityView() : super(ProfileSecurityView.name, path: '');
+
+  static const String name = 'ProfileSecurityView';
+}
+
+/// generated route for
+/// [_i6.ProfileChangePasswordView]
+class ProfileChangePasswordRoute extends _i8.PageRouteInfo<void> {
+  const ProfileChangePasswordRoute()
+      : super(ProfileChangePasswordRoute.name, path: 'change-password');
+
+  static const String name = 'ProfileChangePasswordRoute';
+}
+
+/// generated route for
+/// [_i6.ProfileChangeEmailView]
+class ProfileChangeEmailRoute extends _i8.PageRouteInfo<void> {
+  const ProfileChangeEmailRoute()
+      : super(ProfileChangeEmailRoute.name, path: 'change-email');
+
+  static const String name = 'ProfileChangeEmailRoute';
 }
 
 /// generated route for

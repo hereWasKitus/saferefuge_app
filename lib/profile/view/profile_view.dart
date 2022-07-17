@@ -15,80 +15,83 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   @override
-  Widget build(BuildContext context) {
-    return BlocListener<ProfileBloc, ProfileState>(
-      listener: (context, state) {
-        if (state.authStatus != AuthStatus.authorized) {
-          context.read<RegistrationBloc>().add(const RegistrationEraseProgress());
-          context.tabsRouter.navigate(const HomeRoute());
-        } else {
-          context.read<ProfileBloc>().add(const ProfileFetchBranchesRequest());
-        }
-      },
-      listenWhen: (previous, current) => previous.authStatus != current.authStatus,
-      child: SafeArea(
-        child: AutoTabsRouter(
-          routes: const [
-            ProfileFormRoute(),
-            ProfileBranchesRoute(),
-          ],
-          builder: (context, child, animation) {
-            final tabsRouter = AutoTabsRouter.of(context);
+  Widget build(BuildContext context) => BlocListener<ProfileBloc, ProfileState>(
+        listener: (context, state) {
+          if (state.authStatus != AuthStatus.authorized) {
+            context.read<RegistrationBloc>().add(const RegistrationEraseProgress());
+            context.tabsRouter.navigate(const HomeRoute());
+          } else {
+            context.read<ProfileBloc>().add(const ProfileFetchBranchesRequest());
+          }
+        },
+        listenWhen: (previous, current) => previous.authStatus != current.authStatus,
+        child: SafeArea(
+          child: AutoTabsRouter(
+            routes: const [
+              ProfileMenuRoute(),
+              ProfileBranchesRoute(),
+            ],
+            builder: (context, child, animation) {
+              final tabsRouter = AutoTabsRouter.of(context);
 
-            return Scaffold(
-              body: SingleChildScrollView(
-                padding: const EdgeInsets.only(
-                  left: defaultPadding,
-                  right: defaultPadding,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    BlocBuilder<ProfileBloc, ProfileState>(
-                      buildWhen: (previos, current) =>
-                          (previos.formStatus != current.formStatus &&
-                              current.formStatus == FormStatus.updateSucceed) ||
-                          previos.authStatus != current.authStatus,
-                      builder: (context, state) {
-                        return RichText(
-                          text: TextSpan(
+              return Scaffold(
+                body: SingleChildScrollView(
+                  padding: const EdgeInsets.only(
+                    top: 72,
+                    left: defaultPadding,
+                    right: defaultPadding,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const CircleAvatar(
+                        radius: 42,
+                        backgroundColor: Color(0xFFD9D9D9),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        context.select((ProfileBloc bloc) => bloc.state.name),
+                        style: const TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF1B3284),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            context.select((ProfileBloc bloc) => bloc.state.email),
                             style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 36,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: 'Rubik',
+                              fontSize: 16,
                             ),
-                            children: [
-                              TextSpan(
-                                text: '${state.name},\r\n',
-                                style: const TextStyle(
-                                  color: Color(0xFF1B3284),
-                                ),
-                              ),
-                              const TextSpan(text: 'here is your'),
-                            ],
                           ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 24),
-                    ProfileTabs(
-                      onClick: (int index) => tabsRouter.setActiveIndex(index),
-                      activeIndex: tabsRouter.activeIndex,
-                    ),
-                    const SizedBox(height: 16),
-                    FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    )
-                  ],
+                          const SizedBox(width: 5),
+                          const Icon(Icons.check_circle, color: green),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      const Divider(
+                        color: Color.fromRGBO(115, 119, 122, 1),
+                        thickness: 1,
+                      ),
+                      const SizedBox(height: 12),
+                      ProfileTabs(
+                        onClick: (int index) => tabsRouter.setActiveIndex(index),
+                        activeIndex: tabsRouter.activeIndex,
+                      ),
+                      const SizedBox(height: 16),
+                      FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
