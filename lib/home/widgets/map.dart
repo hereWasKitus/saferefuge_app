@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
@@ -163,12 +164,13 @@ class _HomeState extends State<MapMain> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<HomeBloc, HomeState>(
-      listenWhen: (previous, current) {
-        return (previous.selectedCategories != current.selectedCategories || previous.pois != current.pois);
-      },
+      listenWhen: (previous, current) =>
+          (previous.selectedCategories != current.selectedCategories || previous.pois != current.pois),
       listener: (context, state) {
         List<POIMarker> filteredPOIs =
             state.pois.where((item) => item.poi.containsCategories(state.selectedCategories)).toList();
+
+        print(state.selectedCategories);
 
         _manager.setItems(filteredPOIs.isEmpty ? state.pois : filteredPOIs);
         _manager.updateMap();

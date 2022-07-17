@@ -34,14 +34,14 @@ class CategoriesList extends StatelessWidget {
                     List<String> _newSelectedTags = List<String>.from(state.selectedCategories);
 
                     if (isSelected) {
-                      _newSelectedTags.add(cat.id);
+                      _newSelectedTags.add(cat.name);
                     } else {
-                      _newSelectedTags.removeWhere((id) => id == cat.id);
+                      _newSelectedTags.removeWhere((name) => name == cat.name);
                     }
 
                     context.read<HomeBloc>().add(SetSelectedCategoriesEvent(selectedCategories: _newSelectedTags));
                   },
-                  isSelected: state.selectedCategories.contains(cat.id),
+                  isSelected: state.selectedCategories.contains(cat.name),
                 );
               },
             ),
@@ -55,8 +55,12 @@ class CategoriesList extends StatelessWidget {
 }
 
 class MapCategoryChip extends StatelessWidget {
-  const MapCategoryChip({Key? key, required this.onSelected, required this.category, this.isSelected = false})
-      : super(key: key);
+  const MapCategoryChip({
+    Key? key,
+    required this.onSelected,
+    required this.category,
+    this.isSelected = false,
+  }) : super(key: key);
 
   final Category category;
   final Function(bool) onSelected;
@@ -67,7 +71,7 @@ class MapCategoryChip extends StatelessWidget {
     return FilterChip(
       label: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Text(
-          category.name!,
+          category.name,
           style: const TextStyle(
             color: Colors.white,
             fontSize: 12,
@@ -76,7 +80,8 @@ class MapCategoryChip extends StatelessWidget {
         ),
       ]),
       onSelected: onSelected,
-      showCheckmark: false,
+      showCheckmark: true,
+      checkmarkColor: Colors.white,
       backgroundColor: const Color.fromRGBO(
           44, 83, 218, 0.8), // for some reason there is still white background underneath my background
       // backgroundColor: primaryColor,

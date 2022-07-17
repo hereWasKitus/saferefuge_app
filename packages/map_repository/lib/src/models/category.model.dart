@@ -2,14 +2,14 @@ import 'dart:convert';
 
 class Category {
   String id;
-  String? name;
+  String name;
   String? ru;
   String? ua;
   String? description;
   String? icon;
   Category({
     required this.id,
-    this.name,
+    this.name = '',
     this.ru,
     this.ua,
     this.description,
