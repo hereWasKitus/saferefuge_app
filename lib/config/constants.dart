@@ -10,6 +10,7 @@ const Color green = Color(0xFF5A995C);
 const Color yellow = Color(0xFFE4BA22);
 const Color black = Color.fromRGBO(35, 40, 36, 1);
 const Color grey = Color(0xFF484848);
+const Color grey2 = Color(0xFF73777A);
 
 // Sizes
 const double defaultPadding = 25;

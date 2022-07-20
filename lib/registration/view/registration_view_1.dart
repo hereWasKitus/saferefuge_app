@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/home/home.dart';
 import 'package:protect_ua_women/profile/profile.dart';
@@ -24,20 +25,29 @@ class _RegistrationView1State extends State<RegistrationView1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text(
+          'Registration',
+          style: TextStyle(
+            color: grey,
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.transparent,
         elevation: 0,
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 25),
-            child: RotatedBox(
-              quarterTurns: 1,
-              child: MenuButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  context.router.pop();
-                },
+            padding: const EdgeInsets.only(right: 15),
+            child: IconButton(
+              icon: const Icon(
+                Icons.close,
+                color: grey,
               ),
+              onPressed: () {
+                context.router.pop();
+              },
             ),
           ),
         ],
@@ -63,26 +73,26 @@ class _RegistrationView1State extends State<RegistrationView1> {
         // listenWhen: (old, current) => old.registrationStatus != current.registrationStatus,
         child: SingleChildScrollView(
           padding: const EdgeInsets.only(
-            top: 64,
             left: defaultPadding,
             right: defaultPadding,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              SvgPicture.asset('assets/logo-alt.svg'),
+              const SizedBox(height: 24),
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
-                    const SizedBox(height: 24),
                     const _NameField(),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 8),
                     const _EmailField(),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 8),
                     const _PasswordField(),
-                    const SizedBox(
-                      height: 48,
-                    ),
+                    const SizedBox(height: 16),
+                    const _UserTypeRadio(),
+                    const SizedBox(height: 24),
                     BlocBuilder<RegistrationBloc, RegistrationState>(
                       builder: (context, state) {
                         return ElevatedButton(
@@ -111,9 +121,9 @@ class _RegistrationView1State extends State<RegistrationView1> {
                         const Text(
                           'Have an account?',
                           style: TextStyle(
-                            color: Color.fromRGBO(71, 66, 221, 0.7),
+                            color: grey2,
                             fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         TextButton(
@@ -238,6 +248,85 @@ class _NameField extends StatelessWidget {
           },
         );
       },
+    );
+  }
+}
+
+class _UserTypeRadio extends StatefulWidget {
+  const _UserTypeRadio({Key? key}) : super(key: key);
+
+  @override
+  State<_UserTypeRadio> createState() => __UserTypeRadioState();
+}
+
+class __UserTypeRadioState extends State<_UserTypeRadio> {
+  int _type = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Radio(
+              value: 0,
+              groupValue: _type,
+              onChanged: (int? value) {
+                // setState(() {
+                //   if (value == null) return;
+                //   _type = value;
+                // });
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    const SnackBar(
+                      content: Text('Coming soon!'),
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: grey2,
+                    ),
+                  );
+              },
+            ),
+            const Text(
+              'I\'m private volunteer / refugee',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: grey2,
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Radio(
+              value: 1,
+              groupValue: _type,
+              onChanged: (int? value) {
+                setState(() {
+                  if (value == null) return;
+                  _type = value;
+                });
+              },
+              fillColor: MaterialStateProperty.resolveWith<Color>((states) {
+                // if (states.contains(MaterialState.disabled)) {
+                //   return Colors.orange.withOpacity(.32);
+                // }
+                return primaryColor;
+              }),
+            ),
+            const Text(
+              'I\'m NGO\'s member',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: grey2,
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 }

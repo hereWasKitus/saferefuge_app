@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:protect_ua_women/login/login.dart';
 import 'package:protect_ua_women/config/constants.dart';
-import 'package:protect_ua_women/home/home.dart';
 import 'package:protect_ua_women/profile/profile.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
@@ -32,20 +32,29 @@ class _LoginViewState extends State<LoginView> {
       listenWhen: (previous, current) => previous.authStatus != current.authStatus,
       child: Scaffold(
         appBar: AppBar(
+          title: const Text(
+            'Log in',
+            style: TextStyle(
+              color: grey,
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           foregroundColor: Colors.transparent,
           elevation: 0,
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 25),
-              child: RotatedBox(
-                quarterTurns: 1,
-                child: MenuButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () {
-                    context.router.pop();
-                  },
+              padding: const EdgeInsets.only(right: 15),
+              child: IconButton(
+                icon: const Icon(
+                  Icons.close,
+                  color: grey,
                 ),
+                onPressed: () {
+                  context.router.pop();
+                },
               ),
             ),
           ],
@@ -59,6 +68,8 @@ class _LoginViewState extends State<LoginView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              SvgPicture.asset('assets/logo-alt.svg'),
+              const SizedBox(height: 24),
               Form(
                 key: _formKey,
                 child: Column(
@@ -75,9 +86,9 @@ class _LoginViewState extends State<LoginView> {
                         const Text(
                           'Don\'t have an account?',
                           style: TextStyle(
-                            color: Color.fromRGBO(71, 66, 221, 0.7),
+                            color: grey2,
                             fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         TextButton(
