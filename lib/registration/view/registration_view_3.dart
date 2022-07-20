@@ -23,26 +23,36 @@ class _RegistrationView3State extends State<RegistrationView3> {
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.transparent,
         elevation: 0,
+        title: const Text(
+          'Registration',
+          style: TextStyle(
+            color: grey,
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 25),
-            child: RotatedBox(
-              quarterTurns: 1,
-              child: MenuButton(
-                onPressed: () {
-                  context.router.pop();
-                },
+            padding: const EdgeInsets.only(right: 15),
+            child: IconButton(
+              icon: const Icon(
+                Icons.close,
+                color: grey,
               ),
+              onPressed: () {
+                context.router.pop();
+              },
             ),
           ),
         ],
       ),
       resizeToAvoidBottomInset: false,
-      body: Padding(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
         padding: const EdgeInsets.only(
           left: defaultPadding,
           right: defaultPadding,
-          bottom: 60,
+          // bottom: 60,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -71,11 +81,95 @@ class _RegistrationView3State extends State<RegistrationView3> {
             const Text(
               'Adding branches to our map will allow people to get more help quickly!',
               style: TextStyle(
+                fontWeight: FontWeight.w500,
                 color: Color.fromRGBO(27, 50, 132, 1),
                 fontSize: 16,
               ),
             ),
-            const Spacer(),
+            const SizedBox(height: 20),
+            const Divider(
+              color: Color(0xFFDDDDDD),
+              thickness: 1,
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'If you have many point of help, you can conntact to us directly and send you branches by e-mail',
+              style: TextStyle(
+                fontSize: 16,
+                color: grey,
+              ),
+            ),
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                IconButton(
+                  padding: const EdgeInsets.all(0),
+                  onPressed: () {},
+                  icon: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const Color(0xFF3653B9),
+                        width: 1,
+                      ),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.email_outlined,
+                      color: Color(0xFF3653B9),
+                      size: 24,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                IconButton(
+                  padding: const EdgeInsets.all(0),
+                  onPressed: () {},
+                  icon: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const Color(0xFF3653B9),
+                        width: 1,
+                      ),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.phone_rounded,
+                      color: Color(0xFF3653B9),
+                      size: 24,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                IconButton(
+                  padding: const EdgeInsets.all(0),
+                  onPressed: () {},
+                  icon: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const Color(0xFF3653B9),
+                        width: 1,
+                      ),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.whatsapp,
+                      color: Color(0xFF3653B9),
+                      size: 24,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Image.asset('assets/blured_penguins.png'),
+              ],
+            ),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 context.router.push(

@@ -42,17 +42,25 @@ class _RegistrationView2State extends State<RegistrationView2> {
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.transparent,
         elevation: 0,
+        title: const Text(
+          'Registration',
+          style: TextStyle(
+            color: grey,
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 25),
-            child: RotatedBox(
-              quarterTurns: 1,
-              child: MenuButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  context.router.pop();
-                },
+            padding: const EdgeInsets.only(right: 15),
+            child: IconButton(
+              icon: const Icon(
+                Icons.close,
+                color: grey,
               ),
+              onPressed: () {
+                context.router.pop();
+              },
             ),
           ),
         ],
