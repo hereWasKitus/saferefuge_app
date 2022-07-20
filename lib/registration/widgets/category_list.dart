@@ -49,17 +49,17 @@ class _CategoryListState extends State<CategoryList> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      category.name!,
+                      category.name,
                       style: const TextStyle(color: Colors.white, fontSize: 12),
                     ),
                     // const SizedBox(width: 6),
                   ],
                 ),
-                onSelected: (bool selected) => _onSelected(selected, category.name!),
+                onSelected: (bool selected) => _onSelected(selected, category.name),
                 showCheckmark: false,
                 backgroundColor: const Color.fromRGBO(44, 83, 218, 0.8),
                 selectedColor: const Color.fromRGBO(27, 50, 132, 1),
-                selected: _selected.contains(category.name!),
+                selected: _selected.contains(category.name),
               );
             },
           ).toList(),

@@ -60,10 +60,7 @@ class AppRouter extends _i8.RootStackRouter {
       final args = routeData.argsAs<OrganizationListRouteArgs>();
       return _i8.CustomPage<dynamic>(
           routeData: routeData,
-          child: _i4.OrganizationListView(
-              key: args.key,
-              pois: args.pois,
-              currentPosition: args.currentPosition),
+          child: _i4.OrganizationListView(key: args.key, pois: args.pois),
           transitionsBuilder: _i8.TransitionsBuilders.slideLeft,
           durationInMilliseconds: 150,
           opaque: true,
@@ -295,30 +292,24 @@ class LoginRoute extends _i8.PageRouteInfo<void> {
 class OrganizationListRoute
     extends _i8.PageRouteInfo<OrganizationListRouteArgs> {
   OrganizationListRoute(
-      {_i9.Key? key,
-      required _i10.Future<List<_i7.POI>> pois,
-      required _i10.Future<_i11.LatLng> currentPosition})
+      {_i9.Key? key, required _i10.Future<List<_i7.POI>> pois})
       : super(OrganizationListRoute.name,
             path: '/organizations',
-            args: OrganizationListRouteArgs(
-                key: key, pois: pois, currentPosition: currentPosition));
+            args: OrganizationListRouteArgs(key: key, pois: pois));
 
   static const String name = 'OrganizationListRoute';
 }
 
 class OrganizationListRouteArgs {
-  const OrganizationListRouteArgs(
-      {this.key, required this.pois, required this.currentPosition});
+  const OrganizationListRouteArgs({this.key, required this.pois});
 
   final _i9.Key? key;
 
   final _i10.Future<List<_i7.POI>> pois;
 
-  final _i10.Future<_i11.LatLng> currentPosition;
-
   @override
   String toString() {
-    return 'OrganizationListRouteArgs{key: $key, pois: $pois, currentPosition: $currentPosition}';
+    return 'OrganizationListRouteArgs{key: $key, pois: $pois}';
   }
 }
 

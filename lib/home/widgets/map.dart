@@ -120,10 +120,7 @@ class _HomeState extends State<MapMain> {
               List<String> ids = cluster.items.map((item) => item.poi.id).toList();
 
               AutoRouter.of(context).push(
-                OrganizationListRoute(
-                  pois: context.read<MapRepository>().getPOIsByID(ids),
-                  currentPosition: determinePosition(),
-                ),
+                OrganizationListRoute(pois: context.read<MapRepository>().getPOIsByID(ids)),
               );
             }
           },
@@ -169,8 +166,6 @@ class _HomeState extends State<MapMain> {
       listener: (context, state) {
         List<POIMarker> filteredPOIs =
             state.pois.where((item) => item.poi.containsCategories(state.selectedCategories)).toList();
-
-        print(state.selectedCategories);
 
         _manager.setItems(filteredPOIs.isEmpty ? state.pois : filteredPOIs);
         _manager.updateMap();
