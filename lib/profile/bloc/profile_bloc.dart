@@ -20,12 +20,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileFormHasChangedEvent>(_onProfileFormIsChanged);
     on<ProfileFormChangedEvent>(_onProfileFormChanged);
     on<ProfileTryGetUser>(_onTryGetUser);
-    on<ProfileUpdateRequest>(_onSaveForm);
+    on<ProfileUpdateRequest>(_onProfileUpdate);
     on<ProfileFormStatusChanged>(_onFormStatusChanged);
     on<ProfileAddBranchRequest>(_onAddBranchRequest);
     on<ProfileFetchBranchesRequest>(_onFetchBranchesRequest);
     on<ProfileUpdateBranchRequest>(_onUpdateBranchRequest);
     on<ProfileLogoutRequest>(_onLogoutRequest);
+    on<ProfileUpdateOnboardingStatus>(_onOnboardingStatusUpdate);
   }
 
   final AuthRepository _authRepository;
@@ -73,13 +74,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         organizationEmail: user.org?.email,
         organizationPhone: user.org?.phone,
         organizationCountry: user.org?.country,
+        organizationPosition: user.positionInOrganization,
+        onboardingStatus: user.onboardingStatus,
         services: user.org?.categories,
         isLoading: false,
       ));
     }
   }
 
-  _onSaveForm(ProfileUpdateRequest event, Emitter<ProfileState> emit) async {
+  _onProfileUpdate(ProfileUpdateRequest event, Emitter<ProfileState> emit) async {
     emit(state.copyWith(formStatus: FormStatus.loading, errorMessage: ''));
 
     try {
@@ -136,10 +139,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-  _onLogoutRequest(ProfileLogoutRequest event, Emitter<ProfileState> emit) {
+  _onLogoutRequest(ProfileLogoutRequest event, Emitter<ProfileState> emit) async {
     emit(state.copyWith(formStatus: FormStatus.loading, errorMessage: ''));
 
-    _authRepository.logout();
+    await _authRepository.logout();
 
     emit(state.copyWith(
       name: '',
@@ -158,6 +161,25 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       organizationTelegram: '',
       authStatus: AuthStatus.unauthorized,
       isLoading: false,
+      onboardingStatus: {'INITIAL'},
     ));
+  }
+
+  _onOnboardingStatusUpdate(ProfileUpdateOnboardingStatus event, Emitter<ProfileState> emit) async {
+    emit(state.copyWith(onboardingUpdateStatus: OnboardingUpdateStatus.loading, errorMessage: ''));
+
+    try {
+      Set<String> newStatus = {...state.onboardingStatus, event.status};
+      await _profileRepository.updateProfile(onboardingStatus: newStatus.toList());
+      emit(state.copyWith(
+        onboardingUpdateStatus: OnboardingUpdateStatus.success,
+        onboardingStatus: newStatus,
+      ));
+    } on APIException catch (e) {
+      emit(state.copyWith(
+        onboardingUpdateStatus: OnboardingUpdateStatus.fail,
+        errorMessage: e.message,
+      ));
+    }
   }
 }

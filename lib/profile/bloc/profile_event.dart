@@ -98,3 +98,12 @@ class ProfileLogoutRequest extends ProfileEvent {
   @override
   List<Object> get props => [];
 }
+
+class ProfileUpdateOnboardingStatus extends ProfileEvent {
+  final String status;
+
+  const ProfileUpdateOnboardingStatus(this.status);
+
+  @override
+  List<Object> get props => [status];
+}

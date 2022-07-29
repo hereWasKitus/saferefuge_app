@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:protect_ua_women/config/constants.dart';
-import 'package:protect_ua_women/home/home.dart';
 import 'package:protect_ua_women/profile/profile.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
@@ -23,55 +22,65 @@ class _RegistrationView1State extends State<RegistrationView1> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Registration',
-          style: TextStyle(
-            color: grey,
-            fontSize: 20,
-            fontWeight: FontWeight.w400,
-          ),
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<RegistrationBloc, RegistrationState>(
+          listenWhen: (previous, current) => previous.registrationStatus != current.registrationStatus,
+          listener: (context, state) async {
+            if (state.registrationStatus == RegistrationStatus.failed) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage),
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: red,
+                ),
+              );
+            }
+
+            if (state.registrationStatus == RegistrationStatus.success) {
+              context.read<ProfileBloc>().add(const ProfileTryGetUser());
+            }
+          },
         ),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
-        elevation: 0,
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: IconButton(
-              icon: const Icon(
-                Icons.close,
-                color: grey,
-              ),
-              onPressed: () {
-                context.router.pop();
-              },
+        BlocListener<ProfileBloc, ProfileState>(
+          listenWhen: (previous, current) => previous.authStatus != current.authStatus,
+          listener: (context, state) {
+            if (state.authStatus == AuthStatus.authorized) {
+              context.read<ProfileBloc>().add(const ProfileUpdateOnboardingStatus('ORGANIZATION_ASSIGNMENT'));
+            }
+          },
+        ),
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Registration',
+            style: TextStyle(
+              color: grey,
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
             ),
           ),
-        ],
-      ),
-      body: BlocListener<RegistrationBloc, RegistrationState>(
-        listenWhen: (previous, current) => previous.registrationStatus != current.registrationStatus,
-        listener: (context, state) async {
-          if (state.registrationStatus == RegistrationStatus.failed) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage),
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: red,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.transparent,
+          elevation: 0,
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: IconButton(
+                icon: const Icon(
+                  Icons.close,
+                  color: grey,
+                ),
+                onPressed: () {
+                  context.router.pop();
+                },
               ),
-            );
-          }
-
-          if (state.registrationStatus == RegistrationStatus.success) {
-            context.read<ProfileBloc>().add(const ProfileTryGetUser());
-            context.read<RegistrationBloc>().add(const RegistrationFirstStepCompleted(true));
-          }
-        },
-        // listenWhen: (old, current) => old.registrationStatus != current.registrationStatus,
-        child: SingleChildScrollView(
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
           padding: const EdgeInsets.only(
             left: defaultPadding,
             right: defaultPadding,
@@ -95,9 +104,18 @@ class _RegistrationView1State extends State<RegistrationView1> {
                     const SizedBox(height: 24),
                     BlocBuilder<RegistrationBloc, RegistrationState>(
                       builder: (context, state) {
+                        final OnboardingUpdateStatus onboardingUpdateStatus =
+                            context.select((ProfileBloc bloc) => bloc.state.onboardingUpdateStatus);
+
+                        final bool userIsLoading = context.select((ProfileBloc bloc) => bloc.state.isLoading);
+
+                        final bool isLoading = (state.registrationStatus == RegistrationStatus.loading) ||
+                            userIsLoading ||
+                            (onboardingUpdateStatus == OnboardingUpdateStatus.loading);
+
                         return ElevatedButton(
                           onPressed: _handleFormSubmit,
-                          child: state.registrationStatus == RegistrationStatus.loading
+                          child: isLoading
                               ? const SpinKitCircle(
                                   color: Colors.white,
                                 )

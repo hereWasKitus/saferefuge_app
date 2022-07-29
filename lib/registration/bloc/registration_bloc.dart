@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_repository/map_repository.dart';
+import 'package:profile_repository/profile_repository.dart';
 import 'package:safeway_api/safeway_api.dart';
 
 part 'registration_event.dart';
@@ -13,9 +14,6 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       : _authRepository = authRepository,
         super(const RegistrationState()) {
     on<RegistrationPositionChanged>(_onPositionChanged);
-    on<RegistrationFirstStepCompleted>(_onFirstStepCompleted);
-    on<RegistrationSecondStepCompleted>(_onSecondStepCompleted);
-    on<RegistrationCompleted>(_onRegistrationCompleted);
     on<RegistrationRequestEvent>(_onRegistrationRequest);
     on<RegistrationFormChangedEvent>(_onRegistrationFormChanged);
     on<RegistrationBranchChanged>(_onBranchChanged);
@@ -28,18 +26,6 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
   _onPositionChanged(RegistrationPositionChanged event, Emitter<RegistrationState> emit) {
     emit(state.copyWith(position: event.position));
-  }
-
-  _onFirstStepCompleted(RegistrationFirstStepCompleted event, Emitter<RegistrationState> emit) {
-    emit(state.copyWith(firstStepCompleted: event.completed));
-  }
-
-  _onSecondStepCompleted(RegistrationSecondStepCompleted event, Emitter<RegistrationState> emit) {
-    emit(state.copyWith(secondStepCompleted: event.completed));
-  }
-
-  _onRegistrationCompleted(RegistrationCompleted event, Emitter<RegistrationState> emit) {
-    emit(state.copyWith(registrationCompleted: event.completed));
   }
 
   _onBranchChanged(RegistrationBranchChanged event, Emitter<RegistrationState> emit) {
@@ -101,10 +87,11 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         whatsapp: state.organizationWhatsapp,
         telegram: state.organizationTelegram,
         positionInOrganization: state.positionInOrganization,
+        country: state.organizationCountry,
+        website: state.website,
       );
 
       emit(state.copyWith(
-        secondStepCompleted: true,
         organizationRegistrationStatus: NGORegistrationStatus.success,
         errorMessage: '',
       ));
@@ -143,7 +130,6 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       organizationRegistrationStatus: NGORegistrationStatus.initial,
       errorMessage: '',
       registrationStatus: RegistrationStatus.initial,
-      registrationCompleted: false,
       firstStepCompleted: false,
       secondStepCompleted: false,
       organizationsLoaded: false,

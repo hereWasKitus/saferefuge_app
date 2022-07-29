@@ -24,9 +24,9 @@ class _LoginViewState extends State<LoginView> {
     return BlocListener<ProfileBloc, ProfileState>(
       listener: (context, state) {
         if (state.authStatus == AuthStatus.authorized) {
-          context.router.navigate(const EntrypointRoute(children: [
-            ProfileRouter(),
-          ]));
+          List<PageRouteInfo> routes =
+              state.isOnboardingFinished ? [const ProfileRouter()] : [const RegistrationRoute()];
+          context.router.navigate(EntrypointRoute(children: routes));
         }
       },
       listenWhen: (previous, current) => previous.authStatus != current.authStatus,

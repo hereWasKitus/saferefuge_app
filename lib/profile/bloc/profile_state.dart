@@ -21,6 +21,20 @@ enum AddBranchStatus {
   fail,
 }
 
+enum OnboardingUpdateStatus {
+  initial,
+  loading,
+  success,
+  fail,
+}
+
+// enum OnboardingStatus {
+//   INITIAL,
+//   ORGANIZATION_ASSIGNMENT,
+//   BRANCH_REGISTRATION,
+//   FINISHED,
+// }
+
 class ProfileState extends Equatable {
   const ProfileState({
     this.formChanged = false,
@@ -43,6 +57,8 @@ class ProfileState extends Equatable {
     this.formStatus = FormStatus.initial,
     this.errorMessage = '',
     this.addBranchStatus = AddBranchStatus.initial,
+    this.onboardingStatus = const {'INITIAL'},
+    this.onboardingUpdateStatus = OnboardingUpdateStatus.initial,
   });
 
   final bool formChanged;
@@ -65,6 +81,10 @@ class ProfileState extends Equatable {
   final String errorMessage;
   final String organizationCountry;
   final AddBranchStatus addBranchStatus;
+  final Set<String> onboardingStatus;
+  final OnboardingUpdateStatus onboardingUpdateStatus;
+
+  bool get isOnboardingFinished => onboardingStatus.contains('FINISHED');
 
   ProfileState copyWith({
     bool? formChanged,
@@ -87,6 +107,8 @@ class ProfileState extends Equatable {
     String? errorMessage,
     String? organizationCountry,
     AddBranchStatus? addBranchStatus,
+    Set<String>? onboardingStatus,
+    OnboardingUpdateStatus? onboardingUpdateStatus,
   }) =>
       ProfileState(
         formChanged: formChanged ?? this.formChanged,
@@ -109,6 +131,8 @@ class ProfileState extends Equatable {
         errorMessage: errorMessage ?? this.errorMessage,
         organizationCountry: organizationCountry ?? this.organizationCountry,
         addBranchStatus: addBranchStatus ?? this.addBranchStatus,
+        onboardingStatus: onboardingStatus ?? this.onboardingStatus,
+        onboardingUpdateStatus: onboardingUpdateStatus ?? this.onboardingUpdateStatus,
       );
 
   @override
@@ -133,6 +157,8 @@ class ProfileState extends Equatable {
         errorMessage,
         organizationCountry,
         addBranchStatus,
+        onboardingStatus,
+        onboardingUpdateStatus,
       ];
 }
 

@@ -121,7 +121,7 @@ class AuthRepository {
     }
   }
 
-  void logout() async {
+  Future<void> logout() async {
     try {
       _api.logout();
     } on DioError catch (e) {

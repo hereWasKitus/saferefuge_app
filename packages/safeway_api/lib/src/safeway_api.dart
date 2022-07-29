@@ -124,6 +124,7 @@ class SafeWayAPI {
     String? email,
     String? fullName,
     String? orgPosition,
+    List<String>? onboardingStatus,
   }) async {
     Map<String, dynamic> request = {};
 
@@ -138,6 +139,10 @@ class SafeWayAPI {
 
     if (orgPosition != null) {
       request['org_position'] = orgPosition;
+    }
+
+    if (onboardingStatus != null) {
+      request['on_boarding'] = onboardingStatus;
     }
 
     return await _dio.patch(
@@ -278,7 +283,9 @@ class SafeWayAPI {
     );
   }
 
-  void logout() {
+  Future<void> logout() async {
+    var pref = await SharedPreferences.getInstance();
+    pref.remove('token');
     _dio.options.headers['Authorization'] = '';
   }
 }

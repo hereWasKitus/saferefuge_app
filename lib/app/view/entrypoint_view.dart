@@ -16,7 +16,8 @@ class _EntrypointState extends State<Entrypoint> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
-      buildWhen: (previous, current) => previous.authStatus != current.authStatus,
+      buildWhen: (previous, current) =>
+          previous.authStatus != current.authStatus || previous.onboardingStatus != current.onboardingStatus,
       builder: (context, state) {
         List<PageRouteInfo<dynamic>> _routes = [
           const HomeRoute(),
@@ -49,7 +50,7 @@ class _EntrypointState extends State<Entrypoint> {
               onTap: (int index) {
                 // this is shit, refactor it
                 if (index == 1) {
-                  if (state.authStatus != AuthStatus.authorized) {
+                  if ((state.authStatus != AuthStatus.authorized) || !state.isOnboardingFinished) {
                     context.navigateTo(const RegistrationRoute());
                   } else {
                     context.navigateTo(AddBranchRoute());
@@ -58,7 +59,8 @@ class _EntrypointState extends State<Entrypoint> {
                   return;
                 }
 
-                if (index == _routes.length - 1 && state.authStatus != AuthStatus.authorized) {
+                if (index == _routes.length - 1 &&
+                    (state.authStatus != AuthStatus.authorized || !state.isOnboardingFinished)) {
                   context.navigateTo(const RegistrationRoute());
                 } else {
                   tabsRouter.setActiveIndex(index);

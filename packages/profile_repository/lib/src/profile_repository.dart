@@ -6,13 +6,14 @@ class ProfileRepository {
   ProfileRepository({required SafeWayAPI api}) : _api = api;
 
   Future<void> updateProfile({
-    required String userEmail,
+    String? userEmail,
     String? userFullName,
     String? userPassword,
     String? organizationName,
     String? organizationEmail,
     String? organizationPhone,
     String? organizationPosition,
+    List<String>? onboardingStatus,
   }) async {
     Map<String, dynamic> organizationRequest = {};
     Map<String, dynamic> userRequest = {};
@@ -24,13 +25,12 @@ class ProfileRepository {
     if (userPassword != null) userRequest['password'];
 
     try {
-      await _api.updateUser(email: userEmail, fullName: userFullName, orgPosition: organizationPosition);
-      // await _api.updateOrganization(
-      //   username: userEmail,
-      //   organizationEmail: organizationEmail,
-      //   organizationName: organizationName,
-      //   organizationPhone: organizationPhone,
-      // );
+      await _api.updateUser(
+        email: userEmail,
+        fullName: userFullName,
+        orgPosition: organizationPosition,
+        onboardingStatus: onboardingStatus,
+      );
     } on DioError catch (e) {
       throw APIException.fromDioError(e);
     } catch (e) {

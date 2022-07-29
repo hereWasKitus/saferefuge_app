@@ -16,33 +16,6 @@ class RegistrationPositionChanged extends RegistrationEvent {
   List<Object> get props => [position];
 }
 
-class RegistrationFirstStepCompleted extends RegistrationEvent {
-  final bool completed;
-
-  const RegistrationFirstStepCompleted(this.completed);
-
-  @override
-  List<Object> get props => [completed];
-}
-
-class RegistrationSecondStepCompleted extends RegistrationEvent {
-  final bool completed;
-
-  const RegistrationSecondStepCompleted(this.completed);
-
-  @override
-  List<Object> get props => [completed];
-}
-
-class RegistrationCompleted extends RegistrationEvent {
-  final bool completed;
-
-  const RegistrationCompleted(this.completed);
-
-  @override
-  List<Object> get props => [completed];
-}
-
 class RegistrationRequestEvent extends RegistrationEvent {
   const RegistrationRequestEvent();
 

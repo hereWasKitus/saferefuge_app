@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:map_repository/map_repository.dart';
 import 'package:protect_ua_women/config/constants.dart';
-import 'package:protect_ua_women/home/widgets/menu_button.dart';
+import 'package:protect_ua_women/profile/profile.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 
 import '../registration.dart';
@@ -22,6 +22,7 @@ class _RegistrationView3State extends State<RegistrationView3> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
         elevation: 0,
         title: const Text(
           'Registration',
@@ -58,11 +59,11 @@ class _RegistrationView3State extends State<RegistrationView3> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BlocBuilder<RegistrationBloc, RegistrationState>(
+            BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
                 // final years = context.select((RegistrationBloc bloc) => bloc.state.fullName);
                 return Text(
-                  '${state.fullName},',
+                  '${state.name},',
                   style: const TextStyle(
                     color: Color(0xFF1B3284),
                     fontWeight: FontWeight.bold,
@@ -190,7 +191,7 @@ class _RegistrationView3State extends State<RegistrationView3> {
             const SizedBox(height: 5),
             TextButton(
               onPressed: () {
-                context.read<RegistrationBloc>().add(const RegistrationCompleted(true));
+                context.read<ProfileBloc>().add(const ProfileUpdateOnboardingStatus('FINISHED'));
               },
               child: const Text('No, we don\'t have branches'),
               style: TextButton.styleFrom(
@@ -232,7 +233,7 @@ class _RegistrationView3State extends State<RegistrationView3> {
     }
 
     RegistrationState curState = context.read<RegistrationBloc>().state;
-    final orgName = context.select((RegistrationState state) => state.organizationName);
+    final orgName = context.read<ProfileBloc>().state.organizationName;
     POI newBranch = curState.branch.copyWith(
       name: '$orgName | branch 1',
       address: address,

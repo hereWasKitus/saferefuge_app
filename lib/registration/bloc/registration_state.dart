@@ -25,9 +25,6 @@ class RegistrationState extends Equatable {
     this.services = const <String>[],
     this.position,
     this.website = '',
-    this.firstStepCompleted = false,
-    this.secondStepCompleted = false,
-    this.registrationCompleted = false,
     this.isLoading = false,
     this.registrationNumber = '',
     this.organizationEmail = '',
@@ -56,9 +53,6 @@ class RegistrationState extends Equatable {
   final List<String> services;
   final LatLng? position;
   final String website;
-  final bool firstStepCompleted;
-  final bool secondStepCompleted;
-  final bool registrationCompleted;
   final bool isLoading;
   final RegistrationStatus registrationStatus;
   final NGORegistrationStatus organizationRegistrationStatus;
@@ -117,7 +111,6 @@ class RegistrationState extends Equatable {
     String? website,
     bool? firstStepCompleted,
     bool? secondStepCompleted,
-    bool? registrationCompleted,
     bool? isLoading,
     RegistrationStatus? registrationStatus,
     NGORegistrationStatus? organizationRegistrationStatus,
@@ -142,9 +135,6 @@ class RegistrationState extends Equatable {
         services: services ?? this.services,
         position: position ?? this.position,
         website: website ?? this.website,
-        firstStepCompleted: firstStepCompleted ?? this.firstStepCompleted,
-        secondStepCompleted: secondStepCompleted ?? this.secondStepCompleted,
-        registrationCompleted: registrationCompleted ?? this.registrationCompleted,
         isLoading: isLoading ?? this.isLoading,
         registrationStatus: registrationStatus ?? this.registrationStatus,
         registrationNumber: registrationNumber ?? this.registrationNumber,
@@ -172,14 +162,11 @@ class RegistrationState extends Equatable {
         organizationPhone,
         services,
         position,
-        firstStepCompleted,
-        registrationCompleted,
         isLoading,
         registrationStatus,
         registrationNumber,
         organizationEmail,
         errorMessage,
-        secondStepCompleted,
         organizationID,
         branch,
         organizationWhatsapp,
@@ -188,5 +175,6 @@ class RegistrationState extends Equatable {
         organizations,
         organizationsLoaded,
         organizationCountry,
+        organizationRegistrationStatus,
       ];
 }

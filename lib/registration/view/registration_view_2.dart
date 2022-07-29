@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:protect_ua_women/config/constants.dart';
-import 'package:protect_ua_women/home/home.dart';
 import 'package:protect_ua_women/profile/profile.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
 import 'package:protect_ua_women/widgets/form/text_dropdown.widget.dart';
@@ -37,54 +36,65 @@ class _RegistrationView2State extends State<RegistrationView2> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text(
-          'Registration',
-          style: TextStyle(
-            color: grey,
-            fontSize: 20,
-            fontWeight: FontWeight.w400,
-          ),
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<RegistrationBloc, RegistrationState>(
+          listenWhen: (previous, current) =>
+              previous.organizationRegistrationStatus != current.organizationRegistrationStatus,
+          listener: (context, state) {
+            if (state.organizationRegistrationStatus == NGORegistrationStatus.failed) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage),
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: red,
+                ),
+              );
+            }
+
+            if (state.organizationRegistrationStatus == NGORegistrationStatus.success) {
+              context.read<ProfileBloc>().add(const ProfileTryGetUser());
+            }
+          },
         ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: IconButton(
-              icon: const Icon(
-                Icons.close,
-                color: grey,
-              ),
-              onPressed: () {
-                context.router.pop();
-              },
+        BlocListener<ProfileBloc, ProfileState>(
+          listenWhen: (preivous, current) => preivous.isLoading != current.isLoading,
+          listener: (context, state) => {
+            if (state.organizationPosition.isNotEmpty)
+              {context.read<ProfileBloc>().add(const ProfileUpdateOnboardingStatus('BRANCH_REGISTRATION'))}
+          },
+        )
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.transparent,
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          title: const Text(
+            'Registration',
+            style: TextStyle(
+              color: grey,
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
             ),
           ),
-        ],
-      ),
-      body: BlocListener<RegistrationBloc, RegistrationState>(
-        listener: (context, state) {
-          if (state.organizationRegistrationStatus == NGORegistrationStatus.failed) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage),
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: red,
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: IconButton(
+                icon: const Icon(
+                  Icons.close,
+                  color: grey,
+                ),
+                onPressed: () {
+                  context.router.pop();
+                },
               ),
-            );
-          }
-
-          if (state.organizationRegistrationStatus == NGORegistrationStatus.success) {
-            context.read<ProfileBloc>().add(const ProfileTryGetUser()); // get user with organizatio fields
-            context.read<RegistrationBloc>().add(const RegistrationSecondStepCompleted(true));
-          }
-        },
-        listenWhen: (previous, current) =>
-            previous.organizationRegistrationStatus != current.organizationRegistrationStatus,
-        child: SafeArea(
+            ),
+          ],
+        ),
+        body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.only(
               top: 16,
@@ -121,12 +131,24 @@ class _RegistrationView2State extends State<RegistrationView2> {
                       _NGOIDField(),
                       SizedBox(height: _gap),
                       BlocBuilder<RegistrationBloc, RegistrationState>(
+                        buildWhen: (previous, current) =>
+                            previous.organizationRegistrationStatus != current.organizationRegistrationStatus,
                         builder: (context, state) {
+                          final OnboardingUpdateStatus onboardingUpdateStatus =
+                              context.select((ProfileBloc bloc) => bloc.state.onboardingUpdateStatus);
+
+                          final bool isOrganizationLoading =
+                              state.organizationRegistrationStatus == NGORegistrationStatus.loading;
+                          final bool isLoading =
+                              onboardingUpdateStatus == OnboardingUpdateStatus.loading || isOrganizationLoading;
+
                           return ElevatedButton(
-                            onPressed: state.organizationRegistrationStatus == NGORegistrationStatus.loading
-                                ? () {}
-                                : _handleRegistration,
-                            child: state.organizationRegistrationStatus == NGORegistrationStatus.loading
+                            onPressed: () {
+                              if (!isOrganizationLoading) {
+                                _handleRegistration();
+                              }
+                            },
+                            child: isLoading
                                 ? const SpinKitCircle(
                                     color: Colors.white,
                                   )
@@ -155,10 +177,8 @@ class _RegistrationView2State extends State<RegistrationView2> {
     );
   }
 
-  _handleRegistration() async {
+  void _handleRegistration() async {
     if (_formKey.currentState!.validate()) {
-      // context.read<RegistrationBloc>().add(const RegistrationSecondStepCompleted(true));
-      // context.read<RegistrationBloc>().add(const RegistrationFormChangedEvent());
       context.read<RegistrationBloc>().add(const RegistrationOrganizationCreationRequest());
     }
   }
@@ -182,17 +202,19 @@ class _NGONameField extends StatelessWidget {
               context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationName: value ?? '')),
           onItemSelect: (item) {
             Organization org = state.organizations.firstWhere((org) => org.id == item.value);
-            context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(
-                  organizationAddress: org.address,
-                  organizationCountry: org.country,
-                  website: org.website,
-                  organizationPhone: org.phone,
-                  organizationEmail: org.email,
-                  organizationID: org.formalID,
-                  organizationName: org.name,
-                  organizationTelegram: org.telegram,
-                  organizationWhatsapp: org.whatsapp,
-                ));
+            context.read<RegistrationBloc>().add(
+                  RegistrationFormChangedEvent(
+                    organizationAddress: org.address,
+                    organizationCountry: org.country,
+                    website: org.website,
+                    organizationPhone: org.phone,
+                    organizationEmail: org.email,
+                    organizationID: org.formalID,
+                    organizationName: org.name,
+                    organizationTelegram: org.telegram,
+                    organizationWhatsapp: org.whatsapp,
+                  ),
+                );
           },
           suffixIcon: state.isLoading
               ? SizedBox(
@@ -235,7 +257,7 @@ class _NGOCountry extends StatelessWidget {
         }
       },
       listenWhen: (previous, current) => previous.organizationCountry != current.organizationCountry,
-      buildWhen: (previous, current) => (previous.organizationCountry != current.organizationCountry),
+      buildWhen: (previous, current) => previous.organizationCountry != current.organizationCountry,
       builder: (context, state) {
         return TextDropdown(
           controller: _controller,
