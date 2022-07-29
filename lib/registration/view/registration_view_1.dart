@@ -42,14 +42,6 @@ class _RegistrationView1State extends State<RegistrationView1> {
             }
           },
         ),
-        BlocListener<ProfileBloc, ProfileState>(
-          listenWhen: (previous, current) => previous.authStatus != current.authStatus,
-          listener: (context, state) {
-            if (state.authStatus == AuthStatus.authorized) {
-              context.read<ProfileBloc>().add(const ProfileUpdateOnboardingStatus('ORGANIZATION_ASSIGNMENT'));
-            }
-          },
-        ),
       ],
       child: Scaffold(
         appBar: AppBar(

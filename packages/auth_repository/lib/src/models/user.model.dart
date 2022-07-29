@@ -62,7 +62,7 @@ class User {
       fullName: map['full_name'] ?? '',
       id: map['_id'] ?? '',
       positionInOrganization: map['org_position'] ?? '',
-      onboardingStatus: Set<String>.from(map['on_boarding'] ?? ['INITIAL']),
+      onboardingStatus: Set<String>.from(map['on_boarding'] ?? ['INITIAL', 'ORGANIZATION_ASSIGNMENT']),
       org: Organization(
         id: map['org_id'] ?? '',
         name: map['org_name'] ?? '',
