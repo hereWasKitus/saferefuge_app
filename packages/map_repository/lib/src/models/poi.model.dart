@@ -17,7 +17,7 @@ class POI {
   final double latitude;
   final double longitude;
   final String contactPerson;
-  final List<String> languages;
+  final Set<String> languages;
   final bool approved;
 
   const POI({
@@ -37,7 +37,7 @@ class POI {
     this.latitude = 0,
     this.longitude = 0,
     this.contactPerson = '',
-    this.languages = const [],
+    this.languages = const {},
     this.approved = false,
   });
 
@@ -58,7 +58,7 @@ class POI {
     double? latitude,
     double? longitude,
     String? contactPerson,
-    List<String>? languages,
+    Set<String>? languages,
     bool? approved,
   }) {
     return POI(
@@ -101,7 +101,7 @@ class POI {
       latitude: map['geo']['coordinates'][1] ?? 0.0,
       longitude: map['geo']['coordinates'][0] ?? 0.0,
       contactPerson: map['contact_person'] ?? '',
-      languages: map['languages'] == null ? [] : List<String>.from(map['languages']),
+      languages: map['languages'] == null ? {} : Set<String>.from(map['languages']),
       approved: map['approved'] ?? false,
     );
   }

@@ -163,6 +163,13 @@ class _BranchFormState extends State<BranchForm> {
             hintText: 'Please, describe the branch activity prefferably in english',
           ),
           SizedBox(height: _gap),
+          _LanguageField(
+            selectedLanguages: _branch.languages,
+            onChange: (Set<String> languages) {
+              _branch = _branch.copyWith(languages: languages);
+            },
+          ),
+          SizedBox(height: _gap),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -222,6 +229,146 @@ class _BranchFormState extends State<BranchForm> {
           )
         ],
       ),
+    );
+  }
+}
+
+class _LanguageField extends StatefulWidget {
+  const _LanguageField({
+    Key? key,
+    required this.onChange,
+    this.selectedLanguages = const <String>{},
+  }) : super(key: key);
+
+  final Function(Set<String>) onChange;
+  final Set<String> selectedLanguages;
+
+  @override
+  State<_LanguageField> createState() => _LanguageFieldState();
+}
+
+class _LanguageFieldState extends State<_LanguageField> {
+  final Set<String> _languages = {};
+  final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _languages.addAll(widget.selectedLanguages);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LayoutBuilder(
+          builder: (context, constraints) => RawAutocomplete(
+            textEditingController: _controller,
+            focusNode: _focusNode,
+            optionsBuilder: (value) {
+              if (value.text.isEmpty) {
+                return languages.toList();
+              }
+
+              return languages
+                  .toList()
+                  .where((element) => element.toLowerCase().contains(value.text.toLowerCase()))
+                  .toList();
+            },
+            onSelected: (String language) {
+              setState(() {
+                _languages.add(language);
+                widget.onChange(_languages);
+              });
+              _controller.clear();
+              _focusNode.unfocus();
+            },
+            fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
+              return MyFormField(
+                controller: controller,
+                focusNode: focusNode,
+                onEditingComplete: onEditingComplete,
+                labelText: 'Languages',
+              );
+            },
+            optionsViewBuilder: (context, Function(String) onSelected, options) {
+              return Align(
+                alignment: Alignment.topLeft,
+                child: Material(
+                  type: MaterialType.transparency,
+                  elevation: 0,
+                  child: Container(
+                    constraints: BoxConstraints(maxWidth: constraints.maxWidth, maxHeight: 230),
+                    margin: const EdgeInsets.only(top: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.all(Radius.circular(13)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 5,
+                          offset: const Offset(0, 0),
+                        ),
+                      ],
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.all(10),
+                      itemCount: options.length,
+                      itemBuilder: (BuildContext context, int index) => ListTile(
+                        title: Text(
+                          options.elementAt(index).toString(),
+                        ),
+                        onTap: () => onSelected(options.elementAt(index).toString()),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: -8,
+          children: _languages.map((String language) {
+            return Chip(
+              deleteIcon: const Icon(
+                Icons.close,
+                size: 18,
+                color: Colors.white,
+              ),
+              onDeleted: () {
+                setState(() {
+                  _languages.remove(language);
+                  widget.onChange(_languages);
+                });
+              },
+              label: RichText(
+                text: TextSpan(
+                  style: const TextStyle(color: Colors.white, fontSize: 12),
+                  children: [
+                    TextSpan(text: language.substring(0, 1).toUpperCase()),
+                    TextSpan(text: language.substring(1)),
+                  ],
+                ),
+              ),
+              backgroundColor: const Color.fromRGBO(44, 83, 218, 0.8),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 }

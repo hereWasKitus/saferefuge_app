@@ -24,6 +24,7 @@ class HomeState extends Equatable {
     this.poisLoaded = false,
     this.poiStatus = POIStatus.initial,
     this.searchStatus = SearchStatus.initial,
+    this.searchQuery = '',
   });
 
   final List<MapPlace> searchResults;
@@ -33,6 +34,7 @@ class HomeState extends Equatable {
   final bool poisLoaded;
   final POIStatus poiStatus;
   final SearchStatus searchStatus;
+  final String searchQuery;
 
   bool get toShowSuggestions => searchResults.isNotEmpty;
 
@@ -44,6 +46,7 @@ class HomeState extends Equatable {
     bool? poisLoaded,
     POIStatus? poiStatus,
     SearchStatus? searchStatus,
+    String? searchQuery,
   }) =>
       HomeState(
         searchResults: searchResults ?? this.searchResults,
@@ -53,6 +56,7 @@ class HomeState extends Equatable {
         poisLoaded: poisLoaded ?? this.poisLoaded,
         poiStatus: poiStatus ?? this.poiStatus,
         searchStatus: searchStatus ?? this.searchStatus,
+        searchQuery: searchQuery ?? this.searchQuery,
       );
 
   @override
@@ -64,5 +68,6 @@ class HomeState extends Equatable {
         poisLoaded,
         poiStatus,
         searchStatus,
+        searchQuery,
       ];
 }

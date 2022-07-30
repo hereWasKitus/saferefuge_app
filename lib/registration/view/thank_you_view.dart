@@ -6,8 +6,6 @@ import 'package:protect_ua_women/home/widgets/menu_button.dart';
 import 'package:protect_ua_women/profile/profile.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 
-import '../registration.dart';
-
 class ThankYouView extends StatelessWidget {
   const ThankYouView({Key? key}) : super(key: key);
 

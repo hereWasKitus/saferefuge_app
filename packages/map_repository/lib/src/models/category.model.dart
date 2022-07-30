@@ -38,9 +38,7 @@ class Category {
     final result = <String, dynamic>{};
 
     result.addAll({'id': id});
-    if (name != null) {
-      result.addAll({'name': name});
-    }
+    result.addAll({'name': name});
     if (ru != null) {
       result.addAll({'ru': ru});
     }

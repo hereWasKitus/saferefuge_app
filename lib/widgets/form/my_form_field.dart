@@ -15,6 +15,7 @@ class MyFormField extends StatelessWidget {
   final FocusNode? focusNode;
   final bool? enabled;
   final int? maxLines;
+  final void Function()? onEditingComplete;
 
   const MyFormField({
     Key? key,
@@ -31,6 +32,7 @@ class MyFormField extends StatelessWidget {
     this.focusNode,
     this.enabled,
     this.maxLines = 1,
+    this.onEditingComplete,
   }) : super(key: key);
 
   OutlineInputBorder _borderStyle({Color color = primaryColor}) => OutlineInputBorder(
@@ -56,6 +58,8 @@ class MyFormField extends StatelessWidget {
             ),
           ),
         TextFormField(
+          onEditingComplete: onEditingComplete,
+          focusNode: focusNode,
           controller: controller,
           onSaved: onSaved,
           enabled: enabled,
@@ -83,7 +87,6 @@ class MyFormField extends StatelessWidget {
           validator: validator,
           onChanged: onChanged,
           initialValue: initialValue,
-          focusNode: focusNode,
         )
       ],
     );

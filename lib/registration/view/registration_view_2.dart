@@ -131,8 +131,8 @@ class _RegistrationView2State extends State<RegistrationView2> {
                       _NGOIDField(),
                       SizedBox(height: _gap),
                       BlocBuilder<RegistrationBloc, RegistrationState>(
-                        buildWhen: (previous, current) =>
-                            previous.organizationRegistrationStatus != current.organizationRegistrationStatus,
+                        // buildWhen: (previous, current) =>
+                        //     previous.organizationRegistrationStatus != current.organizationRegistrationStatus,
                         builder: (context, state) {
                           final OnboardingUpdateStatus onboardingUpdateStatus =
                               context.select((ProfileBloc bloc) => bloc.state.onboardingUpdateStatus);

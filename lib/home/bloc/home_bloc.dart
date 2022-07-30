@@ -23,6 +23,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<LoadCategoriesEvent>(_loadCategories);
     on<LoadNearbyPOIsEvent>(_loadNearbyPOIs);
     on<HomeSetSearchStatusEvent>(_setSearchStatus);
+    on<HomeSetSearchQuery>(_setSearchQuery);
   }
 
   final MapRepository _mapRepository;
@@ -82,5 +83,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _setSearchStatus(HomeSetSearchStatusEvent event, Emitter<HomeState> emit) {
     emit(state.copyWith(searchStatus: event.status));
+  }
+
+  void _setSearchQuery(HomeSetSearchQuery event, Emitter<HomeState> emit) {
+    emit(state.copyWith(searchQuery: event.query));
   }
 }

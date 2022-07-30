@@ -45,15 +45,9 @@ class _CategoryListState extends State<CategoryList> {
           children: state.categories.map(
             (category) {
               return FilterChip(
-                label: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      category.name,
-                      style: const TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    // const SizedBox(width: 6),
-                  ],
+                label: Text(
+                  category.name,
+                  style: const TextStyle(color: Colors.white, fontSize: 12),
                 ),
                 onSelected: (bool selected) => _onSelected(selected, category.name),
                 showCheckmark: false,
