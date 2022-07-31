@@ -37,4 +37,24 @@ class ProfileRepository {
       throw APIException.unknown();
     }
   }
+
+  Future<void> dangerousUpdateProfile({
+    required String userID,
+    String? userEmail,
+    String? userPassword,
+    String? userUsername,
+  }) async {
+    try {
+      await _api.dangerousUpdateUser(
+        userID: userID,
+        email: userEmail,
+        username: userUsername,
+        password: userPassword,
+      );
+    } on DioError catch (e) {
+      throw APIException.fromDioError(e);
+    } catch (e) {
+      throw APIException.unknown();
+    }
+  }
 }

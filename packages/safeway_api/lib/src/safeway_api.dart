@@ -151,6 +151,32 @@ class SafeWayAPI {
     );
   }
 
+  Future<Response> dangerousUpdateUser({
+    required String userID,
+    String? email,
+    String? username,
+    String? password,
+  }) async {
+    Map<String, dynamic> request = {};
+
+    if (email != null) {
+      request['username'] = email;
+      request['email'] = email;
+    }
+
+    if (username != null) {
+      request['username'] = username;
+    }
+
+    if (password != null) {
+      request['password'] = password;
+    }
+
+    return await _dio.patch('aaa/user/patch/', data: json.encode(request), queryParameters: <String, dynamic>{
+      '_id': userID,
+    });
+  }
+
   Future<Response> getPOIs({
     List<String>? ids,
     int limit = 100,

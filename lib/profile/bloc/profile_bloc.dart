@@ -27,6 +27,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileUpdateBranchRequest>(_onUpdateBranchRequest);
     on<ProfileLogoutRequest>(_onLogoutRequest);
     on<ProfileUpdateOnboardingStatus>(_onOnboardingStatusUpdate);
+    on<ProfileEmailChanged>(_onEmailChanged);
   }
 
   final AuthRepository _authRepository;
@@ -165,7 +166,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     ));
   }
 
-  _onOnboardingStatusUpdate(ProfileUpdateOnboardingStatus event, Emitter<ProfileState> emit) async {
+  void _onOnboardingStatusUpdate(ProfileUpdateOnboardingStatus event, Emitter<ProfileState> emit) async {
     emit(state.copyWith(onboardingUpdateStatus: OnboardingUpdateStatus.loading, errorMessage: ''));
 
     try {
@@ -180,6 +181,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         onboardingUpdateStatus: OnboardingUpdateStatus.fail,
         errorMessage: e.message,
       ));
+    }
+  }
+
+  void _onEmailChanged(ProfileEmailChanged event, Emitter<ProfileState> emit) async {
+    emit(state.copyWith(formStatus: FormStatus.loading, errorMessage: ''));
+
+    try {
+      await _profileRepository.dangerousUpdateProfile(
+        userID: state.id,
+        userEmail: event.email,
+      );
+      emit(state.copyWith(formStatus: FormStatus.updateSucceed, email: event.email));
+    } on APIException catch (e) {
+      emit(state.copyWith(formStatus: FormStatus.updateFail, errorMessage: e.message));
     }
   }
 }

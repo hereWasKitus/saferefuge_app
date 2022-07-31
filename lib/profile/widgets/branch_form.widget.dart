@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:map_repository/map_repository.dart';
@@ -275,67 +276,11 @@ class _LanguageFieldState extends State<_LanguageField> {
           builder: (context, constraints) => RawAutocomplete(
             textEditingController: _controller,
             focusNode: _focusNode,
-            optionsBuilder: (value) {
-              if (value.text.isEmpty) {
-                return languages.toList();
-              }
-
-              return languages
-                  .toList()
-                  .where((element) => element.toLowerCase().contains(value.text.toLowerCase()))
-                  .toList();
-            },
-            onSelected: (String language) {
-              setState(() {
-                _languages.add(language);
-                widget.onChange(_languages);
-              });
-              _controller.clear();
-              _focusNode.unfocus();
-            },
-            fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
-              return MyFormField(
-                controller: controller,
-                focusNode: focusNode,
-                onEditingComplete: onEditingComplete,
-                labelText: 'Languages',
-              );
-            },
-            optionsViewBuilder: (context, Function(String) onSelected, options) {
-              return Align(
-                alignment: Alignment.topLeft,
-                child: Material(
-                  type: MaterialType.transparency,
-                  elevation: 0,
-                  child: Container(
-                    constraints: BoxConstraints(maxWidth: constraints.maxWidth, maxHeight: 230),
-                    margin: const EdgeInsets.only(top: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(13)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 5,
-                          offset: const Offset(0, 0),
-                        ),
-                      ],
-                    ),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.all(10),
-                      itemCount: options.length,
-                      itemBuilder: (BuildContext context, int index) => ListTile(
-                        title: Text(
-                          options.elementAt(index).toString(),
-                        ),
-                        onTap: () => onSelected(options.elementAt(index).toString()),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
+            optionsBuilder: _optionsBuilder,
+            onSelected: _onSelected,
+            fieldViewBuilder: _fieldViewBuilder,
+            optionsViewBuilder: (context, Function(String) onSelected, options) =>
+                _optionsViewBuilder(context, onSelected, options, constraints),
           ),
         ),
         const SizedBox(height: 8),
@@ -369,6 +314,73 @@ class _LanguageFieldState extends State<_LanguageField> {
           }).toList(),
         ),
       ],
+    );
+  }
+
+  void _onSelected(String language) {
+    setState(() {
+      _languages.add(language);
+      widget.onChange(_languages);
+    });
+    _controller.clear();
+    _focusNode.unfocus();
+  }
+
+  FutureOr<Iterable<String>> _optionsBuilder(TextEditingValue value) {
+    if (value.text.isEmpty) {
+      return languages.toList();
+    }
+
+    return languages.toList().where((element) => element.toLowerCase().contains(value.text.toLowerCase())).toList();
+  }
+
+  Widget _fieldViewBuilder(context, controller, focusNode, onEditingComplete) {
+    return MyFormField(
+      controller: controller,
+      focusNode: focusNode,
+      onEditingComplete: onEditingComplete,
+      labelText: 'Languages',
+    );
+  }
+
+  Widget _optionsViewBuilder(
+    BuildContext context,
+    Function(String) onSelected,
+    Iterable<Object?> options,
+    BoxConstraints constraints,
+  ) {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Material(
+        type: MaterialType.transparency,
+        elevation: 0,
+        child: Container(
+          constraints: BoxConstraints(maxWidth: constraints.maxWidth, maxHeight: 230),
+          margin: const EdgeInsets.only(top: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.all(Radius.circular(13)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 5,
+                offset: const Offset(0, 0),
+              ),
+            ],
+          ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(10),
+            itemCount: options.length,
+            itemBuilder: (BuildContext context, int index) => ListTile(
+              title: Text(
+                options.elementAt(index).toString(),
+              ),
+              onTap: () => onSelected(options.elementAt(index).toString()),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

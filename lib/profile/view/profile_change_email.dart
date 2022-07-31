@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/profile/profile.dart';
 import 'package:protect_ua_women/widgets/form/my_form_field.dart';
@@ -49,42 +50,82 @@ class _EmailForm extends StatefulWidget {
 
 class _EmailFormState extends State<_EmailForm> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: <Widget>[
-          MyFormField(
-            labelText: 'Email',
-            hintText: 'Enter your email',
-            initialValue: context.select((ProfileBloc bloc) => bloc.state.email),
-            keyboardType: TextInputType.emailAddress,
-            validator: (value) {
-              if (value != null && value.isEmpty) {
-                return 'Please enter your email';
-              }
+    final isLoading = context.select((ProfileBloc bloc) => bloc.state.formStatus == FormStatus.loading);
 
-              return null;
-            },
-          ),
-          const SizedBox(height: 18),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text('Save'),
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(double.infinity, 60),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(defaultBorderRadius),
-                ),
+    return BlocListener<ProfileBloc, ProfileState>(
+      listener: (context, state) {
+        if (state.formStatus == FormStatus.updateSucceed) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              const SnackBar(
+                content: Text('Email updated successfully!'),
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: green,
               ),
-              primary: const Color.fromRGBO(27, 50, 132, 1),
+            );
+        } else if (state.formStatus == FormStatus.updateFail) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              const SnackBar(
+                content: Text('Failed to update email!'),
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: red,
+              ),
+            );
+        }
+      },
+      listenWhen: (previous, current) => previous.formStatus != current.formStatus,
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            MyFormField(
+              controller: _emailController,
+              labelText: 'Email',
+              hintText: 'Enter your email',
+              // initialValue: context.select((ProfileBloc bloc) => bloc.state.email),
+              keyboardType: TextInputType.emailAddress,
+              validator: (value) {
+                if (value != null && value.isEmpty) {
+                  return 'Please enter your email';
+                }
+
+                return null;
+              },
             ),
-          ),
-        ],
+            const SizedBox(height: 18),
+            ElevatedButton(
+              onPressed: isLoading ? () {} : _onSave,
+              child: isLoading ? const SpinKitCircle(color: Colors.white) : const Text('Save'),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 60),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(defaultBorderRadius),
+                  ),
+                ),
+                primary: const Color.fromRGBO(27, 50, 132, 1),
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  void _onSave() {
+    context.read<ProfileBloc>().add(ProfileEmailChanged(_emailController.text));
   }
 }

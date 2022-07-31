@@ -107,3 +107,21 @@ class ProfileUpdateOnboardingStatus extends ProfileEvent {
   @override
   List<Object> get props => [status];
 }
+
+class ProfileEmailChanged extends ProfileEvent {
+  final String email;
+
+  const ProfileEmailChanged(this.email);
+
+  @override
+  List<Object> get props => [email];
+}
+
+class ProfilePasswordChanged extends ProfileEvent {
+  final String password;
+
+  const ProfilePasswordChanged(this.password);
+
+  @override
+  List<Object> get props => [password];
+}

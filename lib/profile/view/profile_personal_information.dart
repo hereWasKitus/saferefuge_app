@@ -38,7 +38,17 @@ class ProfilePersonalInformationView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    const SnackBar(
+                      content: Text('Coming soon!'),
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: grey2,
+                    ),
+                  );
+              },
               child: const Text(
                 'Change profile photo',
                 style: TextStyle(color: actionColor, fontSize: 16, fontWeight: FontWeight.w500),
