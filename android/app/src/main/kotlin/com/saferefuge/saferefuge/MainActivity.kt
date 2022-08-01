@@ -1,4 +1,4 @@
-package com.safeway.app
+package com.saferefuge.saferefuge
 
 import io.flutter.embedding.android.FlutterActivity
 
