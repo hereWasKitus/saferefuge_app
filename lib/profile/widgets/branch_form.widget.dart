@@ -128,7 +128,7 @@ class _BranchFormState extends State<BranchForm> {
             labelText: 'Branch telegram',
             initialValue: _branch.telegram,
             validator: (value) {
-              if (value != null && !RegExp(r'^@[a-zA-Z0-9_]{5,32}$').hasMatch(value)) {
+              if (value != null && value.isNotEmpty && !RegExp(r'^@[a-zA-Z0-9_]{5,32}$').hasMatch(value)) {
                 return 'Telegram is not valid';
               }
 

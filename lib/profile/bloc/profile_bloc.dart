@@ -68,7 +68,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(
         authStatus: AuthStatus.authorized,
         name: user.fullName,
-        email: user.username,
+        email: user.email,
+        username: user.username,
         id: user.id,
         organizationName: user.org?.name,
         organizationAddress: user.org?.address,
@@ -117,7 +118,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(state.copyWith(addBranchStatus: AddBranchStatus.loading, errorMessage: ''));
 
     try {
-      List<POI> branches = await _mapRepository.getPOIsByUsername(state.email);
+      List<POI> branches = await _mapRepository.getPOIsByUsername(state.username);
       emit(state.copyWith(
         branches: branches,
         addBranchStatus: AddBranchStatus.success,

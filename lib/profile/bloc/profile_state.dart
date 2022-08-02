@@ -41,6 +41,7 @@ class ProfileState extends Equatable {
     this.id = '',
     this.name = '',
     this.email = '',
+    this.username = '',
     this.organizationAddress = '',
     this.organizationEmail = '',
     this.organizationName = '',
@@ -83,6 +84,7 @@ class ProfileState extends Equatable {
   final AddBranchStatus addBranchStatus;
   final Set<String> onboardingStatus;
   final OnboardingUpdateStatus onboardingUpdateStatus;
+  final String username;
 
   bool get isOnboardingFinished => onboardingStatus.contains('FINISHED');
 
@@ -109,6 +111,7 @@ class ProfileState extends Equatable {
     AddBranchStatus? addBranchStatus,
     Set<String>? onboardingStatus,
     OnboardingUpdateStatus? onboardingUpdateStatus,
+    String? username,
   }) =>
       ProfileState(
         formChanged: formChanged ?? this.formChanged,
@@ -133,6 +136,7 @@ class ProfileState extends Equatable {
         addBranchStatus: addBranchStatus ?? this.addBranchStatus,
         onboardingStatus: onboardingStatus ?? this.onboardingStatus,
         onboardingUpdateStatus: onboardingUpdateStatus ?? this.onboardingUpdateStatus,
+        username: username ?? this.username,
       );
 
   @override
@@ -159,6 +163,7 @@ class ProfileState extends Equatable {
         addBranchStatus,
         onboardingStatus,
         onboardingUpdateStatus,
+        username,
       ];
 }
 

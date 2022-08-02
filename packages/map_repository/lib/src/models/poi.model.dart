@@ -148,7 +148,7 @@ class POI {
     result.addAll({'latitude': latitude});
     result.addAll({'longitude': longitude});
     result.addAll({'contactPerson': contactPerson});
-    result.addAll({'languages': languages});
+    result.addAll({'languages': languages.toList()});
     result.addAll({'approved': approved});
 
     return result;
