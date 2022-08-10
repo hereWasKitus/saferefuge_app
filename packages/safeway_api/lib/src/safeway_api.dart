@@ -314,4 +314,11 @@ class SafeWayAPI {
     pref.remove('token');
     _dio.options.headers['Authorization'] = '';
   }
+
+  Future<Response> deleteMe({required String password}) async {
+    return _dio.delete('users/delete/me', queryParameters: {
+      'current_password': password,
+      'force': true,
+    });
+  }
 }

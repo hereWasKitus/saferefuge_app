@@ -28,6 +28,13 @@ enum OnboardingUpdateStatus {
   fail,
 }
 
+enum DeleteStatus {
+  initial,
+  loading,
+  success,
+  fail,
+}
+
 // enum OnboardingStatus {
 //   INITIAL,
 //   ORGANIZATION_ASSIGNMENT,
@@ -60,6 +67,7 @@ class ProfileState extends Equatable {
     this.addBranchStatus = AddBranchStatus.initial,
     this.onboardingStatus = const {'INITIAL'},
     this.onboardingUpdateStatus = OnboardingUpdateStatus.initial,
+    this.deleteStatus = DeleteStatus.initial,
   });
 
   final bool formChanged;
@@ -85,6 +93,7 @@ class ProfileState extends Equatable {
   final Set<String> onboardingStatus;
   final OnboardingUpdateStatus onboardingUpdateStatus;
   final String username;
+  final DeleteStatus deleteStatus;
 
   bool get isOnboardingFinished => onboardingStatus.contains('FINISHED');
 
@@ -112,6 +121,7 @@ class ProfileState extends Equatable {
     Set<String>? onboardingStatus,
     OnboardingUpdateStatus? onboardingUpdateStatus,
     String? username,
+    DeleteStatus? deleteStatus,
   }) =>
       ProfileState(
         formChanged: formChanged ?? this.formChanged,
@@ -137,6 +147,7 @@ class ProfileState extends Equatable {
         onboardingStatus: onboardingStatus ?? this.onboardingStatus,
         onboardingUpdateStatus: onboardingUpdateStatus ?? this.onboardingUpdateStatus,
         username: username ?? this.username,
+        deleteStatus: deleteStatus ?? this.deleteStatus,
       );
 
   @override
@@ -164,6 +175,7 @@ class ProfileState extends Equatable {
         onboardingStatus,
         onboardingUpdateStatus,
         username,
+        deleteStatus,
       ];
 }
 

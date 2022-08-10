@@ -90,6 +90,13 @@ import 'package:protect_ua_women/profile/profile.dart';
                   transitionsBuilder: TransitionsBuilders.slideLeft,
                   durationInMilliseconds: defaultAnimationDuration,
                 ),
+                CustomRoute(
+                  path: 'delete',
+                  name: 'ProfileDeleteRoute',
+                  page: ProfileDeleteView,
+                  transitionsBuilder: TransitionsBuilders.slideLeft,
+                  durationInMilliseconds: defaultAnimationDuration,
+                ),
               ],
             ),
           ],

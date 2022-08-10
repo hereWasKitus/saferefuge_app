@@ -55,6 +55,13 @@ class ProfileSecurityView extends StatelessWidget {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                 onTap: () => context.router.push(const ProfileChangeEmailRoute()),
               ),
+              ListTile(
+                leading: const Icon(Icons.delete),
+                title: const Text('Delete account'),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                onTap: () => context.router.push(const ProfileDeleteRoute()),
+              ),
             ],
           ).toList(),
         ),

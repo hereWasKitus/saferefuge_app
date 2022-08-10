@@ -170,6 +170,15 @@ class AppRouter extends _i8.RootStackRouter {
           opaque: true,
           barrierDismissible: false);
     },
+    ProfileDeleteRoute.name: (routeData) {
+      return _i8.CustomPage<dynamic>(
+          routeData: routeData,
+          child: const _i6.ProfileDeleteView(),
+          transitionsBuilder: _i8.TransitionsBuilders.slideLeft,
+          durationInMilliseconds: 150,
+          opaque: true,
+          barrierDismissible: false);
+    },
     RegistrationFirstStepRoute.name: (routeData) {
       return _i8.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i2.RegistrationView1());
@@ -226,7 +235,9 @@ class AppRouter extends _i8.RootStackRouter {
                           parent: ProfileSecurityRouter.name),
                       _i8.RouteConfig(ProfileChangeEmailRoute.name,
                           path: 'change-email',
-                          parent: ProfileSecurityRouter.name)
+                          parent: ProfileSecurityRouter.name),
+                      _i8.RouteConfig(ProfileDeleteRoute.name,
+                          path: 'delete', parent: ProfileSecurityRouter.name)
                     ])
               ])
         ]),
@@ -487,6 +498,14 @@ class ProfileChangeEmailRoute extends _i8.PageRouteInfo<void> {
       : super(ProfileChangeEmailRoute.name, path: 'change-email');
 
   static const String name = 'ProfileChangeEmailRoute';
+}
+
+/// generated route for
+/// [_i6.ProfileDeleteView]
+class ProfileDeleteRoute extends _i8.PageRouteInfo<void> {
+  const ProfileDeleteRoute() : super(ProfileDeleteRoute.name, path: 'delete');
+
+  static const String name = 'ProfileDeleteRoute';
 }
 
 /// generated route for

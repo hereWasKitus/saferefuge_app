@@ -125,3 +125,12 @@ class ProfilePasswordChanged extends ProfileEvent {
   @override
   List<Object> get props => [password];
 }
+
+class ProfileDeleteRequest extends ProfileEvent {
+  final String password;
+
+  const ProfileDeleteRequest(this.password);
+
+  @override
+  List<Object> get props => [password];
+}

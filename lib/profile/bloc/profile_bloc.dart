@@ -28,6 +28,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileLogoutRequest>(_onLogoutRequest);
     on<ProfileUpdateOnboardingStatus>(_onOnboardingStatusUpdate);
     on<ProfileEmailChanged>(_onEmailChanged);
+    on<ProfileDeleteRequest>(_onProfileDeleteRequest);
   }
 
   final AuthRepository _authRepository;
@@ -196,6 +197,40 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(formStatus: FormStatus.updateSucceed, email: event.email));
     } on APIException catch (e) {
       emit(state.copyWith(formStatus: FormStatus.updateFail, errorMessage: e.message));
+    }
+  }
+
+  void _onProfileDeleteRequest(ProfileDeleteRequest event, Emitter<ProfileState> emit) async {
+    emit(state.copyWith(formStatus: FormStatus.loading, errorMessage: ''));
+
+    try {
+      await _profileRepository.deleteMe(
+        password: event.password,
+      );
+      await _authRepository.logout();
+      emit(state.copyWith(
+        name: '',
+        id: '',
+        organizationName: '',
+        organizationAddress: '',
+        organizationEmail: '',
+        organizationPhone: '',
+        organizationCountry: '',
+        services: [],
+        branches: [],
+        addBranchStatus: AddBranchStatus.initial,
+        formStatus: FormStatus.initial,
+        organizationPosition: '',
+        organizationWhatsapp: '',
+        organizationTelegram: '',
+        authStatus: AuthStatus.unauthorized,
+        isLoading: false,
+        onboardingStatus: {'INITIAL'},
+      ));
+    } on APIException catch (e) {
+      emit(state.copyWith(formStatus: FormStatus.updateFail, errorMessage: e.message));
+    } catch (e) {
+      emit(state.copyWith(formStatus: FormStatus.updateFail, errorMessage: 'Server error, try again'));
     }
   }
 }

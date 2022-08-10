@@ -57,4 +57,15 @@ class ProfileRepository {
       throw APIException.unknown();
     }
   }
+
+  Future<void> deleteMe({required String password}) async {
+    try {
+      Response response = await _api.deleteMe(password: password);
+      // await _api.deleteMe(password: password);
+    } on DioError catch (e) {
+      throw APIException.fromDioError(e);
+    } catch (e) {
+      throw APIException.unknown();
+    }
+  }
 }

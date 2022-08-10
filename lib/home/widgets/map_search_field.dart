@@ -58,7 +58,7 @@ class MapSearchField extends StatelessWidget {
   }
 
   _searchPlaces(String term, BuildContext context) async {
-    context.read<HomeBloc>().add(HomeSetSearchStatusEvent(status: SearchStatus.loading));
+    context.read<HomeBloc>().add(const HomeSetSearchStatusEvent(status: SearchStatus.loading));
 
     if (timer is Timer) {
       timer.cancel();
@@ -66,7 +66,7 @@ class MapSearchField extends StatelessWidget {
 
     timer = Timer(const Duration(seconds: 1), () async {
       context.read<HomeBloc>().add(SetSearchResultsByQueryEvent(query: term));
-      context.read<HomeBloc>().add(HomeSetSearchStatusEvent(status: SearchStatus.succeed));
+      context.read<HomeBloc>().add(const HomeSetSearchStatusEvent(status: SearchStatus.succeed));
     });
   }
 
@@ -79,7 +79,7 @@ class MapSearchField extends StatelessWidget {
     var json = convert.jsonDecode(response.body);
     var res = json['candidates'];
     Map<String, dynamic> location = res[0]['geometry']['location'];
-    context.read<HomeBloc>().add(SetSearchResultsByQueryEvent(query: ''));
+    context.read<HomeBloc>().add(const SetSearchResultsByQueryEvent(query: ''));
     onSubmit(location['lat'], location['lng']);
   }
 
