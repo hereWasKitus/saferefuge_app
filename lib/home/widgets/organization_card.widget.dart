@@ -116,6 +116,10 @@ class _OrganizationCardCategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (categories.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     return ConstrainedBox(
       constraints: const BoxConstraints(maxHeight: 32),
       child: ListView.separated(
