@@ -14,7 +14,7 @@ class APIException implements Exception {
       );
     }
 
-    if (error.response != null && error.response!.statusCode == 402) {
+    if (error.response != null && error.response!.statusCode == 422) {
       return APIException(
         message: error.response!.data['detail']['msg'],
         statusCode: error.response!.statusCode,

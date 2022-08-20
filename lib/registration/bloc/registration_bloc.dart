@@ -46,8 +46,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     } on LoginFailure catch (e) {
       emit(state.copyWith(registrationStatus: RegistrationStatus.failed, errorMessage: 'Login error: ${e.message}'));
     } catch (e) {
-      emit(state.copyWith(
-          registrationStatus: RegistrationStatus.failed, errorMessage: 'Registration error: ${e.toString()}'));
+      emit(
+        state.copyWith(
+            registrationStatus: RegistrationStatus.failed, errorMessage: 'Registration error: ${e.toString()}'),
+      );
     }
   }
 
@@ -79,7 +81,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       await _authRepository.registerOrAssignToOrganization(
         username: state.email,
         name: state.organizationName,
-        email: state.organizationEmail,
+        email: event.userEmail,
         phone: state.organizationPhone,
         address: state.organizationAddress,
         categories: state.services,

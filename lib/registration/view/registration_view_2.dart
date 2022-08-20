@@ -178,8 +178,10 @@ class _RegistrationView2State extends State<RegistrationView2> {
   }
 
   void _handleRegistration() async {
+    final String userEmail = context.read<ProfileBloc>().state.email;
+
     if (_formKey.currentState!.validate()) {
-      context.read<RegistrationBloc>().add(const RegistrationOrganizationCreationRequest());
+      context.read<RegistrationBloc>().add(RegistrationOrganizationCreationRequest(userEmail: userEmail));
     }
   }
 }
@@ -347,15 +349,11 @@ class _NGOIDField extends StatelessWidget {
       builder: (context, state) {
         return MyFormField(
           controller: _controller,
-          labelText: 'NGO\' ID number*',
+          labelText: 'NGO\' ID number',
           hintText: 'ID number',
           onChanged: (String? value) =>
               context.read<RegistrationBloc>().add(RegistrationFormChangedEvent(organizationID: value ?? '')),
           validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'This field is required';
-            }
-
             return null;
           },
         );

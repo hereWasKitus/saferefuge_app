@@ -71,10 +71,14 @@ class RegistrationBranchChanged extends RegistrationEvent {
 }
 
 class RegistrationOrganizationCreationRequest extends RegistrationEvent {
-  const RegistrationOrganizationCreationRequest();
+  final String userEmail;
+
+  const RegistrationOrganizationCreationRequest({
+    required this.userEmail,
+  });
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [userEmail];
 }
 
 class RegistrationGetOrganizationsList extends RegistrationEvent {
