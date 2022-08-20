@@ -12,7 +12,7 @@ class ProfileDeleteView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
-      listenWhen: (previous, current) => previous.formStatus != current.formStatus,
+      listenWhen: (previous, current) => previous.deleteStatus != current.deleteStatus,
       listener: (context, state) {
         if (state.deleteStatus == DeleteStatus.fail) {
           ScaffoldMessenger.of(context).showSnackBar(

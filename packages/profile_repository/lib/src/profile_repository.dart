@@ -61,7 +61,11 @@ class ProfileRepository {
   Future<void> deleteMe({required String password}) async {
     try {
       Response response = await _api.deleteMe(password: password);
-      // await _api.deleteMe(password: password);
+
+      // remove it after it will be fixed on backend
+      if (response.data == 'Incorrect password') {
+        throw APIException(message: 'Incorrect password', statusCode: 422);
+      }
     } on DioError catch (e) {
       throw APIException.fromDioError(e);
     } catch (e) {

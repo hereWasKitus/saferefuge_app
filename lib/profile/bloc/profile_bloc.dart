@@ -201,7 +201,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   void _onProfileDeleteRequest(ProfileDeleteRequest event, Emitter<ProfileState> emit) async {
-    emit(state.copyWith(formStatus: FormStatus.loading, errorMessage: ''));
+    emit(state.copyWith(deleteStatus: DeleteStatus.loading, errorMessage: ''));
 
     try {
       await _profileRepository.deleteMe(
@@ -220,6 +220,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         branches: [],
         addBranchStatus: AddBranchStatus.initial,
         formStatus: FormStatus.initial,
+        deleteStatus: DeleteStatus.initial,
         organizationPosition: '',
         organizationWhatsapp: '',
         organizationTelegram: '',
@@ -228,9 +229,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         onboardingStatus: {'INITIAL'},
       ));
     } on APIException catch (e) {
-      emit(state.copyWith(formStatus: FormStatus.updateFail, errorMessage: e.message));
+      emit(state.copyWith(deleteStatus: DeleteStatus.fail, errorMessage: e.message));
     } catch (e) {
-      emit(state.copyWith(formStatus: FormStatus.updateFail, errorMessage: 'Server error, try again'));
+      emit(state.copyWith(deleteStatus: DeleteStatus.fail, errorMessage: 'Server error, try again'));
     }
   }
 }
