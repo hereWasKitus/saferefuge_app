@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:map_repository/map_repository.dart';
 import 'package:profile_repository/profile_repository.dart';
-import 'package:protect_ua_women/config/constants.dart';
-import 'package:protect_ua_women/config/secrets.dart';
-import 'package:protect_ua_women/profile/profile.dart';
+import 'package:protect_ua_women/core/config/constants.dart';
+import 'package:protect_ua_women/core/config/secrets.dart';
+import 'package:protect_ua_women/features/profile/profile.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:safeway_api/safeway_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'login/login.dart';
-import 'registration/registration.dart';
-import 'home/home.dart';
+import 'features/login/login.dart';
+import 'features/registration/registration.dart';
+import 'features/home/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

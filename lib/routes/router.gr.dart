@@ -17,13 +17,13 @@ import 'package:flutter/material.dart' as _i10;
 import 'package:google_maps_flutter/google_maps_flutter.dart' as _i12;
 import 'package:map_repository/map_repository.dart' as _i8;
 
-import '../app/app.dart' as _i1;
-import '../home/home.dart' as _i5;
-import '../login/login.dart' as _i3;
-import '../map/map.dart' as _i6;
-import '../password_reset/view/view.dart' as _i4;
-import '../profile/profile.dart' as _i7;
-import '../registration/registration.dart' as _i2;
+import '../features/app/app.dart' as _i1;
+import '../features/home/home.dart' as _i5;
+import '../features/login/login.dart' as _i3;
+import '../features/map/map.dart' as _i6;
+import '../features/password_reset/view/view.dart' as _i4;
+import '../features/profile/profile.dart' as _i7;
+import '../features/registration/registration.dart' as _i2;
 
 class AppRouter extends _i9.RootStackRouter {
   AppRouter([_i10.GlobalKey<_i10.NavigatorState>? navigatorKey])

@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:protect_ua_women/app/app.dart';
-import 'package:protect_ua_women/login/login.dart';
-import 'package:protect_ua_women/map/map.dart';
-import 'package:protect_ua_women/password_reset/view/view.dart';
-import 'package:protect_ua_women/registration/registration.dart';
-import 'package:protect_ua_women/config/constants.dart';
-import 'package:protect_ua_women/home/home.dart';
-import 'package:protect_ua_women/profile/profile.dart';
+import 'package:protect_ua_women/features/app/app.dart';
+import 'package:protect_ua_women/features/login/login.dart';
+import 'package:protect_ua_women/features/map/map.dart';
+import 'package:protect_ua_women/features/password_reset/view/view.dart';
+import 'package:protect_ua_women/features/registration/registration.dart';
+import 'package:protect_ua_women/core/config/constants.dart';
+import 'package:protect_ua_women/features/home/home.dart';
+import 'package:protect_ua_women/features/profile/profile.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
