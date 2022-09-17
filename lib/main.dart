@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:map_repository/map_repository.dart';
 import 'package:profile_repository/profile_repository.dart';
-import 'package:protect_ua_women/core/config/constants.dart';
+import 'package:protect_ua_women/core/theme/theme.dart';
 import 'package:protect_ua_women/features/profile/profile.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:safeway_api/safeway_api.dart';
@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             fontFamily: "Rubik",
             primarySwatch: Colors.blue,
-            primaryColor: primaryColor,
+            primaryColor: AppColors.primary,
             textTheme: const TextTheme(
               bodyText1: TextStyle(fontSize: 16),
             ),
