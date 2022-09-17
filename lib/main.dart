@@ -1,10 +1,10 @@
 import 'package:auth_repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:map_repository/map_repository.dart';
 import 'package:profile_repository/profile_repository.dart';
 import 'package:protect_ua_women/core/config/constants.dart';
-import 'package:protect_ua_women/core/config/secrets.dart';
 import 'package:protect_ua_women/features/profile/profile.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:safeway_api/safeway_api.dart';
@@ -16,12 +16,13 @@ import 'features/home/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
   final _api = SafeWayAPI(prefs: await SharedPreferences.getInstance());
 
   runApp(
     MyApp(
       authRepository: AuthRepository(api: _api),
-      mapRepository: MapRepository(api: _api, googleApiKey: googleMapAPIkey),
+      mapRepository: MapRepository(api: _api, googleApiKey: dotenv.env['GOOGLE_MAP_API_KEY'] as String),
       profileRepository: ProfileRepository(api: _api),
     ),
   );

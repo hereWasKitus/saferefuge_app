@@ -4,6 +4,7 @@
 *.log
 *.pyc
 *.swp
+*.env
 .DS_Store
 .atom/
 .buildlog/
@@ -58,7 +59,6 @@ flutter_*.png
 linked_*.ds
 unlinked.ds
 unlinked_spec.ds
-secrets.dart
 
 # Android related
 **/android/**/gradle-wrapper.jar

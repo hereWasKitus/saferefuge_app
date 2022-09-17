@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protect_ua_women/core/config/constants.dart';
-import 'package:protect_ua_women/core/config/secrets.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../home.dart';
 
@@ -14,7 +14,7 @@ class SuggestionsList extends StatelessWidget {
 
   _goToLocation(String input, BuildContext context) async {
     Uri url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=geometry&inputtype=textquery&input=$input&key=$googleMapAPIkey');
+        'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=geometry&inputtype=textquery&input=$input&key=${dotenv.env['GOOGLE_MAP_API_KEY']}');
     var response = await http.get(url);
     var json = convert.jsonDecode(response.body);
     var res = json['candidates'];

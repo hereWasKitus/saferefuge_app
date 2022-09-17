@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:map_repository/map_repository.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
-import 'package:protect_ua_women/core/config/secrets.dart';
 
 import '../models/models.dart';
 
@@ -33,9 +33,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(state.copyWith(searchResults: []));
       return;
     }
-
     Uri url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${event.query}&key=$googleMapAPIkey');
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${event.query}&key=${dotenv.env['GOOGLE_MAP_API_KEY']}');
     var response = await http.get(url);
     var json = convert.jsonDecode(response.body);
     var results = json['predictions'] as List;

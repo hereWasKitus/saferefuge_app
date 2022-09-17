@@ -4,11 +4,11 @@ import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:protect_ua_women/core/config/constants.dart';
-import 'package:protect_ua_women/core/config/secrets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -191,7 +191,7 @@ class _MapViewState extends State<MapView> {
 
   Future<Map<String, dynamic>?> _getAddressByLatLng(LatLng latLng) async {
     String query =
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng.latitude},${latLng.longitude}&key=$googleMapAPIkey';
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng.latitude},${latLng.longitude}&key=${dotenv.env['GOOGLE_MAP_API_KEY']}';
     var res = await http.get(Uri.parse(query));
     var json = convert.jsonDecode(res.body) as Map;
 
