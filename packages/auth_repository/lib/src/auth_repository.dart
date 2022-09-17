@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:safeway_api/safeway_api.dart';
 import 'models/models.dart';
 
@@ -124,6 +126,18 @@ class AuthRepository {
   Future<void> logout() async {
     try {
       _api.logout();
+    } on DioError catch (e) {
+      throw APIException.fromDioError(e);
+    } catch (e) {
+      throw APIException.unknown();
+    }
+  }
+
+  Future<String> requestPasswordReset({required String email}) async {
+    try {
+      Response response = await _api.requestPasswordReset(email: email);
+      debugger(when: true);
+      return response.data['message'];
     } on DioError catch (e) {
       throw APIException.fromDioError(e);
     } catch (e) {

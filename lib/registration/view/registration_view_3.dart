@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:map_repository/map_repository.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/profile/profile.dart';
@@ -18,6 +19,8 @@ class RegistrationView3 extends StatefulWidget {
 class _RegistrationView3State extends State<RegistrationView3> {
   @override
   Widget build(BuildContext context) {
+    OnboardingUpdateStatus onboardingStatus = context.read<ProfileBloc>().state.onboardingUpdateStatus;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -191,9 +194,15 @@ class _RegistrationView3State extends State<RegistrationView3> {
             const SizedBox(height: 5),
             TextButton(
               onPressed: () {
-                context.read<ProfileBloc>().add(const ProfileUpdateOnboardingStatus('FINISHED'));
+                if (onboardingStatus != OnboardingUpdateStatus.loading) {
+                  context.read<ProfileBloc>().add(const ProfileUpdateOnboardingStatus('FINISHED'));
+                }
               },
-              child: const Text('No, we don\'t have branches'),
+              child: onboardingStatus == OnboardingUpdateStatus.loading
+                  ? const SpinKitCircle(
+                      color: primaryColor,
+                    )
+                  : const Text('No, we don\'t have branches'),
               style: TextButton.styleFrom(
                 minimumSize: const Size(double.infinity, 60),
                 primary: const Color.fromRGBO(27, 50, 132, 1),

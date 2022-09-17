@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:protect_ua_women/app/app.dart';
 import 'package:protect_ua_women/login/login.dart';
 import 'package:protect_ua_women/map/map.dart';
+import 'package:protect_ua_women/password_reset/view/view.dart';
 import 'package:protect_ua_women/registration/registration.dart';
 import 'package:protect_ua_women/config/constants.dart';
 import 'package:protect_ua_women/home/home.dart';
@@ -143,6 +144,29 @@ import 'package:protect_ua_women/profile/profile.dart';
       name: 'LoginRoute',
       transitionsBuilder: TransitionsBuilders.slideLeft,
       durationInMilliseconds: defaultAnimationDuration,
+    ),
+    CustomRoute(
+      page: PasswordResetWrapperView,
+      path: '/password-reset',
+      name: 'PasswordResetRouter',
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+      children: [
+        AutoRoute(
+          path: '',
+          name: 'PasswordResetEmailFormRoute',
+          page: PasswordResetEmailFormView,
+        ),
+        AutoRoute(
+          path: 'code-form',
+          name: 'PasswordResetCodeFormRoute',
+          page: PasswordResetCodeFormView,
+        ),
+        AutoRoute(
+          path: 'password-form',
+          name: 'PasswordResetPasswordFormRoute',
+          page: PasswordResetPasswordFormView,
+        ),
+      ],
     ),
     CustomRoute(
       transitionsBuilder: TransitionsBuilders.slideLeft,

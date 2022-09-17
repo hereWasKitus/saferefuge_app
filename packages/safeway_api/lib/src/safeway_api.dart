@@ -321,4 +321,10 @@ class SafeWayAPI {
       'force': true,
     });
   }
+
+  Future<Response> requestPasswordReset({required String email}) async {
+    return _dio.get('email/reset-password-request/', queryParameters: {
+      'email': email,
+    });
+  }
 }

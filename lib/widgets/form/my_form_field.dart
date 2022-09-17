@@ -16,6 +16,7 @@ class MyFormField extends StatelessWidget {
   final bool? enabled;
   final int? maxLines;
   final void Function()? onEditingComplete;
+  final String? errorText;
 
   const MyFormField({
     Key? key,
@@ -33,6 +34,7 @@ class MyFormField extends StatelessWidget {
     this.enabled,
     this.maxLines = 1,
     this.onEditingComplete,
+    this.errorText,
   }) : super(key: key);
 
   OutlineInputBorder _borderStyle({Color color = primaryColor}) => OutlineInputBorder(
@@ -66,6 +68,7 @@ class MyFormField extends StatelessWidget {
           style: const TextStyle(fontSize: 16),
           maxLines: maxLines,
           decoration: InputDecoration(
+            errorText: errorText,
             border: _borderStyle(),
             enabledBorder: _borderStyle(color: const Color.fromRGBO(44, 83, 218, 0.8)),
             focusedBorder: _borderStyle(),

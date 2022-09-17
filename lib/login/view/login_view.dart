@@ -75,11 +75,26 @@ class _LoginViewState extends State<LoginView> {
               Form(
                 key: _formKey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const _EmailField(),
                     const SizedBox(height: 16),
                     const _PasswordField(),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 8),
+                    // TextButton(
+                    //   onPressed: () {
+                    //     context.router.push(const PasswordResetRouter());
+                    //   },
+                    //   child: const Text('Forgot password?'),
+                    //   style: TextButton.styleFrom(
+                    //     primary: actionColor,
+                    //     textStyle: const TextStyle(
+                    //       fontSize: 16,
+                    //       fontWeight: FontWeight.w500,
+                    //     ),
+                    //   ),
+                    // ),
+                    const SizedBox(height: 8),
                     _LoginButton(formKey: _formKey),
                     const SizedBox(height: 32),
                     Row(
