@@ -5,12 +5,14 @@ import 'package:saferefuge_ui/src/colors/sr_colors.dart';
 class SRElevetedButton extends StatefulWidget {
   const SRElevetedButton({
     super.key,
-    this.onPressed,
+    required this.onPressed,
     this.child,
+    this.primary = SRColors.primary,
   });
 
-  final VoidCallback? onPressed;
+  final VoidCallback onPressed;
   final Widget? child;
+  final Color primary;
 
   @override
   State<SRElevetedButton> createState() => _SRElevetedButtonState();
@@ -22,13 +24,13 @@ class _SRElevetedButtonState extends State<SRElevetedButton> {
     return ElevatedButton(
       onPressed: widget.onPressed,
       style: ElevatedButton.styleFrom(
-        minimumSize: const Size(double.infinity, 60),
+        minimumSize: const Size(double.infinity, 44),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(8),
           ),
         ),
-        primary: SRColors.primary,
+        primary: widget.primary,
       ),
       child: widget.child,
     );

@@ -53,12 +53,10 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (context) =>
-                HomeBloc(mapRepository: context.read<MapRepository>())
-                  ..add(const LoadPOIsEvent())
-                  ..add(const LoadCategoriesEvent()),
-          ),
+          BlocProvider(create: (context) => HomeBloc()
+              // ..add(const LoadPOIsEvent())
+              // ..add(const LoadCategoriesEvent()),
+              ),
         ],
         child: MaterialApp.router(
           routerDelegate: _appRouter.delegate(),

@@ -1,16 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:protect_ua_women/features/app/app.dart';
 import 'package:protect_ua_women/features/map/map.dart';
-import 'package:protect_ua_women/core/config/constants.dart';
 import 'package:protect_ua_women/features/home/home.dart';
 
 @MaterialAutoRouter(
-  replaceInRouteName: 'Page,Route',
+  replaceInRouteName: 'View,Route',
   routes: <AutoRoute>[
     AutoRoute(
-      page: SplashScreen,
+      page: SplashScreenView,
       path: '/',
-      name: 'SplashScreenRoute',
       initial: true,
     ),
     AutoRoute(
@@ -19,9 +17,8 @@ import 'package:protect_ua_women/features/home/home.dart';
       name: 'EntrypointRoute',
       children: [
         AutoRoute(
-          page: HomeScreen,
+          page: HomeView,
           path: 'home',
-          name: 'HomeRoute',
         ),
         AutoRoute(
           page: EmptyRouterPage,
@@ -30,13 +27,13 @@ import 'package:protect_ua_women/features/home/home.dart';
         ),
       ],
     ),
-    CustomRoute(
-      transitionsBuilder: TransitionsBuilders.slideLeft,
-      page: OrganizationListView,
-      name: 'OrganizationListRoute',
-      path: '/organizations',
-      durationInMilliseconds: defaultAnimationDuration,
-    ),
+    // CustomRoute(
+    //   transitionsBuilder: TransitionsBuilders.slideLeft,
+    //   page: OrganizationListView,
+    //   name: 'OrganizationListRoute',
+    //   path: '/organizations',
+    //   durationInMilliseconds: defaultAnimationDuration,
+    // ),
     AutoRoute(
       page: MapScreen,
       name: 'MapRoute',

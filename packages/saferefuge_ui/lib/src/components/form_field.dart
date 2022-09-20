@@ -21,6 +21,8 @@ class SRFormField extends StatelessWidget {
     this.maxLines = 1,
     this.onEditingComplete,
     this.errorText,
+    this.filled,
+    this.fillColor = Colors.white,
   });
 
   final String labelText;
@@ -36,8 +38,10 @@ class SRFormField extends StatelessWidget {
   final FocusNode? focusNode;
   final bool? enabled;
   final int? maxLines;
-  final void Function()? onEditingComplete;
+  final VoidCallback? onEditingComplete;
   final String? errorText;
+  final bool? filled;
+  final Color? fillColor;
 
   OutlineInputBorder _borderStyle({Color color = SRColors.primary}) =>
       OutlineInputBorder(
@@ -87,6 +91,8 @@ class SRFormField extends StatelessWidget {
               horizontal: 16,
             ),
             suffixIcon: suffixIcon,
+            filled: filled,
+            fillColor: fillColor,
           ),
           obscureText: isPassword,
           enableSuggestions: !isPassword,

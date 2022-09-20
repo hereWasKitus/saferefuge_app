@@ -1,2 +1,2 @@
-export 'splash_screen_view.dart';
-export 'entrypoint_view.dart';
+export 'splash_screen.view.dart';
+export 'entrypoint.view.dart';

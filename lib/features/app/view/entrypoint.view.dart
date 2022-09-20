@@ -28,12 +28,12 @@ class _EntrypointState extends State<Entrypoint> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: 'Add point',
+              icon: Icon(Icons.emergency_share),
+              label: 'Report',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
+              icon: Icon(Icons.report),
+              label: 'About',
             ),
           ],
           currentIndex: tabsRouter.activeIndex,
