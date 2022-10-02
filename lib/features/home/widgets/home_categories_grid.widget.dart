@@ -34,7 +34,7 @@ class _HomeCategoriesGridState extends State<HomeCategoriesGrid> {
               onSelect: (String value, bool selected) => {},
               name: cat['name'] as String,
               value: cat['name'] as String,
-              categoryColorHEX: cat['color'] as int,
+              categoryColor: cat['color'] as Color,
             ),
           )
           .toList(),
@@ -45,7 +45,7 @@ class _HomeCategoriesGridState extends State<HomeCategoriesGrid> {
 class _HomeCategoriesGridItem extends StatelessWidget {
   const _HomeCategoriesGridItem({
     Key? key,
-    this.categoryColorHEX = 0xFF000000,
+    this.categoryColor = const Color(0xFF000000),
     required this.categoryIcon,
     this.selected = false,
     required this.onSelect,
@@ -53,7 +53,7 @@ class _HomeCategoriesGridItem extends StatelessWidget {
     required this.value,
   }) : super(key: key);
 
-  final int categoryColorHEX;
+  final Color categoryColor;
   final IconData categoryIcon;
   final bool selected;
   final void Function(String value, bool selected) onSelect;
@@ -65,10 +65,10 @@ class _HomeCategoriesGridItem extends StatelessWidget {
     return GestureDetector(
       onTap: () => onSelect(value, !selected),
       child: Card(
-        color: selected ? Color(categoryColorHEX) : Colors.white,
+        color: selected ? categoryColor : Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: BorderSide(color: Color(categoryColorHEX)),
+          side: BorderSide(color: categoryColor),
         ),
         child: Container(
           padding: const EdgeInsets.all(12.0),
@@ -82,11 +82,11 @@ class _HomeCategoriesGridItem extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: selected
                       ? Colors.white.withOpacity(0.25)
-                      : Color(categoryColorHEX).withOpacity(0.25),
+                      : categoryColor.withOpacity(0.25),
                 ),
                 child: Icon(
                   categoryIcon,
-                  color: selected ? Colors.white : Color(categoryColorHEX),
+                  color: selected ? Colors.white : categoryColor,
                 ),
               ),
               const SizedBox(height: 14),
@@ -97,8 +97,7 @@ class _HomeCategoriesGridItem extends StatelessWidget {
                     child: Text(
                       name,
                       style: TextStyle(
-                        color:
-                            selected ? Colors.white : Color(categoryColorHEX),
+                        color: selected ? Colors.white : categoryColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 12,
                       ),

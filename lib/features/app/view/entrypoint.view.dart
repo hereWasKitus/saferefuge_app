@@ -15,7 +15,8 @@ class _EntrypointState extends State<Entrypoint> {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       routes: const [
-        HomeRoute(),
+        // HomeRoute(),
+        HomeRouter(),
         EmptyRoute(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {

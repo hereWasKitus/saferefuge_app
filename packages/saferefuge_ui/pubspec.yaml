@@ -14,3 +14,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   very_good_analysis: ^3.0.1
+
+flutter:
+  fonts:
+      - family: SRIcons
+        fonts:
+          - asset: assets/fonts/SRIcons.ttf

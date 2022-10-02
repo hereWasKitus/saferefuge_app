@@ -1,6 +1,9 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
+import 'dart:developer';
+import 'package:safeway_api/safeway_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'models/poi.model.dart';
 
 class SafeWayAPI {
   final Dio _dio = Dio(BaseOptions(
@@ -9,21 +12,24 @@ class SafeWayAPI {
     connectTimeout: 20000,
     receiveTimeout: 20000,
   ));
-  final SharedPreferences _prefs;
+  late SharedPreferences _prefs;
 
-  SafeWayAPI({required SharedPreferences prefs}) : _prefs = prefs {
+  SafeWayAPI() {
     _init();
   }
 
   void _init() async {
+    _prefs = await SharedPreferences.getInstance();
     String? token = _prefs.getString('token');
-    _dio.options.headers['Authorization'] = token != null ? 'Bearer $token' : '';
+    _dio.options.headers['Authorization'] =
+        token != null ? 'Bearer $token' : '';
   }
 
   Future<Response> login(String email, String password) async {
     Response response = await _dio.post(
       'aaa/login',
-      options: Options(headers: {'content-type': 'application/x-www-form-urlencoded'}),
+      options: Options(
+          headers: {'content-type': 'application/x-www-form-urlencoded'}),
       data: {
         'username': email,
         'password': password,
@@ -33,7 +39,8 @@ class SafeWayAPI {
     if (response.statusCode == 200) {
       var pref = await SharedPreferences.getInstance();
       pref.setString('token', response.data['access_token']);
-      _dio.options.headers['Authorization'] = 'Bearer ${response.data['access_token']}';
+      _dio.options.headers['Authorization'] =
+          'Bearer ${response.data['access_token']}';
     }
 
     return response;
@@ -55,157 +62,33 @@ class SafeWayAPI {
     );
   }
 
-  Future<Response> registerOrAssignToOrganization({
-    String username = '',
-    String name = '',
-    String email = '',
-    String phone = '',
-    String website = '',
-    String address = '',
-    String city = '',
-    String country = '',
-    String formalID = '',
-    String whatsapp = '',
-    String telegram = '',
-    String positionInOrganization = '',
-    List<String> categories = const [],
-  }) async {
-    var response = await _dio.post(
-      'org/assign',
-      data: json.encode({
-        'username': username,
-        'name': name,
-        'email': email,
-        'phone': phone,
-        'website': website,
-        'address': address,
-        'city': city,
-        'country': country,
-        'categories': categories,
-        'formal_id': formalID,
-        'whatsapp': whatsapp,
-        'telegram': telegram,
-        'position': positionInOrganization,
-      }),
-    );
-
-    return response;
-  }
-
   Future<Response> getMe() async {
     return _dio.get('users/me/');
   }
 
-  Future<Response> getOrganization({required String username}) async {
-    return await _dio.get(
-      'org/get/$username',
-    );
-  }
-
-  Future<Response> updateOrganization({
-    required String username,
-    String? organizationName,
-    String? organizationEmail,
-    String? organizationPhone,
-  }) async {
-    Map<String, dynamic> request = {};
-
-    if (organizationName != null) request['name'] = organizationName;
-    if (organizationEmail != null) request['email'] = organizationEmail;
-    if (organizationPhone != null) request['phone'] = organizationPhone;
-
-    return await _dio.put(
-      'org/$username',
-      data: json.encode(request),
-    );
-  }
-
-  Future<Response> updateUser({
-    String? email,
-    String? fullName,
-    String? orgPosition,
-    List<String>? onboardingStatus,
-  }) async {
-    Map<String, dynamic> request = {};
-
-    if (email != null) {
-      request['username'] = email;
-      request['email'] = email;
-    }
-
-    if (fullName != null) {
-      request['full_name'] = fullName;
-    }
-
-    if (orgPosition != null) {
-      request['org_position'] = orgPosition;
-    }
-
-    if (onboardingStatus != null) {
-      request['on_boarding'] = onboardingStatus;
-    }
-
-    return await _dio.patch(
-      'users/me/',
-      data: json.encode(request),
-    );
-  }
-
-  Future<Response> dangerousUpdateUser({
-    required String userID,
-    String? email,
-    String? username,
-    String? password,
-  }) async {
-    Map<String, dynamic> request = {};
-
-    if (email != null) {
-      request['username'] = email;
-      request['email'] = email;
-    }
-
-    if (username != null) {
-      request['username'] = username;
-    }
-
-    if (password != null) {
-      request['password'] = password;
-    }
-
-    return await _dio.patch('aaa/user/patch/', data: json.encode(request), queryParameters: <String, dynamic>{
-      '_id': userID,
-    });
-  }
-
-  Future<Response> getPOIs({
+  Future<List<POI>> fetchPOIs({
     List<String>? ids,
-    int limit = 100,
-    String mode = 'compact',
-    int skip = 0,
+    int limit = 20,
+    int? skip,
+    String mode = 'basic',
     List<String>? categories,
     List<String>? organizations,
     String? city,
     String? country,
     bool? approved,
     String? author,
+    double? longitude,
+    double? latitude,
+    double? maxDistance,
   }) async {
-    if (ids != null && ids.isNotEmpty) {
-      return await _dio.get(
-        'poi/',
-        queryParameters: {
-          'ids': ids.join(','),
-          'limit': limit,
-          'mode': mode,
-          'skip': skip,
-        },
-      );
-    }
-
     Map<String, dynamic> queryParameters = {
       'limit': limit,
       'fields': mode,
-      'skip': skip,
     };
+
+    if (skip != null) {
+      queryParameters['skip'] = skip;
+    }
 
     if (categories != null) {
       queryParameters['categories'] = categories.join(',');
@@ -231,16 +114,27 @@ class SafeWayAPI {
       queryParameters['author'] = author;
     }
 
-    return _dio.get('poi/search', queryParameters: queryParameters);
-  }
+    if (longitude != null) {
+      queryParameters['longitude'] = longitude;
+    }
 
-  Future<Response> getNearbyPOIs({required double lat, required double lng, int? limit, double? maxDistance}) {
-    return _dio.get('poi/', queryParameters: {
-      'limit': limit ?? 0,
-      'latitdue': lat,
-      'longitude': lng,
-      'max_distance': maxDistance ?? 50000,
-    });
+    if (latitude != null) {
+      queryParameters['latitude'] = latitude;
+    }
+
+    if (maxDistance != null) {
+      queryParameters['maxDistance'] = maxDistance;
+    }
+
+    Response response = await _dio.get(
+      'poi/search',
+      queryParameters: queryParameters,
+    );
+
+    List<POI> pois =
+        response.data['items'].map<POI>((n) => POI.fromJson(n)).toList();
+
+    return pois;
   }
 
   Future<Response> getOrganizations({int limit = 100}) {
@@ -249,10 +143,16 @@ class SafeWayAPI {
     });
   }
 
-  Future<Response> getCategories({int limit = 100}) {
-    return _dio.get('common/', queryParameters: {
+  Future<List<POICategory>> fetchCategories({int limit = 100}) async {
+    Response response = await _dio.get('common/', queryParameters: {
       'limit': limit,
     });
+
+    List<POICategory> categories = response.data['items']
+        .map<POICategory>((n) => POICategory.fromJson(n))
+        .toList();
+
+    return categories;
   }
 
   Future<Response> createPOI(Map<String, dynamic> poi) {

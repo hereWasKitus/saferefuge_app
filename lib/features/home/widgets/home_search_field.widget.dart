@@ -1,13 +1,29 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:saferefuge_ui/saferefuge_ui.dart';
 
 class HomeSearchField extends StatefulWidget {
   const HomeSearchField({
     Key? key,
     required this.onChange,
+    this.hintText,
+    this.hintTextColor,
+    this.fillColor,
+    this.prefixIcon,
+    this.cursorColor,
+    this.textColor,
+    this.focusedBorderColor = const Color.fromRGBO(27, 50, 132, 0.5),
   }) : super(key: key);
 
   final void Function(String) onChange;
+  final String? hintText;
+  final Color? hintTextColor;
+  final Color? fillColor;
+  final Icon? prefixIcon;
+  final Color? cursorColor;
+  final Color? textColor;
+  final Color focusedBorderColor;
 
   @override
   State<HomeSearchField> createState() => _HomeSearchFieldState();
@@ -54,48 +70,26 @@ class _HomeSearchFieldState extends State<HomeSearchField> {
     _focusNode.unfocus();
   }
 
-  Widget _fieldViewBuilder(context, controller, focusNode, onEditingComplete) {
-    return TextField(
-      onEditingComplete: onEditingComplete,
+  Widget _fieldViewBuilder(
+      BuildContext context,
+      TextEditingController controller,
+      FocusNode focusNode,
+      onEditingComplete) {
+    return SRTextField(
       focusNode: focusNode,
       controller: controller,
-      decoration: const InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-        fillColor: Color(0xFF7D79E3),
-        filled: true,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(8),
-          ),
-          borderSide: BorderSide(
-            color: Color.fromRGBO(27, 50, 132, 0.2),
-            width: 1,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(8),
-          ),
-          borderSide: BorderSide(
-            color: Colors.white,
-            width: 1,
-          ),
-        ),
-        constraints: BoxConstraints(maxHeight: 44),
-        hintText: 'What is needed?',
-        hintStyle: TextStyle(
-          color: Colors.white,
-        ),
-        prefixIcon: Icon(
-          Icons.search,
-          color: Colors.white,
-        ),
-      ),
-      style: const TextStyle(
-        color: Colors.white,
-      ),
-      cursorColor: Colors.white,
-      onChanged: widget.onChange,
+      onEditingComplete: () {
+        focusNode.unfocus();
+        onEditingComplete();
+      },
+      onChange: widget.onChange,
+      hintText: widget.hintText,
+      hintTextColor: widget.hintTextColor,
+      fillColor: widget.fillColor,
+      prefixIcon: widget.prefixIcon,
+      cursorColor: widget.cursorColor,
+      textColor: widget.textColor,
+      focusedBorderColor: widget.focusedBorderColor,
     );
   }
 
@@ -111,8 +105,10 @@ class _HomeSearchFieldState extends State<HomeSearchField> {
         type: MaterialType.transparency,
         elevation: 0,
         child: Container(
-          constraints:
-              BoxConstraints(maxWidth: constraints.maxWidth, maxHeight: 230),
+          constraints: BoxConstraints(
+            maxWidth: constraints.maxWidth,
+            maxHeight: 230,
+          ),
           margin: const EdgeInsets.only(top: 8),
           decoration: BoxDecoration(
             color: Colors.white,

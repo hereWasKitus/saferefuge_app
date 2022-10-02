@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:auto_route/empty_router_widgets.dart';
 import 'package:protect_ua_women/features/app/app.dart';
+import 'package:protect_ua_women/features/home/view/poi_list.view.dart';
 import 'package:protect_ua_women/features/map/map.dart';
 import 'package:protect_ua_women/features/home/home.dart';
 
@@ -17,8 +19,19 @@ import 'package:protect_ua_women/features/home/home.dart';
       name: 'EntrypointRoute',
       children: [
         AutoRoute(
-          page: HomeView,
+          page: EmptyRouterPage,
+          name: 'HomeRouter',
           path: 'home',
+          children: [
+            AutoRoute(
+              page: HomeView,
+              path: '',
+            ),
+            AutoRoute(
+              page: POIListView,
+              path: 'poi-list',
+            )
+          ],
         ),
         AutoRoute(
           page: EmptyRouterPage,

@@ -7,11 +7,31 @@ abstract class AppEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class SetAppInitializedEvent extends AppEvent {
-  final bool isInitialized;
-
-  const SetAppInitializedEvent(this.isInitialized);
+class LoadCategories extends AppEvent {
+  const LoadCategories();
 
   @override
-  List<Object> get props => [isInitialized];
+  List<Object> get props => [];
+}
+
+class ChangeSelectedCategoriesIDs extends AppEvent {
+  final List<String> ids;
+
+  const ChangeSelectedCategoriesIDs(this.ids);
+
+  @override
+  List<Object> get props => [ids];
+}
+
+class LoadPOIsByCurrentLocation extends AppEvent {
+  final double maxDistance;
+  final int skip;
+
+  const LoadPOIsByCurrentLocation({
+    this.skip = 0,
+    this.maxDistance = 500000,
+  });
+
+  @override
+  List<Object> get props => [skip, maxDistance];
 }

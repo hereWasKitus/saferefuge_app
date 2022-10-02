@@ -1,37 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:protect_ua_women/core/theme/theme.dart';
 import 'package:protect_ua_women/features/home/home.dart';
+import 'package:protect_ua_women/features/home/view/poi_list.view.dart';
 import 'package:protect_ua_women/features/home/widgets/home_categories_grid.widget.dart';
+import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:saferefuge_ui/saferefuge_ui.dart';
+import 'package:auto_route/auto_route.dart';
 
 final categories = [
   {
     'name': 'Jobs',
-    'color': 0xFF3C5027,
+    'color': const Color(0xFF3C5027),
   },
   {
     'name': 'Medical',
-    'color': 0xFF277DA1,
+    'color': const Color(0xFF277DA1),
   },
   {
     'name': 'Accomodation',
-    'color': 0xFF43AA8B,
+    'color': const Color(0xFF43AA8B),
   },
   {
     'name': 'Children',
-    'color': 0xFF5C374C,
+    'color': const Color(0xFF5C374C),
   },
   {
     'name': 'Pets',
-    'color': 0xFF606C38,
+    'color': const Color(0xFF606C38),
   },
   {
     'name': 'Information',
-    'color': 0xFFDCA726,
+    'color': const Color(0xFFDCA726),
   },
   {
     'name': 'Clothes',
-    'color': 0xFFF94144,
+    'color': const Color(0xFFF94144),
   },
 ];
 
@@ -56,6 +59,16 @@ class HomeView extends StatelessWidget {
               children: [
                 HomeSearchField(
                   onChange: (value) => {},
+                  fillColor: const Color(0xFF7D79E3),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                  focusedBorderColor: Colors.white.withOpacity(0.5),
+                  hintText: 'What is needed?',
+                  hintTextColor: Colors.white,
+                  textColor: Colors.white,
+                  cursorColor: Colors.white,
                 ),
                 const SizedBox(height: 33),
                 const SizedBox(
@@ -97,7 +110,9 @@ class HomeView extends StatelessWidget {
                     ],
                   ),
                   primary: Colors.white,
-                  onPressed: () => {},
+                  onPressed: () {
+                    context.router.navigate(const POIListRoute());
+                  },
                 ),
               ],
             ),

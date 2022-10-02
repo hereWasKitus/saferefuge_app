@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:protect_ua_women/core/config/constants.dart';
 
 import '../map.dart';
@@ -32,7 +31,8 @@ class _MapBottomState extends State<MapBottom> {
           children: [
             BlocBuilder<MapBloc, MapState>(
               buildWhen: (previos, current) =>
-                  (previos.status != current.status) || (previos.markers != current.markers),
+                  (previos.status != current.status) ||
+                  (previos.markers != current.markers),
               builder: (context, state) {
                 return ElevatedButton(
                   onPressed: () {
@@ -41,9 +41,7 @@ class _MapBottomState extends State<MapBottom> {
                     }
                   },
                   child: state.status == MapStatus.loading
-                      ? const SpinKitCircle(
-                          color: Colors.white,
-                        )
+                      ? const CircularProgressIndicator()
                       : const Text('Add point on map'),
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 60),
@@ -52,8 +50,10 @@ class _MapBottomState extends State<MapBottom> {
                         Radius.circular(defaultBorderRadius),
                       ),
                     ),
-                    primary: Color.fromRGBO(27, 50, 132, state.markers.isEmpty ? 0.7 : 1),
-                    splashFactory: (state.status == MapStatus.loading) || state.markers.isEmpty
+                    primary: Color.fromRGBO(
+                        27, 50, 132, state.markers.isEmpty ? 0.7 : 1),
+                    splashFactory: (state.status == MapStatus.loading) ||
+                            state.markers.isEmpty
                         ? NoSplash.splashFactory
                         : InkRipple.splashFactory,
                   ),

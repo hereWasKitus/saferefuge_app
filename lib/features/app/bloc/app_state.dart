@@ -1,23 +1,44 @@
 part of 'app_bloc.dart';
 
-class AppState extends Equatable {
-  final bool isInitialized;
-  final bool isLoading;
+enum CategoriesStatus {
+  initial,
+  loading,
+  success,
+  failure,
+}
 
-  const AppState({
-    this.isInitialized = false,
-    this.isLoading = false,
-  });
+enum POIsStatus {
+  initial,
+  loading,
+  success,
+  failure,
+}
 
-  AppState copyWith({
-    bool? isInitialized,
-    bool? isLoading,
-  }) =>
-      AppState(
-        isInitialized: isInitialized ?? this.isInitialized,
-        isLoading: isLoading ?? this.isLoading,
-      );
+enum AppStatus {
+  initial,
+  loading,
+  success,
+  failure,
+}
 
-  @override
-  List<Object> get props => [isInitialized, isLoading];
+enum LocationPermissionStatus {
+  initial,
+  loading,
+  granted,
+  denied,
+}
+
+@freezed
+class AppState with _$AppState {
+  const factory AppState({
+    @Default(AppStatus.initial) AppStatus appStatus,
+    @Default(CategoriesStatus.initial) CategoriesStatus categoriesStatus,
+    @Default(POIsStatus.initial) POIsStatus poisStatus,
+    @Default(<POICategory>[]) List<POICategory> categories,
+    @Default(<String>[]) List<String> selectedCategoriesIDs,
+    @Default(<POI>[]) List<POI> pois,
+    @Default('') String errorMessage,
+    @Default(LocationPermissionStatus.initial)
+        LocationPermissionStatus locationPermissionStatus,
+  }) = _AppState;
 }

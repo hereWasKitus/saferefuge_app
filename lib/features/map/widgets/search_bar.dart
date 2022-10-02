@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:protect_ua_women/core/config/constants.dart';
 
 import '../map.dart';
@@ -44,9 +43,8 @@ class _MapSearchBarState extends State<MapSearchBar> {
                     width: 20,
                     height: 20,
                     child: LayoutBuilder(builder: (context, constraints) {
-                      return SpinKitCircle(
+                      return CircularProgressIndicator(
                         color: primaryColor,
-                        size: constraints.maxWidth / 2,
                       );
                     }),
                   )
