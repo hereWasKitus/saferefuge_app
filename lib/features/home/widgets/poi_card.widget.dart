@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:protect_ua_women/core/theme/app_colors.dart';
 import 'package:protect_ua_women/features/app/app.dart';
 import 'package:protect_ua_women/features/app/widgets/category_filter_chip.widget.dart';

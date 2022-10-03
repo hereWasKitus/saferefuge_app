@@ -50,7 +50,7 @@ class _MapBottomState extends State<MapBottom> {
                         Radius.circular(defaultBorderRadius),
                       ),
                     ),
-                    primary: Color.fromRGBO(
+                    backgroundColor: Color.fromRGBO(
                         27, 50, 132, state.markers.isEmpty ? 0.7 : 1),
                     splashFactory: (state.status == MapStatus.loading) ||
                             state.markers.isEmpty

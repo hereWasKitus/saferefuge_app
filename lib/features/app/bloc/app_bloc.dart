@@ -57,7 +57,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     LoadPOIsByCurrentLocation event,
     Emitter<AppState> emit,
   ) async {
-    print('let\'s rock');
     if (state.locationPermissionStatus == LocationPermissionStatus.initial) {
       emit(
         state.copyWith(

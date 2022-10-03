@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protect_ua_women/core/theme/app_colors.dart';
 import 'package:protect_ua_women/features/app/app.dart';
 import 'package:protect_ua_women/features/home/home.dart';
+import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:saferefuge_ui/saferefuge_ui.dart';
 
 class POIListView extends StatefulWidget {
@@ -70,7 +72,9 @@ class _POIListViewState extends State<POIListView> {
                   ),
                   child: IconButton(
                     splashRadius: 25,
-                    onPressed: () {},
+                    onPressed: () {
+                      context.router.push(const FiltersRoute());
+                    },
                     icon: const Icon(
                       Icons.tune_sharp,
                       color: AppColors.action,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:protect_ua_women/features/app/app.dart';
-import 'package:protect_ua_women/features/app/widgets/category_filter_chip.widget.dart';
 
 class CategoriesList extends StatelessWidget {
   const CategoriesList({

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:protect_ua_women/core/helpers/poi_category_styler.dart';
 import 'package:safeway_api/safeway_api.dart';
 
 class CategoryFilterChip extends StatelessWidget {

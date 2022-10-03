@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:protect_ua_women/core/theme/theme.dart';
 import 'package:protect_ua_women/features/home/home.dart';
-import 'package:protect_ua_women/features/home/view/poi_list.view.dart';
 import 'package:protect_ua_women/features/home/widgets/home_categories_grid.widget.dart';
 import 'package:protect_ua_women/routes/router.gr.dart';
 import 'package:saferefuge_ui/saferefuge_ui.dart';
