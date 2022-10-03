@@ -281,7 +281,8 @@ class _OpenHoursRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return _Detail(
       title: 'Open Hours',
-      bottom: Text(' - '),
+      bottom:
+          poi.openHours.isNotEmpty ? Text(poi.openHours) : const Text(' - '),
     );
   }
 }
@@ -341,7 +342,12 @@ class _SocialMediaRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _Detail(title: 'Social Media', bottom: Text(' - '));
+    return _Detail(
+      title: 'Social Media',
+      bottom: poi.socialMedia.isNotEmpty
+          ? Text(poi.socialMedia)
+          : const Text(' - '),
+    );
   }
 }
 
