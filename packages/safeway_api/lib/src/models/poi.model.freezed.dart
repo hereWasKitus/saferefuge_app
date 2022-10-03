@@ -40,6 +40,12 @@ mixin _$POI {
   List<String> get languages => throw _privateConstructorUsedError;
   bool get approved => throw _privateConstructorUsedError;
   String get author => throw _privateConstructorUsedError;
+  @JsonKey(name: 'distance_km')
+  double get distanceKm => throw _privateConstructorUsedError;
+  @JsonKey(name: 'socialmedia')
+  String get socialMedia => throw _privateConstructorUsedError;
+  @JsonKey(name: 'open_hours')
+  String get openHours => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -68,7 +74,10 @@ abstract class $POICopyWith<$Res> {
       @JsonKey(name: 'contact_person') String contactPerson,
       List<String> languages,
       bool approved,
-      String author});
+      String author,
+      @JsonKey(name: 'distance_km') double distanceKm,
+      @JsonKey(name: 'socialmedia') String socialMedia,
+      @JsonKey(name: 'open_hours') String openHours});
 }
 
 /// @nodoc
@@ -99,6 +108,9 @@ class _$POICopyWithImpl<$Res> implements $POICopyWith<$Res> {
     Object? languages = freezed,
     Object? approved = freezed,
     Object? author = freezed,
+    Object? distanceKm = freezed,
+    Object? socialMedia = freezed,
+    Object? openHours = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -173,6 +185,18 @@ class _$POICopyWithImpl<$Res> implements $POICopyWith<$Res> {
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
               as String,
+      distanceKm: distanceKm == freezed
+          ? _value.distanceKm
+          : distanceKm // ignore: cast_nullable_to_non_nullable
+              as double,
+      socialMedia: socialMedia == freezed
+          ? _value.socialMedia
+          : socialMedia // ignore: cast_nullable_to_non_nullable
+              as String,
+      openHours: openHours == freezed
+          ? _value.openHours
+          : openHours // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -200,7 +224,10 @@ abstract class _$$_POICopyWith<$Res> implements $POICopyWith<$Res> {
       @JsonKey(name: 'contact_person') String contactPerson,
       List<String> languages,
       bool approved,
-      String author});
+      String author,
+      @JsonKey(name: 'distance_km') double distanceKm,
+      @JsonKey(name: 'socialmedia') String socialMedia,
+      @JsonKey(name: 'open_hours') String openHours});
 }
 
 /// @nodoc
@@ -232,6 +259,9 @@ class __$$_POICopyWithImpl<$Res> extends _$POICopyWithImpl<$Res>
     Object? languages = freezed,
     Object? approved = freezed,
     Object? author = freezed,
+    Object? distanceKm = freezed,
+    Object? socialMedia = freezed,
+    Object? openHours = freezed,
   }) {
     return _then(_$_POI(
       id: id == freezed
@@ -306,6 +336,18 @@ class __$$_POICopyWithImpl<$Res> extends _$POICopyWithImpl<$Res>
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
               as String,
+      distanceKm: distanceKm == freezed
+          ? _value.distanceKm
+          : distanceKm // ignore: cast_nullable_to_non_nullable
+              as double,
+      socialMedia: socialMedia == freezed
+          ? _value.socialMedia
+          : socialMedia // ignore: cast_nullable_to_non_nullable
+              as String,
+      openHours: openHours == freezed
+          ? _value.openHours
+          : openHours // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -331,7 +373,10 @@ class _$_POI implements _POI {
       @JsonKey(name: 'contact_person') this.contactPerson = '',
       final List<String> languages = const [],
       this.approved = false,
-      this.author = ''})
+      this.author = '',
+      @JsonKey(name: 'distance_km') this.distanceKm = 0,
+      @JsonKey(name: 'socialmedia') this.socialMedia = '',
+      @JsonKey(name: 'open_hours') this.openHours = ''})
       : _categories = categories,
         _organizations = organizations,
         _geo = geo,
@@ -413,10 +458,19 @@ class _$_POI implements _POI {
   @override
   @JsonKey()
   final String author;
+  @override
+  @JsonKey(name: 'distance_km')
+  final double distanceKm;
+  @override
+  @JsonKey(name: 'socialmedia')
+  final String socialMedia;
+  @override
+  @JsonKey(name: 'open_hours')
+  final String openHours;
 
   @override
   String toString() {
-    return 'POI(id: $id, address: $address, phone: $phone, email: $email, url: $url, telegram: $telegram, whatsapp: $whatsapp, city: $city, country: $country, name: $name, description: $description, categories: $categories, organizations: $organizations, geo: $geo, contactPerson: $contactPerson, languages: $languages, approved: $approved, author: $author)';
+    return 'POI(id: $id, address: $address, phone: $phone, email: $email, url: $url, telegram: $telegram, whatsapp: $whatsapp, city: $city, country: $country, name: $name, description: $description, categories: $categories, organizations: $organizations, geo: $geo, contactPerson: $contactPerson, languages: $languages, approved: $approved, author: $author, distanceKm: $distanceKm, socialMedia: $socialMedia, openHours: $openHours)';
   }
 
   @override
@@ -446,31 +500,40 @@ class _$_POI implements _POI {
             const DeepCollectionEquality()
                 .equals(other._languages, _languages) &&
             const DeepCollectionEquality().equals(other.approved, approved) &&
-            const DeepCollectionEquality().equals(other.author, author));
+            const DeepCollectionEquality().equals(other.author, author) &&
+            const DeepCollectionEquality()
+                .equals(other.distanceKm, distanceKm) &&
+            const DeepCollectionEquality()
+                .equals(other.socialMedia, socialMedia) &&
+            const DeepCollectionEquality().equals(other.openHours, openHours));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(address),
-      const DeepCollectionEquality().hash(phone),
-      const DeepCollectionEquality().hash(email),
-      const DeepCollectionEquality().hash(url),
-      const DeepCollectionEquality().hash(telegram),
-      const DeepCollectionEquality().hash(whatsapp),
-      const DeepCollectionEquality().hash(city),
-      const DeepCollectionEquality().hash(country),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(description),
-      const DeepCollectionEquality().hash(_categories),
-      const DeepCollectionEquality().hash(_organizations),
-      const DeepCollectionEquality().hash(_geo),
-      const DeepCollectionEquality().hash(contactPerson),
-      const DeepCollectionEquality().hash(_languages),
-      const DeepCollectionEquality().hash(approved),
-      const DeepCollectionEquality().hash(author));
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        const DeepCollectionEquality().hash(id),
+        const DeepCollectionEquality().hash(address),
+        const DeepCollectionEquality().hash(phone),
+        const DeepCollectionEquality().hash(email),
+        const DeepCollectionEquality().hash(url),
+        const DeepCollectionEquality().hash(telegram),
+        const DeepCollectionEquality().hash(whatsapp),
+        const DeepCollectionEquality().hash(city),
+        const DeepCollectionEquality().hash(country),
+        const DeepCollectionEquality().hash(name),
+        const DeepCollectionEquality().hash(description),
+        const DeepCollectionEquality().hash(_categories),
+        const DeepCollectionEquality().hash(_organizations),
+        const DeepCollectionEquality().hash(_geo),
+        const DeepCollectionEquality().hash(contactPerson),
+        const DeepCollectionEquality().hash(_languages),
+        const DeepCollectionEquality().hash(approved),
+        const DeepCollectionEquality().hash(author),
+        const DeepCollectionEquality().hash(distanceKm),
+        const DeepCollectionEquality().hash(socialMedia),
+        const DeepCollectionEquality().hash(openHours)
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -504,7 +567,10 @@ abstract class _POI implements POI {
       @JsonKey(name: 'contact_person') final String contactPerson,
       final List<String> languages,
       final bool approved,
-      final String author}) = _$_POI;
+      final String author,
+      @JsonKey(name: 'distance_km') final double distanceKm,
+      @JsonKey(name: 'socialmedia') final String socialMedia,
+      @JsonKey(name: 'open_hours') final String openHours}) = _$_POI;
 
   factory _POI.fromJson(Map<String, dynamic> json) = _$_POI.fromJson;
 
@@ -546,6 +612,15 @@ abstract class _POI implements POI {
   bool get approved;
   @override
   String get author;
+  @override
+  @JsonKey(name: 'distance_km')
+  double get distanceKm;
+  @override
+  @JsonKey(name: 'socialmedia')
+  String get socialMedia;
+  @override
+  @JsonKey(name: 'open_hours')
+  String get openHours;
   @override
   @JsonKey(ignore: true)
   _$$_POICopyWith<_$_POI> get copyWith => throw _privateConstructorUsedError;

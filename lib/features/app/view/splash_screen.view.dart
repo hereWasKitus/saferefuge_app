@@ -20,7 +20,7 @@ class _SplashScreenViewState extends State<SplashScreenView> {
     super.initState();
     timer = Timer(
       const Duration(milliseconds: 1500),
-      () => context.router.pushNamed('/root'),
+      () => context.router.replaceNamed('/root'),
     );
   }
 

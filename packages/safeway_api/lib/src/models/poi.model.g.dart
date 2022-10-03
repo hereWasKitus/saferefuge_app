@@ -34,6 +34,9 @@ _$_POI _$$_POIFromJson(Map<String, dynamic> json) => _$_POI(
           const [],
       approved: json['approved'] as bool? ?? false,
       author: json['author'] as String? ?? '',
+      distanceKm: (json['distance_km'] as num?)?.toDouble() ?? 0,
+      socialMedia: json['socialmedia'] as String? ?? '',
+      openHours: json['open_hours'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$_POIToJson(_$_POI instance) => <String, dynamic>{
@@ -55,4 +58,7 @@ Map<String, dynamic> _$$_POIToJson(_$_POI instance) => <String, dynamic>{
       'languages': instance.languages,
       'approved': instance.approved,
       'author': instance.author,
+      'distance_km': instance.distanceKm,
+      'socialmedia': instance.socialMedia,
+      'open_hours': instance.openHours,
     };

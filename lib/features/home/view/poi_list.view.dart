@@ -1,13 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:protect_ua_women/core/theme/app_colors.dart';
 import 'package:protect_ua_women/features/app/app.dart';
 import 'package:protect_ua_women/features/home/home.dart';
 import 'package:saferefuge_ui/saferefuge_ui.dart';
-import 'package:safeway_api/safeway_api.dart';
 
 class POIListView extends StatefulWidget {
   const POIListView({Key? key}) : super(key: key);
@@ -149,6 +145,7 @@ class _POIListState extends State<_POIList> {
           }
 
           return ListView.separated(
+            physics: const BouncingScrollPhysics(),
             controller: _scrollController,
             itemCount: state.pois.length,
             shrinkWrap: true,
@@ -156,13 +153,26 @@ class _POIListState extends State<_POIList> {
             itemBuilder: (BuildContext context, int index) {
               if (index + 1 >= state.pois.length &&
                   state.poisStatus == POIsStatus.loading) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.primary,
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: 24,
+                        right: 24,
+                        bottom: index == state.pois.length - 1 ? 16 : 0,
+                      ),
+                      child: POICard(poi: state.pois[index]),
                     ),
-                  ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10.0),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               }
 
@@ -183,7 +193,9 @@ class _POIListState extends State<_POIList> {
 
   void _onScroll() {
     final int poisCount = context.read<AppBloc>().state.pois.length;
-    if (_isBottom) {
+    final bool hasReachedMaximum =
+        context.read<AppBloc>().state.poisReachedMaximum;
+    if (_isBottom && !hasReachedMaximum) {
       context.read<AppBloc>().add(LoadPOIsByCurrentLocation(skip: poisCount));
     }
   }

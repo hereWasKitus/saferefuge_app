@@ -90,11 +90,16 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         latitude: position.latitude,
         maxDistance: event.maxDistance,
         skip: event.skip,
+        mode: 'full',
       );
       emit(state.copyWith(
         poisStatus: POIsStatus.success,
         pois: [...state.pois, ...pois],
       ));
+
+      // if (pois.isEmpty && state.poisReachedMaximum == false) {
+      //   emit(state.copyWith(poisReachedMaximum: true));
+      // }
     } catch (e) {
       debugger(when: true);
       emit(state.copyWith(poisStatus: POIsStatus.failure));

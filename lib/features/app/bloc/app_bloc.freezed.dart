@@ -25,6 +25,7 @@ mixin _$AppState {
   String get errorMessage => throw _privateConstructorUsedError;
   LocationPermissionStatus get locationPermissionStatus =>
       throw _privateConstructorUsedError;
+  bool get poisReachedMaximum => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AppStateCopyWith<AppState> get copyWith =>
@@ -43,7 +44,8 @@ abstract class $AppStateCopyWith<$Res> {
       List<String> selectedCategoriesIDs,
       List<POI> pois,
       String errorMessage,
-      LocationPermissionStatus locationPermissionStatus});
+      LocationPermissionStatus locationPermissionStatus,
+      bool poisReachedMaximum});
 }
 
 /// @nodoc
@@ -64,6 +66,7 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
     Object? pois = freezed,
     Object? errorMessage = freezed,
     Object? locationPermissionStatus = freezed,
+    Object? poisReachedMaximum = freezed,
   }) {
     return _then(_value.copyWith(
       appStatus: appStatus == freezed
@@ -98,6 +101,10 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
           ? _value.locationPermissionStatus
           : locationPermissionStatus // ignore: cast_nullable_to_non_nullable
               as LocationPermissionStatus,
+      poisReachedMaximum: poisReachedMaximum == freezed
+          ? _value.poisReachedMaximum
+          : poisReachedMaximum // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -116,7 +123,8 @@ abstract class _$$_AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
       List<String> selectedCategoriesIDs,
       List<POI> pois,
       String errorMessage,
-      LocationPermissionStatus locationPermissionStatus});
+      LocationPermissionStatus locationPermissionStatus,
+      bool poisReachedMaximum});
 }
 
 /// @nodoc
@@ -139,6 +147,7 @@ class __$$_AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
     Object? pois = freezed,
     Object? errorMessage = freezed,
     Object? locationPermissionStatus = freezed,
+    Object? poisReachedMaximum = freezed,
   }) {
     return _then(_$_AppState(
       appStatus: appStatus == freezed
@@ -173,6 +182,10 @@ class __$$_AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
           ? _value.locationPermissionStatus
           : locationPermissionStatus // ignore: cast_nullable_to_non_nullable
               as LocationPermissionStatus,
+      poisReachedMaximum: poisReachedMaximum == freezed
+          ? _value.poisReachedMaximum
+          : poisReachedMaximum // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -188,7 +201,8 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
       final List<String> selectedCategoriesIDs = const <String>[],
       final List<POI> pois = const <POI>[],
       this.errorMessage = '',
-      this.locationPermissionStatus = LocationPermissionStatus.initial})
+      this.locationPermissionStatus = LocationPermissionStatus.initial,
+      this.poisReachedMaximum = false})
       : _categories = categories,
         _selectedCategoriesIDs = selectedCategoriesIDs,
         _pois = pois;
@@ -232,10 +246,13 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
   @override
   @JsonKey()
   final LocationPermissionStatus locationPermissionStatus;
+  @override
+  @JsonKey()
+  final bool poisReachedMaximum;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AppState(appStatus: $appStatus, categoriesStatus: $categoriesStatus, poisStatus: $poisStatus, categories: $categories, selectedCategoriesIDs: $selectedCategoriesIDs, pois: $pois, errorMessage: $errorMessage, locationPermissionStatus: $locationPermissionStatus)';
+    return 'AppState(appStatus: $appStatus, categoriesStatus: $categoriesStatus, poisStatus: $poisStatus, categories: $categories, selectedCategoriesIDs: $selectedCategoriesIDs, pois: $pois, errorMessage: $errorMessage, locationPermissionStatus: $locationPermissionStatus, poisReachedMaximum: $poisReachedMaximum)';
   }
 
   @override
@@ -251,7 +268,8 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
       ..add(DiagnosticsProperty('pois', pois))
       ..add(DiagnosticsProperty('errorMessage', errorMessage))
       ..add(DiagnosticsProperty(
-          'locationPermissionStatus', locationPermissionStatus));
+          'locationPermissionStatus', locationPermissionStatus))
+      ..add(DiagnosticsProperty('poisReachedMaximum', poisReachedMaximum));
   }
 
   @override
@@ -272,7 +290,9 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
             const DeepCollectionEquality()
                 .equals(other.errorMessage, errorMessage) &&
             const DeepCollectionEquality().equals(
-                other.locationPermissionStatus, locationPermissionStatus));
+                other.locationPermissionStatus, locationPermissionStatus) &&
+            const DeepCollectionEquality()
+                .equals(other.poisReachedMaximum, poisReachedMaximum));
   }
 
   @override
@@ -285,7 +305,8 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
       const DeepCollectionEquality().hash(_selectedCategoriesIDs),
       const DeepCollectionEquality().hash(_pois),
       const DeepCollectionEquality().hash(errorMessage),
-      const DeepCollectionEquality().hash(locationPermissionStatus));
+      const DeepCollectionEquality().hash(locationPermissionStatus),
+      const DeepCollectionEquality().hash(poisReachedMaximum));
 
   @JsonKey(ignore: true)
   @override
@@ -302,7 +323,8 @@ abstract class _AppState implements AppState {
       final List<String> selectedCategoriesIDs,
       final List<POI> pois,
       final String errorMessage,
-      final LocationPermissionStatus locationPermissionStatus}) = _$_AppState;
+      final LocationPermissionStatus locationPermissionStatus,
+      final bool poisReachedMaximum}) = _$_AppState;
 
   @override
   AppStatus get appStatus;
@@ -320,6 +342,8 @@ abstract class _AppState implements AppState {
   String get errorMessage;
   @override
   LocationPermissionStatus get locationPermissionStatus;
+  @override
+  bool get poisReachedMaximum;
   @override
   @JsonKey(ignore: true)
   _$$_AppStateCopyWith<_$_AppState> get copyWith =>

@@ -40,5 +40,6 @@ class AppState with _$AppState {
     @Default('') String errorMessage,
     @Default(LocationPermissionStatus.initial)
         LocationPermissionStatus locationPermissionStatus,
+    @Default(false) bool poisReachedMaximum,
   }) = _AppState;
 }

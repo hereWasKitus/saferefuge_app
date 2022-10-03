@@ -48,6 +48,8 @@ class AppRepository {
         city: city,
         country: country,
         approved: approved,
+        latitude: latitude,
+        longitude: longitude,
       );
       return pois;
     } on DioError catch (e) {

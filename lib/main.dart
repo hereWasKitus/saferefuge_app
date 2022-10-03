@@ -76,6 +76,10 @@ class MyApp extends StatelessWidget {
             textTheme: const TextTheme(
               bodyText1: TextStyle(fontSize: 16),
             ),
+            // pageTransitionsTheme: PageTransitionsTheme(builders: {
+            //   TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            //   TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+            // }),
           ),
         ),
       ),

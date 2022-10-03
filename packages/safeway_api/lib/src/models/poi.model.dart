@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'poi.model.freezed.dart';
 part 'poi.model.g.dart';
@@ -23,6 +25,9 @@ class POI with _$POI {
     @Default([]) List<String> languages,
     @Default(false) bool approved,
     @Default('') String author,
+    @Default(0) @JsonKey(name: 'distance_km') double distanceKm,
+    @Default('') @JsonKey(name: 'socialmedia') String socialMedia,
+    @Default('') @JsonKey(name: 'open_hours') String openHours,
   }) = _POI;
 
   factory POI.fromJson(Map<String, dynamic> json) => _$POIFromJson(json);
