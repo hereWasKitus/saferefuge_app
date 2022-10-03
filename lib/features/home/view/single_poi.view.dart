@@ -26,16 +26,8 @@ class _SinglePOIViewState extends State<SinglePOIView> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
         iconTheme: const IconThemeData(color: AppColors.grey),
-        title: const Text(
-          'Point of interest',
-          style: TextStyle(
-            color: AppColors.grey,
-            fontWeight: FontWeight.normal,
-          ),
-        ),
+        title: const Text('Point of interest'),
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(

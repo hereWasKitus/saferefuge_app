@@ -76,6 +76,15 @@ class MyApp extends StatelessWidget {
             textTheme: const TextTheme(
               bodyText1: TextStyle(fontSize: 16),
             ),
+            backgroundColor: Colors.white,
+            appBarTheme: AppBarTheme.of(context).copyWith(
+              backgroundColor: Colors.white,
+              shadowColor: Colors.transparent,
+              titleTextStyle: const TextStyle(
+                color: AppColors.grey,
+                fontSize: 20,
+              ),
+            ),
             // pageTransitionsTheme: PageTransitionsTheme(builders: {
             //   TargetPlatform.android: CupertinoPageTransitionsBuilder(),
             //   TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),

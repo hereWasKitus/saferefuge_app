@@ -40,9 +40,7 @@ class _POIListViewState extends State<POIListView> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
           titleSpacing: 0,
-          shadowColor: Colors.transparent,
           title: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Row(
