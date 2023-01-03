@@ -26,6 +26,9 @@ mixin _$AppState {
   LocationPermissionStatus get locationPermissionStatus =>
       throw _privateConstructorUsedError;
   bool get poisReachedMaximum => throw _privateConstructorUsedError;
+  List<Country> get countries => throw _privateConstructorUsedError;
+  CountriesFetchingStatus get countriesFetchingStatus =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AppStateCopyWith<AppState> get copyWith =>
@@ -45,7 +48,9 @@ abstract class $AppStateCopyWith<$Res> {
       List<POI> pois,
       String errorMessage,
       LocationPermissionStatus locationPermissionStatus,
-      bool poisReachedMaximum});
+      bool poisReachedMaximum,
+      List<Country> countries,
+      CountriesFetchingStatus countriesFetchingStatus});
 }
 
 /// @nodoc
@@ -67,6 +72,8 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
     Object? errorMessage = freezed,
     Object? locationPermissionStatus = freezed,
     Object? poisReachedMaximum = freezed,
+    Object? countries = freezed,
+    Object? countriesFetchingStatus = freezed,
   }) {
     return _then(_value.copyWith(
       appStatus: appStatus == freezed
@@ -105,6 +112,14 @@ class _$AppStateCopyWithImpl<$Res> implements $AppStateCopyWith<$Res> {
           ? _value.poisReachedMaximum
           : poisReachedMaximum // ignore: cast_nullable_to_non_nullable
               as bool,
+      countries: countries == freezed
+          ? _value.countries
+          : countries // ignore: cast_nullable_to_non_nullable
+              as List<Country>,
+      countriesFetchingStatus: countriesFetchingStatus == freezed
+          ? _value.countriesFetchingStatus
+          : countriesFetchingStatus // ignore: cast_nullable_to_non_nullable
+              as CountriesFetchingStatus,
     ));
   }
 }
@@ -124,7 +139,9 @@ abstract class _$$_AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
       List<POI> pois,
       String errorMessage,
       LocationPermissionStatus locationPermissionStatus,
-      bool poisReachedMaximum});
+      bool poisReachedMaximum,
+      List<Country> countries,
+      CountriesFetchingStatus countriesFetchingStatus});
 }
 
 /// @nodoc
@@ -148,6 +165,8 @@ class __$$_AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
     Object? errorMessage = freezed,
     Object? locationPermissionStatus = freezed,
     Object? poisReachedMaximum = freezed,
+    Object? countries = freezed,
+    Object? countriesFetchingStatus = freezed,
   }) {
     return _then(_$_AppState(
       appStatus: appStatus == freezed
@@ -186,6 +205,14 @@ class __$$_AppStateCopyWithImpl<$Res> extends _$AppStateCopyWithImpl<$Res>
           ? _value.poisReachedMaximum
           : poisReachedMaximum // ignore: cast_nullable_to_non_nullable
               as bool,
+      countries: countries == freezed
+          ? _value._countries
+          : countries // ignore: cast_nullable_to_non_nullable
+              as List<Country>,
+      countriesFetchingStatus: countriesFetchingStatus == freezed
+          ? _value.countriesFetchingStatus
+          : countriesFetchingStatus // ignore: cast_nullable_to_non_nullable
+              as CountriesFetchingStatus,
     ));
   }
 }
@@ -202,10 +229,13 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
       final List<POI> pois = const <POI>[],
       this.errorMessage = '',
       this.locationPermissionStatus = LocationPermissionStatus.initial,
-      this.poisReachedMaximum = false})
+      this.poisReachedMaximum = false,
+      final List<Country> countries = const [],
+      this.countriesFetchingStatus = CountriesFetchingStatus.initial})
       : _categories = categories,
         _selectedCategoriesIDs = selectedCategoriesIDs,
-        _pois = pois;
+        _pois = pois,
+        _countries = countries;
 
   @override
   @JsonKey()
@@ -249,10 +279,21 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
   @override
   @JsonKey()
   final bool poisReachedMaximum;
+  final List<Country> _countries;
+  @override
+  @JsonKey()
+  List<Country> get countries {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_countries);
+  }
+
+  @override
+  @JsonKey()
+  final CountriesFetchingStatus countriesFetchingStatus;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AppState(appStatus: $appStatus, categoriesStatus: $categoriesStatus, poisStatus: $poisStatus, categories: $categories, selectedCategoriesIDs: $selectedCategoriesIDs, pois: $pois, errorMessage: $errorMessage, locationPermissionStatus: $locationPermissionStatus, poisReachedMaximum: $poisReachedMaximum)';
+    return 'AppState(appStatus: $appStatus, categoriesStatus: $categoriesStatus, poisStatus: $poisStatus, categories: $categories, selectedCategoriesIDs: $selectedCategoriesIDs, pois: $pois, errorMessage: $errorMessage, locationPermissionStatus: $locationPermissionStatus, poisReachedMaximum: $poisReachedMaximum, countries: $countries, countriesFetchingStatus: $countriesFetchingStatus)';
   }
 
   @override
@@ -269,7 +310,10 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
       ..add(DiagnosticsProperty('errorMessage', errorMessage))
       ..add(DiagnosticsProperty(
           'locationPermissionStatus', locationPermissionStatus))
-      ..add(DiagnosticsProperty('poisReachedMaximum', poisReachedMaximum));
+      ..add(DiagnosticsProperty('poisReachedMaximum', poisReachedMaximum))
+      ..add(DiagnosticsProperty('countries', countries))
+      ..add(DiagnosticsProperty(
+          'countriesFetchingStatus', countriesFetchingStatus));
   }
 
   @override
@@ -292,7 +336,11 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
             const DeepCollectionEquality().equals(
                 other.locationPermissionStatus, locationPermissionStatus) &&
             const DeepCollectionEquality()
-                .equals(other.poisReachedMaximum, poisReachedMaximum));
+                .equals(other.poisReachedMaximum, poisReachedMaximum) &&
+            const DeepCollectionEquality()
+                .equals(other._countries, _countries) &&
+            const DeepCollectionEquality().equals(
+                other.countriesFetchingStatus, countriesFetchingStatus));
   }
 
   @override
@@ -306,7 +354,9 @@ class _$_AppState with DiagnosticableTreeMixin implements _AppState {
       const DeepCollectionEquality().hash(_pois),
       const DeepCollectionEquality().hash(errorMessage),
       const DeepCollectionEquality().hash(locationPermissionStatus),
-      const DeepCollectionEquality().hash(poisReachedMaximum));
+      const DeepCollectionEquality().hash(poisReachedMaximum),
+      const DeepCollectionEquality().hash(_countries),
+      const DeepCollectionEquality().hash(countriesFetchingStatus));
 
   @JsonKey(ignore: true)
   @override
@@ -324,7 +374,9 @@ abstract class _AppState implements AppState {
       final List<POI> pois,
       final String errorMessage,
       final LocationPermissionStatus locationPermissionStatus,
-      final bool poisReachedMaximum}) = _$_AppState;
+      final bool poisReachedMaximum,
+      final List<Country> countries,
+      final CountriesFetchingStatus countriesFetchingStatus}) = _$_AppState;
 
   @override
   AppStatus get appStatus;
@@ -344,6 +396,10 @@ abstract class _AppState implements AppState {
   LocationPermissionStatus get locationPermissionStatus;
   @override
   bool get poisReachedMaximum;
+  @override
+  List<Country> get countries;
+  @override
+  CountriesFetchingStatus get countriesFetchingStatus;
   @override
   @JsonKey(ignore: true)
   _$$_AppStateCopyWith<_$_AppState> get copyWith =>

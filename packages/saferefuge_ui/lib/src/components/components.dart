@@ -1,3 +1,4 @@
+export 'autocomplete.dart';
 export 'button.dart';
 export 'form_field.dart';
 export 'icons.dart';

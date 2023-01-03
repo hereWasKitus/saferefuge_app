@@ -10,6 +10,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:protect_ua_women/features/app/app.dart';
 import 'package:safeway_api/safeway_api.dart';
 import 'package:stream_transform/stream_transform.dart';
+
+import '../models/models.dart';
 part 'app_bloc.freezed.dart';
 
 part 'app_event.dart';
@@ -31,9 +33,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       _loadPOIsByCurrentLocation,
       transformer: throttleDroppable(const Duration(milliseconds: 100)),
     );
+    on<AppLoadCountries>(_loadCountries);
   }
 
   final AppRepository _appRepository;
+  final CountriesService _countriesService = CountriesService();
 
   void _loadCategories(LoadCategories event, Emitter<AppState> emit) async {
     emit(state.copyWith(categoriesStatus: CategoriesStatus.loading));
@@ -102,6 +106,24 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     } catch (e) {
       debugger(when: true);
       emit(state.copyWith(poisStatus: POIsStatus.failure));
+    }
+  }
+
+  _loadCountries(AppLoadCountries event, Emitter<AppState> emit) async {
+    emit(state.copyWith(
+      countriesFetchingStatus: CountriesFetchingStatus.loading,
+    ));
+
+    try {
+      final List<Country> countries = await _countriesService.fetchCountries();
+      emit(state.copyWith(
+        countries: countries,
+        countriesFetchingStatus: CountriesFetchingStatus.success,
+      ));
+    } catch (e) {
+      debugger(when: true);
+      emit(state.copyWith(
+          countriesFetchingStatus: CountriesFetchingStatus.failure));
     }
   }
 }

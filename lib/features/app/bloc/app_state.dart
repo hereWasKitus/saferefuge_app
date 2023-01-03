@@ -28,6 +28,13 @@ enum LocationPermissionStatus {
   denied,
 }
 
+enum CountriesFetchingStatus {
+  initial,
+  loading,
+  success,
+  failure,
+}
+
 @freezed
 class AppState with _$AppState {
   const factory AppState({
@@ -41,5 +48,8 @@ class AppState with _$AppState {
     @Default(LocationPermissionStatus.initial)
         LocationPermissionStatus locationPermissionStatus,
     @Default(false) bool poisReachedMaximum,
+    @Default([]) List<Country> countries,
+    @Default(CountriesFetchingStatus.initial)
+        CountriesFetchingStatus countriesFetchingStatus,
   }) = _AppState;
 }

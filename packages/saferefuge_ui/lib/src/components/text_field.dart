@@ -15,6 +15,7 @@ class SRTextField extends StatelessWidget {
     this.hintText,
     this.hintTextColor = SRColors.grey,
     this.prefixIcon,
+    this.suffixIcon,
     this.textColor = SRColors.grey2,
     this.cursorColor = SRColors.grey2,
     this.fillColor = Colors.white,
@@ -29,7 +30,8 @@ class SRTextField extends StatelessWidget {
   final Color focusedBorderColor;
   final String? hintText;
   final Color? hintTextColor;
-  final Icon? prefixIcon;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final Color? textColor;
   final Color? cursorColor;
   final Color? fillColor;
@@ -61,12 +63,21 @@ class SRTextField extends StatelessWidget {
             color: focusedBorderColor,
           ),
         ),
+        errorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
+          ),
+          borderSide: BorderSide(
+            color: Colors.red,
+          ),
+        ),
         constraints: const BoxConstraints(maxHeight: 44),
         hintText: hintText,
         hintStyle: TextStyle(
           color: hintTextColor,
         ),
         prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
       ),
       style: TextStyle(
         color: textColor,

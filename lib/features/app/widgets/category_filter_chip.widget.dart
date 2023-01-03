@@ -19,6 +19,7 @@ class CategoryFilterChip extends StatelessWidget {
     return FilterChip(
       selected: selected,
       label: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(category.name),
           // _styler.getIcon(category),

@@ -11,13 +11,13 @@
 // ignore_for_file: type=lint
 
 import 'package:auto_route/auto_route.dart' as _i5;
-import 'package:auto_route/empty_router_widgets.dart' as _i3;
+import 'package:auto_route/empty_router_widgets.dart' as _i4;
 import 'package:flutter/cupertino.dart' as _i7;
 import 'package:flutter/material.dart' as _i6;
 
 import '../features/app/app.dart' as _i1;
-import '../features/home/home.dart' as _i4;
-import '../features/map/map.dart' as _i2;
+import '../features/home/home.dart' as _i2;
+import '../features/map/map.dart' as _i3;
 
 class AppRouter extends _i5.RootStackRouter {
   AppRouter([_i6.GlobalKey<_i6.NavigatorState>? navigatorKey])
@@ -33,28 +33,36 @@ class AppRouter extends _i5.RootStackRouter {
       return _i5.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i1.Entrypoint());
     },
+    FiltersRoute.name: (routeData) {
+      return _i5.CustomPage<dynamic>(
+          routeData: routeData,
+          child: const _i2.FiltersView(),
+          transitionsBuilder: _i5.TransitionsBuilders.slideLeft,
+          opaque: true,
+          barrierDismissible: false);
+    },
     MapRoute.name: (routeData) {
       final args = routeData.argsAs<MapRouteArgs>();
       return _i5.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i2.MapScreen(
+          child: _i3.MapScreen(
               key: args.key, onPointSelected: args.onPointSelected));
     },
     HomeRouter.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i3.EmptyRouterPage());
+          routeData: routeData, child: const _i4.EmptyRouterPage());
     },
     EmptyRoute.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i3.EmptyRouterPage());
+          routeData: routeData, child: const _i4.EmptyRouterPage());
     },
     HomeRoute.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i4.HomeView());
+          routeData: routeData, child: const _i2.HomeView());
     },
     POIListRoute.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i4.POIListView());
+          routeData: routeData, child: const _i2.POIListView());
     },
     SinglePOIRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
@@ -62,7 +70,7 @@ class AppRouter extends _i5.RootStackRouter {
           orElse: () => SinglePOIRouteArgs(poiID: pathParams.getString('id')));
       return _i5.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i4.SinglePOIView(key: args.key, poiID: args.poiID));
+          child: _i2.SinglePOIView(key: args.key, poiID: args.poiID));
     }
   };
 
@@ -84,6 +92,7 @@ class AppRouter extends _i5.RootStackRouter {
           _i5.RouteConfig(EmptyRoute.name,
               path: 'empty', parent: EntrypointRoute.name)
         ]),
+        _i5.RouteConfig(FiltersRoute.name, path: '/filters'),
         _i5.RouteConfig(MapRoute.name, path: '/map')
       ];
 }
@@ -106,7 +115,15 @@ class EntrypointRoute extends _i5.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.MapScreen]
+/// [_i2.FiltersView]
+class FiltersRoute extends _i5.PageRouteInfo<void> {
+  const FiltersRoute() : super(FiltersRoute.name, path: '/filters');
+
+  static const String name = 'FiltersRoute';
+}
+
+/// generated route for
+/// [_i3.MapScreen]
 class MapRoute extends _i5.PageRouteInfo<MapRouteArgs> {
   MapRoute(
       {_i7.Key? key,
@@ -133,7 +150,7 @@ class MapRouteArgs {
 }
 
 /// generated route for
-/// [_i3.EmptyRouterPage]
+/// [_i4.EmptyRouterPage]
 class HomeRouter extends _i5.PageRouteInfo<void> {
   const HomeRouter({List<_i5.PageRouteInfo>? children})
       : super(HomeRouter.name, path: 'home', initialChildren: children);
@@ -142,7 +159,7 @@ class HomeRouter extends _i5.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.EmptyRouterPage]
+/// [_i4.EmptyRouterPage]
 class EmptyRoute extends _i5.PageRouteInfo<void> {
   const EmptyRoute() : super(EmptyRoute.name, path: 'empty');
 
@@ -150,7 +167,7 @@ class EmptyRoute extends _i5.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.HomeView]
+/// [_i2.HomeView]
 class HomeRoute extends _i5.PageRouteInfo<void> {
   const HomeRoute() : super(HomeRoute.name, path: '');
 
@@ -158,7 +175,7 @@ class HomeRoute extends _i5.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.POIListView]
+/// [_i2.POIListView]
 class POIListRoute extends _i5.PageRouteInfo<void> {
   const POIListRoute() : super(POIListRoute.name, path: 'pois');
 
@@ -166,7 +183,7 @@ class POIListRoute extends _i5.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.SinglePOIView]
+/// [_i2.SinglePOIView]
 class SinglePOIRoute extends _i5.PageRouteInfo<SinglePOIRouteArgs> {
   SinglePOIRoute({_i7.Key? key, required String poiID})
       : super(SinglePOIRoute.name,

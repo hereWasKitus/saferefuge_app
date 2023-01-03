@@ -35,3 +35,10 @@ class LoadPOIsByCurrentLocation extends AppEvent {
   @override
   List<Object> get props => [skip, maxDistance];
 }
+
+class AppLoadCountries extends AppEvent {
+  const AppLoadCountries();
+
+  @override
+  List<Object> get props => [];
+}

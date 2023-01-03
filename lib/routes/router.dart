@@ -43,6 +43,11 @@ import 'package:protect_ua_women/features/home/home.dart';
         ),
       ],
     ),
+    CustomRoute(
+      page: FiltersView,
+      path: '/filters',
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+    ),
     // CustomRoute(
     //   transitionsBuilder: TransitionsBuilders.slideLeft,
     //   page: OrganizationListView,
